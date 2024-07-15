@@ -5,6 +5,7 @@ import static java.lang.Math.sin;
 
 /**
  * Class for representing 2D robot poses (x, y, and heading) and their derivatives.
+ * Clone of Roadrunner's Pose2d class
  */
 public class Pose2d {
     private final double x;

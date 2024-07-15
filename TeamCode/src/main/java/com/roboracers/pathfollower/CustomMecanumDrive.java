@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.modules.drive.DriveConstants.RUN_US
 import static org.firstinspires.ftc.teamcode.modules.drive.DriveConstants.encoderTicksToInches;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.roboracers.pathfollower.follower.ParametricLookaheadFollower;
 import com.roboracers.pathfollower.geometry.Pose2d;
 import com.acmerobotics.roadrunner.localization.Localizer;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -17,17 +18,14 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 import com.roboracers.pathfollower.follower.Follower;
-import com.roboracers.pathfollower.planner.Path;
+import com.roboracers.pathfollower.planner.ParametricPath;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.modules.drive.ThreeTrackingWheelLocalizer;
-import org.firstinspires.ftc.teamcode.modules.subsystems.Subsystem;
 import org.firstinspires.ftc.teamcode.modules.util.RoadrunnerUtil.LynxModuleUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
@@ -128,6 +126,8 @@ public class CustomMecanumDrive {
         // TODO: if desired, use setLocalizer() to change the localization method
         localizer = new ThreeTrackingWheelLocalizer(hardwareMap);
 
+        follower = new ParametricLookaheadFollower(this);
+
     }
 
 
@@ -140,8 +140,8 @@ public class CustomMecanumDrive {
      * Follower functions
      */
 
-    public void setPath (Path path) {
-        this.follower.setPath(path);
+    public void setPath (ParametricPath parametricPath) {
+        follower.setPath(parametricPath);
     }
 
     /**

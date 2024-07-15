@@ -1,10 +1,12 @@
 package com.roboracers.pathfollower.planner;
 
-import com.roboracers.pathfollower.geometry.Pose2d;
 import com.roboracers.pathfollower.geometry.Vector2d;
 
-public interface Path {
+public interface ParametricPath {
 
     Vector2d getPoint(double t);
+    Vector2d getDerivative(double t);
+
+    double getArcLength();
 
 }
