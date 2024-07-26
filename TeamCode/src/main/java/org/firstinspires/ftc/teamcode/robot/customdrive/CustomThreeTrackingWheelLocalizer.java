@@ -1,11 +1,12 @@
-package org.firstinspires.ftc.teamcode.robot.drive;
+package org.firstinspires.ftc.teamcode.robot.customdrive;
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.roboracers.pathfollower.geometry.Pose2d;
 import com.roboracers.pathfollower.localization.Localizer;
+import com.roboracers.pathfollower.localization.ThreeTrackingWheelLocalizer;
 
 import org.firstinspires.ftc.teamcode.util.roadrunner.util.Encoder;
 
@@ -13,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Config
-public class ThreeTrackingWheelLocalizer extends com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer{
+public class CustomThreeTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer {
     public static double TICKS_PER_REV = 8192;
     public static double WHEEL_RADIUS = 0.6889764;
     public static double GEAR_RATIO = 1;
@@ -22,7 +23,9 @@ public class ThreeTrackingWheelLocalizer extends com.acmerobotics.roadrunner.loc
     public static double X_MULTIPLIER = 1.002255073876221;
     public static double Y_MULTIPLIER = 1.005446166720779;
     private Encoder leftEncoder, rightEncoder, frontEncoder;
-    public ThreeTrackingWheelLocalizer(HardwareMap hardwareMap) {
+
+
+    public CustomThreeTrackingWheelLocalizer(HardwareMap hardwareMap) {
         super(Arrays.asList(
                 new Pose2d(0, LATERAL_DISTANCE / 2, 0), // left
                 new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right
@@ -65,4 +68,11 @@ public class ThreeTrackingWheelLocalizer extends com.acmerobotics.roadrunner.loc
         );
     }
 
+    /**
+     * Current robot pose velocity (optional)
+     */
+    @Override
+    public com.roboracers.pathfollower.geometry.Pose2d getPoseVelocity() {
+        return null;
+    }
 }

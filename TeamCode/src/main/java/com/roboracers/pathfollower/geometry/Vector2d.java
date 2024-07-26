@@ -1,5 +1,8 @@
 package com.roboracers.pathfollower.geometry;
 
+import static org.apache.commons.math3.util.FastMath.cos;
+import static org.apache.commons.math3.util.FastMath.sin;
+
 public class Vector2d {
     private final double x;
     private final double y;
@@ -54,4 +57,12 @@ public class Vector2d {
         double dy = this.y - other.y;
         return Math.sqrt(dx * dx + dy * dy);
     }
+
+    public Vector2d rotated(double angle) {
+        double newX = x * cos(angle) - y * sin(angle);
+        double newY = x * sin(angle) + y * cos(angle);
+        return new Vector2d(newX, newY);
+    }
+
+
 }

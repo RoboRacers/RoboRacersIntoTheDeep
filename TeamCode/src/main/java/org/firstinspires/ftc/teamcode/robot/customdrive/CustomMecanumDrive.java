@@ -1,13 +1,11 @@
-package com.roboracers.pathfollower;
+package org.firstinspires.ftc.teamcode.robot.customdrive;
 
-import static org.firstinspires.ftc.teamcode.modules.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.modules.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.modules.drive.DriveConstants.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.encoderTicksToInches;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.roboracers.pathfollower.follower.ParametricLookaheadFollower;
-import com.roboracers.pathfollower.geometry.Pose2d;
-import com.acmerobotics.roadrunner.localization.Localizer;
+import com.roboracers.pathfollower.localization.Localizer;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,10 +16,12 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 import com.roboracers.pathfollower.follower.Follower;
+import com.roboracers.pathfollower.follower.ParametricLookaheadFollower;
+import com.roboracers.pathfollower.geometry.Pose2d;
 import com.roboracers.pathfollower.planner.ParametricPath;
 
-import org.firstinspires.ftc.teamcode.modules.drive.ThreeTrackingWheelLocalizer;
-import org.firstinspires.ftc.teamcode.modules.util.RoadrunnerUtil.LynxModuleUtil;
+import org.firstinspires.ftc.teamcode.robot.drive.ThreeTrackingWheelLocalizer;
+import org.firstinspires.ftc.teamcode.util.roadrunner.util.LynxModuleUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,7 +124,7 @@ public class CustomMecanumDrive {
         // TODO: reverse any motors using DcMotor.setDirection()
 
         // TODO: if desired, use setLocalizer() to change the localization method
-        localizer = new ThreeTrackingWheelLocalizer(hardwareMap);
+        localizer = new CustomThreeTrackingWheelLocalizer(hardwareMap);
 
         follower = new ParametricLookaheadFollower(this);
 
