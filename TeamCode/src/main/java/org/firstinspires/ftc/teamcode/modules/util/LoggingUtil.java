@@ -10,17 +10,17 @@ import java.io.Writer;
 
 public class LoggingUtil {
 
-    private static final String BASE_FOLDER_NAME = "FIRST";
+    private static final String BASE_FOLDER_NAME = "ROBORACERS_LOGGING";
     private Writer fileWriter;
     private String line;
     private boolean logTime;
     private long startTime;
     private boolean disabled = false;
 
-    LoggingUtil(String filename, boolean logTime) {
+    public LoggingUtil(String filename, boolean logTime) {
         if (logTime) startTime = System.nanoTime();
         this.logTime = logTime;
-        String directoryPath = Environment.getExternalStorageDirectory().getPath()+"/"+BASE_FOLDER_NAME;
+        String directoryPath = Environment.getRootDirectory().getPath()+"/"+BASE_FOLDER_NAME;
         File directory = new File(directoryPath);
         //noinspection ResultOfMethodCallIgnored
         directory.mkdir();
