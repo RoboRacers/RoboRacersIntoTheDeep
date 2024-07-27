@@ -16,11 +16,10 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 import com.roboracers.pathfollower.follower.Follower;
-import com.roboracers.pathfollower.follower.ParametricLookaheadFollower;
+import com.roboracers.pathfollower.follower.GuidedVectorFieldFollower;
 import com.roboracers.pathfollower.geometry.Pose2d;
 import com.roboracers.pathfollower.planner.ParametricPath;
 
-import org.firstinspires.ftc.teamcode.robot.drive.ThreeTrackingWheelLocalizer;
 import org.firstinspires.ftc.teamcode.util.roadrunner.util.LynxModuleUtil;
 
 import java.util.ArrayList;
@@ -126,14 +125,14 @@ public class CustomMecanumDrive {
         // TODO: if desired, use setLocalizer() to change the localization method
         localizer = new CustomThreeTrackingWheelLocalizer(hardwareMap);
 
-        follower = new ParametricLookaheadFollower(this);
+        follower = new GuidedVectorFieldFollower(0.01);
 
     }
 
 
     public void update() {
         updatePoseEstimate();
-        setDrivePower(follower.getDriveVelocity());
+        setDrivePower(follower.getDriveVelocity(getPoseEstimate()));
     }
 
     /**

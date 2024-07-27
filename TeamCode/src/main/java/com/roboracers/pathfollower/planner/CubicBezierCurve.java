@@ -11,6 +11,7 @@ public class CubicBezierCurve implements ParametricPath {
     private final Vector2d controlPoint4;
 
     private final double arcLength;
+
     // TODO: Make this tunable
     public static int ARCLEN_ESTIMATION_SEGMENTS = 100;
 
