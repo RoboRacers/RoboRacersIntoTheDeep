@@ -51,7 +51,7 @@ public class GuidedVectorFieldFollower implements Follower {
 
         Vector2d currentPoint = currentPosition.vec();
 
-        double closestTValue = PointProjection.projectionGradientDescent(parametricPath, currentPoint, lastTValue);
+        double closestTValue = PointProjection.projectionBinarySearch(parametricPath, currentPoint, 10);
 
         Vector2d tangentPoint = parametricPath.getPoint(closestTValue).add(
                 parametricPath.getDerivative(closestTValue).normalize().multiply(tangentDistance));
@@ -67,7 +67,9 @@ public class GuidedVectorFieldFollower implements Follower {
 
         lastTValue = closestTValue;
 
-        return new Pose2d(velocityVector, 0);
+        Vector2d robotFrame = velocityVector.fieldToRobotCentric(currentPosition.getHeading());
+        // Return the new vector in the robot's frame of reference
+        return new Pose2d(robotFrame, 0);
     }
 
     @Override
@@ -85,4 +87,5 @@ public class GuidedVectorFieldFollower implements Follower {
         else
             return false;
     }
+
 }

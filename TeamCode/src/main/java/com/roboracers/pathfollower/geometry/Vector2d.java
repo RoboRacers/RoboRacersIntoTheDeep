@@ -3,6 +3,8 @@ package com.roboracers.pathfollower.geometry;
 import static org.apache.commons.math3.util.FastMath.cos;
 import static org.apache.commons.math3.util.FastMath.sin;
 
+import androidx.annotation.NonNull;
+
 public class Vector2d {
     private final double x;
     private final double y;
@@ -62,6 +64,28 @@ public class Vector2d {
         double newX = x * cos(angle) - y * sin(angle);
         double newY = x * sin(angle) + y * cos(angle);
         return new Vector2d(newX, newY);
+    }
+
+    public Vector2d fieldToRobotCentric(double heading) {
+        // Convert heading to radians
+        double theta = heading;
+
+        // Compute the inverse rotation matrix elements
+        double cosTheta = Math.cos(theta);
+        double sinTheta = Math.sin(theta);
+
+        // Apply the inverse rotation matrix to the vector
+        double xRobot = cosTheta * this.x + sinTheta * this.y;
+        double yRobot = -sinTheta * this.x + cosTheta * this.y;
+
+        // Return the new vector in the robot's frame of reference
+        return new Vector2d(xRobot, yRobot);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format("Vector2D{x=%.6f, y=%.6f}", x, y);
     }
 
 

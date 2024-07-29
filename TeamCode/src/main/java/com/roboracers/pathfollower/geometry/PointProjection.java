@@ -5,128 +5,89 @@ import com.roboracers.pathfollower.planner.ParametricPath;
 
 public class PointProjection {
 
-    // TODO: make these tunable
-    private static double EPSILON_SCALING_FACTOR = 100;
-    private static double ITERATIONS_SCALING_FACTOR = 10000;
+    private static final double INITIAL_LEARNING_RATE = 0.01;
+    private static final double EPSILON = 1e-4;
+    private static final int MAX_ITERATIONS = 10000;
+    private static final int NUM_GUESSES = 20; // Number of evenly-spread guesses
 
-    private static final double LEARNING_RATE_SCALING_FACTOR_GD = 0.01;
-    private static final double EPSILON_SCALING_FACTOR_GD = 1e-6;
-    private static final double ITERATIONS_SCALING_FACTOR_GD = 1000;
+    public static double projectionGradientDescent(ParametricPath parametricPath, Vector2d targetPoint, double guessRange) {
+        double bestT = 0.0;
+        double bestDistance = Double.MAX_VALUE;
 
-    public static Vector2d findClosestPoint(ParametricPath parametricPath, Vector2d targetPoint) {
+        // Spread guesses evenly across the range [0, 1]
+        for (int i = 0; i < NUM_GUESSES; i++) {
+            double initialGuess = i / (double) (NUM_GUESSES - 1) * guessRange; // Spread guesses evenly
 
-        double arclen = parametricPath.getArcLength();
-        double epsilon = arclen / EPSILON_SCALING_FACTOR;
-        int maxIterations = (int) (arclen * ITERATIONS_SCALING_FACTOR);
+            double t = initialGuess;
+            double learningRate = INITIAL_LEARNING_RATE;
 
-        double t = 0.5; // Starting guess for t
-        double bestT = t;
-        double minDistance = Double.MAX_VALUE;
+            for (int iter = 0; iter < MAX_ITERATIONS; iter++) {
+                // Calculate the current point on the path and its derivative
+                Vector2d P_t = parametricPath.getPoint(t);
+                Vector2d dP_dt = parametricPath.getDerivative(t);
 
-        for (int i = 0; i < maxIterations; i++) {
-            Vector2d P_t = parametricPath.getPoint(t);
-            double distance = P_t.distanceTo(targetPoint);
-            if (distance < minDistance) {
-                minDistance = distance;
-                bestT = t;
-            }
+                // Calculate the distance vector from the current point to the target point
+                Vector2d distanceVector = P_t.subtract(targetPoint);
 
-            // Try small steps in both directions
-            double[] steps = {-epsilon, epsilon};
-            for (double step : steps) {
-                double newT = t + step;
-                if (newT >= 0.0 && newT <= 1.0) { // Ensure t is within bounds
-                    P_t = parametricPath.getPoint(newT);
-                    distance = P_t.distanceTo(targetPoint);
-                    if (distance < minDistance) {
-                        minDistance = distance;
+                // Calculate the gradient
+                double gradient = 2 * distanceVector.dot(dP_dt);
+
+                // Update the parameter t
+                double newT = t - learningRate * gradient;
+
+                // Ensure t is within bounds [0, 1]
+                newT = Math.max(0.0, Math.min(1.0, newT));
+
+                // Check for convergence
+                if (Math.abs(newT - t) < EPSILON) {
+                    // Calculate the distance from the target point
+                    double currentDistance = P_t.distanceTo(targetPoint);
+
+                    // Update the best result if needed
+                    if (currentDistance < bestDistance) {
+                        bestDistance = currentDistance;
                         bestT = newT;
                     }
+                    break;
                 }
+
+                // Update t for the next iteration
+                t = newT;
+
+                // Optionally adjust learning rate (e.g., decay)
+                // learningRate *= 0.99;
             }
-            t = bestT; // Update t for the next iteration
-        }
-
-        return parametricPath.getPoint(bestT);
-
-    }
-
-    public static double findClosestTValue(ParametricPath parametricPath, Vector2d targetPoint) {
-
-        double arclen = parametricPath.getArcLength();
-        double epsilon = arclen / EPSILON_SCALING_FACTOR;
-        int maxIterations = (int) (arclen * ITERATIONS_SCALING_FACTOR);
-
-
-        double t = 0.5; // Starting guess for t
-        double bestT = t;
-        double minDistance = Double.MAX_VALUE;
-
-        for (int i = 0; i < maxIterations; i++) {
-            Vector2d P_t = parametricPath.getPoint(t);
-            double distance = P_t.distanceTo(targetPoint);
-            if (distance < minDistance) {
-                minDistance = distance;
-                bestT = t;
-            }
-
-            // Try small steps in both directions
-            double[] steps = {-epsilon, epsilon};
-            for (double step : steps) {
-                double newT = t + step;
-                if (newT >= 0.0 && newT <= 1.0) { // Ensure t is within bounds
-                    P_t = parametricPath.getPoint(newT);
-                    distance = P_t.distanceTo(targetPoint);
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        bestT = newT;
-                    }
-                }
-            }
-            t = bestT; // Update t for the next iteration
         }
 
         return bestT;
-
     }
 
-    public static double projectionGradientDescent(ParametricPath parametricPath, Vector2d targetPoint, double guess) {
+    /**
+     * Projection method that uses binary search to find the t-value of a point
+     * on a path that is closest to the given target point.
+     * Credit: Function taken from Pedro Pathing's implementation
+     * @param path Path to search on
+     * @param targetPoint The target point to minimize distance to
+     * @param searchStepLimit The amount of iterations for the binary search
+     * @return t-value of the closest point on the path
+     */
+    public static double projectionBinarySearch(ParametricPath path, Vector2d targetPoint, int searchStepLimit) {
+        double lower = 0;
+        double upper = 1;
+        Pose2d returnPoint;
 
-        // Constants for gradient descent
-        double arcLength = 1;
-        double learningRate = LEARNING_RATE_SCALING_FACTOR_GD * arcLength;
-        double epsilon = EPSILON_SCALING_FACTOR_GD * arcLength;
-        int maxIterations = (int) (ITERATIONS_SCALING_FACTOR_GD * arcLength);
-
-        // Initial guess for t
-        double t = guess;
-
-        for (int i = 0; i < maxIterations; i++) {
-            // Calculate the current point on the path and its derivative
-            Vector2d P_t = parametricPath.getPoint(t);
-            Vector2d dP_dt = parametricPath.getDerivative(t);
-
-            // Calculate the distance vector from the current point to the target point
-            Vector2d distanceVector = P_t.subtract(targetPoint);
-
-            // Calculate the gradient (dot product of distance vector and derivative of the path)
-            double gradient = 2 * distanceVector.dot(dP_dt);
-
-            // Update the parameter t using the gradient
-            double newT = t - learningRate * gradient;
-
-            // Ensure t is within bounds [0, 1]
-            if (newT < 0.0) newT = 0.0;
-            if (newT > 1.0) newT = 1.0;
-
-            // Check for convergence
-            if (Math.abs(newT - t) < epsilon) break;
-
-            // Update t for the next iteration
-            t = newT;
+        // we don't need to calculate the midpoint, so we start off at the 1/4 and 3/4 point
+        for (int i = 0; i < searchStepLimit; i++) {
+            if ( targetPoint.distanceTo(path.getPoint(lower + 0.25 * (upper-lower))) > targetPoint.distanceTo(path.getPoint(lower + 0.75 * (upper-lower)))) {
+                lower += (upper-lower)/2.0;
+            } else {
+                upper -= (upper-lower)/2.0;
+            }
         }
 
-        return t;
+        double closestPointTValue = lower + 0.5 * (upper-lower);
+
+        return closestPointTValue;
 
     }
 
@@ -138,12 +99,12 @@ public class PointProjection {
                 new Vector2d(1,1)
         );
 
-        Vector2d target = new Vector2d(0.758,0.635);
+        Vector2d target = new Vector2d(0.78,0.5);
 
-        double closest = projectionGradientDescent(testParametricPath, target, 0.5);
+        double closest = projectionGradientDescent(testParametricPath, target, 0);
 
         System.out.println(
-                closest
+                testParametricPath.getPoint(closest)
         );
     }
 }
