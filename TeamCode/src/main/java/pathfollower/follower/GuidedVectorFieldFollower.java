@@ -1,7 +1,8 @@
-package com.roboracers.pathfollower.follower;
+package pathfollower.follower;
 
 import com.roboracers.pathfollower.controls.PIDCoefficients;
 import com.roboracers.pathfollower.controls.PIDController;
+import com.roboracers.pathfollower.follower.Follower;
 import com.roboracers.pathfollower.geometry.PointProjection;
 import com.roboracers.pathfollower.geometry.Pose2d;
 import com.roboracers.pathfollower.geometry.Vector2d;

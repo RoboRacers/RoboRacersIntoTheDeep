@@ -1,4 +1,4 @@
-package com.roboracers.pathfollower.geometry;
+package pathfollower.geometry;
 
 import static org.apache.commons.math3.util.FastMath.cos;
 import static org.apache.commons.math3.util.FastMath.sin;
