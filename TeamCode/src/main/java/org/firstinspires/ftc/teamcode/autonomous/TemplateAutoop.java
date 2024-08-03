@@ -6,10 +6,9 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.RobotCore;
-import org.firstinspires.ftc.teamcode.modules.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.robot.RobotCore;
+import org.firstinspires.ftc.teamcode.util.roadrunner.trajectorysequence.TrajectorySequence;
 
 // Localization if it shows drift, follower if it doesn't
 // - Words to code by
