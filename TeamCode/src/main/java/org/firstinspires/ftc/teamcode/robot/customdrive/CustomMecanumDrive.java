@@ -46,8 +46,9 @@ public class CustomMecanumDrive {
     private VoltageSensor batteryVoltageSensor;
 
     private Localizer localizer;
-    private Follower follower;
+    public GuidedVectorFieldFollower follower;
 
+    private boolean isFollowing = false;
     public CustomMecanumDrive(HardwareMap hardwareMap) {
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
@@ -130,12 +131,19 @@ public class CustomMecanumDrive {
     }
 
 
+
     public void update() {
         updatePoseEstimate();
-        setDrivePower(follower.getDriveVelocity(getPoseEstimate()));
+        // Only adhere to the follower when path following is enabled.
+        if (isFollowing) {
+            // Check if the path is complete. If it is, stop following.
+            if (follower.isComplete(getPoseEstimate())) {
+                isFollowing = false;
+            } else setDrivePower(follower.getDriveVelocity(getPoseEstimate()));
+        }
     }
 
-    /**
+    /*
      * Follower functions
      */
 
@@ -143,6 +151,10 @@ public class CustomMecanumDrive {
         follower.setPath(parametricPath);
     }
 
+    public void setFollowing(boolean following) {
+        isFollowing = following;
+    }
+    
     /**
      * Motor Behavior Functions
      */
