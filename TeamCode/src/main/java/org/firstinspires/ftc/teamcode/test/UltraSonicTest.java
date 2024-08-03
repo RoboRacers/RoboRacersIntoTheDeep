@@ -7,11 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 
 @TeleOp(name="MaxBotix Ultrasonic Sensor", group="LinearOpMode")
-public class sensorfusiontest extends LinearOpMode {
+public class UltraSonicTest extends LinearOpMode {
 
     private AnalogInput ultrasonicSensor;
     private FtcDashboard dashboard;
