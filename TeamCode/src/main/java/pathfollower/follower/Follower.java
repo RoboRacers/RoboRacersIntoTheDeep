@@ -1,7 +1,7 @@
 package pathfollower.follower;
 
-import com.roboracers.pathfollower.geometry.Pose2d;
-import com.roboracers.pathfollower.planner.ParametricPath;
+import com.roboracers.topgear.geometry.Pose2d;
+import com.roboracers.topgear.planner.ParametricPath;
 
 public interface Follower {
 

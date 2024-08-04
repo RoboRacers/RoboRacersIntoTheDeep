@@ -1,7 +1,7 @@
 package pathfollower.planner;
 
-import com.roboracers.pathfollower.geometry.Vector2d;
-import com.roboracers.pathfollower.planner.ParametricPath;
+import com.roboracers.topgear.geometry.Vector2d;
+import com.roboracers.topgear.planner.ParametricPath;
 
 import java.util.ArrayList;
 

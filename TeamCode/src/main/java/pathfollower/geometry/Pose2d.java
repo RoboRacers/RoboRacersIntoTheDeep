@@ -3,7 +3,7 @@ package pathfollower.geometry;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
-import com.roboracers.pathfollower.geometry.Vector2d;
+import com.roboracers.topgear.geometry.Vector2d;
 
 /**
  * Class for representing 2D robot poses (x, y, and heading) and their derivatives.
@@ -36,15 +36,15 @@ public class Pose2d {
         return heading;
     }
 
-    public Pose2d(com.roboracers.pathfollower.geometry.Vector2d pos, double heading) {
+    public Pose2d(com.roboracers.topgear.geometry.Vector2d pos, double heading) {
         this(pos.getX(), pos.getY(), heading);
     }
 
-    public com.roboracers.pathfollower.geometry.Vector2d vec() {
-        return new com.roboracers.pathfollower.geometry.Vector2d(x, y);
+    public com.roboracers.topgear.geometry.Vector2d vec() {
+        return new com.roboracers.topgear.geometry.Vector2d(x, y);
     }
 
-    public com.roboracers.pathfollower.geometry.Vector2d headingVec() {
+    public com.roboracers.topgear.geometry.Vector2d headingVec() {
         return new Vector2d(cos(heading), sin(heading));
     }
 

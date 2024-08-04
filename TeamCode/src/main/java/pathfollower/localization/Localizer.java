@@ -1,6 +1,6 @@
 package pathfollower.localization;
 
-import com.roboracers.pathfollower.geometry.Pose2d;
+import com.roboracers.topgear.geometry.Pose2d;
 
 public interface Localizer {
 

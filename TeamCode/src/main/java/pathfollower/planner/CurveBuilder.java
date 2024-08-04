@@ -1,15 +1,15 @@
 package pathfollower.planner;
 
-import com.roboracers.pathfollower.geometry.Vector2d;
-import com.roboracers.pathfollower.planner.CubicBezierCurve;
-import com.roboracers.pathfollower.planner.ParametricPath;
+import com.roboracers.topgear.geometry.Vector2d;
+import com.roboracers.topgear.planner.CubicBezierCurve;
+import com.roboracers.topgear.planner.ParametricPath;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CurveBuilder {
 
-    public static com.roboracers.pathfollower.planner.CubicBezierCurve buildCurve(Vector2d start, Vector2d end, double startTangent, double endTangent) {
+    public static com.roboracers.topgear.planner.CubicBezierCurve buildCurve(Vector2d start, Vector2d end, double startTangent, double endTangent) {
         double k = 0.5;
 
         double D = start.distanceTo(end);
@@ -23,10 +23,10 @@ public class CurveBuilder {
         Vector2d control1 = start.add(tangent1.multiply(a));
         Vector2d control2 = end.subtract(tangent2.multiply(b));
 
-        return new com.roboracers.pathfollower.planner.CubicBezierCurve(start, control1, control2, end);
+        return new com.roboracers.topgear.planner.CubicBezierCurve(start, control1, control2, end);
     }
 
-    public static com.roboracers.pathfollower.planner.CubicBezierCurve buildCurve(Vector2d start, Vector2d end, double startTangent, double endTangent, double curvature) {
+    public static com.roboracers.topgear.planner.CubicBezierCurve buildCurve(Vector2d start, Vector2d end, double startTangent, double endTangent, double curvature) {
         double k = curvature;
 
         double D = start.distanceTo(end);
@@ -48,7 +48,7 @@ public class CurveBuilder {
     }
 
     public static class CurveList {
-        List<com.roboracers.pathfollower.planner.ParametricPath> curves;
+        List<com.roboracers.topgear.planner.ParametricPath> curves;
 
         public CurveList() {
             curves = new ArrayList<>();

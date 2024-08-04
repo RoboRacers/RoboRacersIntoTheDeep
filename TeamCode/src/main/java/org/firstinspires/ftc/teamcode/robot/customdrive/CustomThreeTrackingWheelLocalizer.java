@@ -4,9 +4,8 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.roboracers.pathfollower.geometry.Pose2d;
-import com.roboracers.pathfollower.localization.Localizer;
-import com.roboracers.pathfollower.localization.ThreeTrackingWheelLocalizer;
+import com.roboracers.topgear.geometry.Pose2d;
+import com.roboracers.topgear.localization.ThreeTrackingWheelLocalizer;
 
 import org.firstinspires.ftc.teamcode.util.roadrunner.util.Encoder;
 
@@ -72,7 +71,7 @@ public class CustomThreeTrackingWheelLocalizer extends ThreeTrackingWheelLocaliz
      * Current robot pose velocity (optional)
      */
     @Override
-    public com.roboracers.pathfollower.geometry.Pose2d getPoseVelocity() {
+    public com.roboracers.topgear.geometry.Pose2d getPoseVelocity() {
         return null;
     }
 }

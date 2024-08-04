@@ -1,12 +1,12 @@
 package pathfollower.follower;
 
-import com.roboracers.pathfollower.controls.PIDCoefficients;
-import com.roboracers.pathfollower.controls.PIDController;
-import com.roboracers.pathfollower.follower.Follower;
-import com.roboracers.pathfollower.geometry.PointProjection;
-import com.roboracers.pathfollower.geometry.Pose2d;
-import com.roboracers.pathfollower.geometry.Vector2d;
-import com.roboracers.pathfollower.planner.ParametricPath;
+import com.roboracers.topgear.controls.PIDCoefficients;
+import com.roboracers.topgear.controls.PIDController;
+import com.roboracers.topgear.follower.Follower;
+import com.roboracers.topgear.geometry.PointProjection;
+import com.roboracers.topgear.geometry.Pose2d;
+import com.roboracers.topgear.geometry.Vector2d;
+import com.roboracers.topgear.planner.ParametricPath;
 
 /**
  * The GuidedVectorFieldFollower class implements a robot controller that follows a guided vector field (GVF).

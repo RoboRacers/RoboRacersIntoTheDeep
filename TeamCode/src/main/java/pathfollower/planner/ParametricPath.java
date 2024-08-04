@@ -1,6 +1,6 @@
 package pathfollower.planner;
 
-import com.roboracers.pathfollower.geometry.Vector2d;
+import com.roboracers.topgear.geometry.Vector2d;
 
 public interface ParametricPath {
 

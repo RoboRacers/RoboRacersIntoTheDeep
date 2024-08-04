@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode.pathfollowertest;
 
-import static com.roboracers.pathfollower.utils.DefaultCurves.FIELD_S_CURVE;
-import static com.roboracers.pathfollower.utils.DefaultCurves.UNIT_S_CURVE;
+import static com.roboracers.topgear.utils.DefaultCurves.FIELD_S_CURVE;
 
-import com.roboracers.pathfollower.follower.GuidedVectorFieldFollower;
-import com.roboracers.pathfollower.geometry.Pose2d;
+import com.roboracers.topgear.follower.GuidedVectorFieldFollower;
+import com.roboracers.topgear.geometry.Pose2d;
 
 public class GVFVectorTest {
     public static void main(String[] args) {
