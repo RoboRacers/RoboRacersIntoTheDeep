@@ -94,12 +94,13 @@ public class CustomMecanumDrive {
 
          */
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "Bl"); //Fl
-        leftRear = hardwareMap.get(DcMotorEx.class, "Fl"); //Bl
-        rightRear = hardwareMap.get(DcMotorEx.class, "Fr"); //Br
-        rightFront = hardwareMap.get(DcMotorEx.class, "Br");// Fr
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront"); //Fl
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear"); //Bl
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear"); //Br
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");// Fr
 
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
@@ -126,7 +127,13 @@ public class CustomMecanumDrive {
         // TODO: if desired, use setLocalizer() to change the localization method
         localizer = new CustomThreeTrackingWheelLocalizer(hardwareMap);
 
-        follower = new GuidedVectorFieldFollower(0.01);
+        follower = new GuidedVectorFieldFollower(
+                TuneableConstants.tangentDistance,
+                TuneableConstants.xPIDCoeffs,
+                TuneableConstants.yPIDCoeffs,
+                TuneableConstants.headingPIDCoeffs,
+                TuneableConstants.maxSpeed
+        );
 
     }
 
