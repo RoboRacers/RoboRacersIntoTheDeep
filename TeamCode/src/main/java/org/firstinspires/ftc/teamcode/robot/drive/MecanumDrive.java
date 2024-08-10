@@ -135,13 +135,15 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
 
          */
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "Bl"); //Fl
-        leftRear = hardwareMap.get(DcMotorEx.class, "Fl"); //Bl
-        rightRear = hardwareMap.get(DcMotorEx.class, "Fr"); //Br
-        rightFront = hardwareMap.get(DcMotorEx.class, "Br");// Fr
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront"); //Fl
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear"); //Bl
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear"); //Br
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");// Fr
 
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
@@ -170,9 +172,6 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
         trajectorySequenceRunner = new TrajectorySequenceRunner(follower, HEADING_PID);
 
         // More custom stuff
-
-        leftUltrasonic = new UltrasonicDistanceSensor(hardwareMap.get(AnalogInput.class, "leftUltrasonic"));
-        rightUltrasonic = new UltrasonicDistanceSensor(hardwareMap.get(AnalogInput.class, "rightUltrasonic"));
     }
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
