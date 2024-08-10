@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.test.kalmanfilterrssss;
+package org.firstinspires.ftc.teamcode.test;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -7,9 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.test.WeightedMovingAverageEdited;
-import org.firstinspires.ftc.teamcode.test.kalmanfilterrssss.kalmanfilter;
 
 @TeleOp(name="IMU Kalman vs Moving Average Test", group="Linear Opmode")
 public class SensorRunning extends LinearOpMode {
