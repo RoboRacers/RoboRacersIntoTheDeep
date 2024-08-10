@@ -21,10 +21,10 @@ public class kalmanfilter {
         // errorCovariance += processNoise;
         estimatedValue = estimatedValue;
         errorCovariance += processNoise;
-        
+
     }
 
-    public void update(float measurement) {
+    public void update(double measurement) {
         // Measurement update step: Incorporate the new measurement
         double kalmanGain = errorCovariance / (errorCovariance + measurementNoise);
         estimatedValue += kalmanGain * (measurement - estimatedValue);

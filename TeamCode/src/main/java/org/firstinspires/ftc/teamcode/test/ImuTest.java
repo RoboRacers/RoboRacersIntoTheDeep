@@ -29,7 +29,6 @@ public class ImuTest extends LinearOpMode {
 
         dashboard = FtcDashboard.getInstance();
         packet = new TelemetryPacket();
-        double[] weights = {0.1, 0.3, 0.6};
         RotationZ = new WeightedMovingAverageEdited(0.7);
 
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
