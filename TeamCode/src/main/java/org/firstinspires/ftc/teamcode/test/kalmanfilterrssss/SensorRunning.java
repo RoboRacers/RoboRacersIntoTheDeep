@@ -8,11 +8,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.test.WeightedMovingAverageEdited;
 import org.firstinspires.ftc.teamcode.test.kalmanfilterrssss.kalmanfilter;
 
-@TeleOp(name="IMU Test", group="Linear Opmode")
+@TeleOp(name="IMU Kalman vs Moving Average Test", group="Linear Opmode")
 public class SensorRunning extends LinearOpMode {
     kalmanfilter KalmanFilter;
+    WeightedMovingAverageEdited movingAverage;
+    double movingAverageValue;
     private ElapsedTime timer = new ElapsedTime();
     private IMU imuSensor;
     private FtcDashboard dashboard;
@@ -24,6 +27,7 @@ public class SensorRunning extends LinearOpMode {
         dashboard = FtcDashboard.getInstance();
         packet = new TelemetryPacket();
         KalmanFilter = new kalmanfilter(0.01, 0.01, 0);
+        movingAverage = new WeightedMovingAverageEdited(0.7);
 
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
         RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
@@ -38,13 +42,16 @@ public class SensorRunning extends LinearOpMode {
             double yawAngle = imuSensor.getRobotYawPitchRollAngles().getYaw(org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES);
             KalmanFilter.predict();
             KalmanFilter.update(yawAngle);
+            movingAverageValue = movingAverage.getAvg(yawAngle);
 
             telemetry.addData("Yaw (Z)", "%.2f Deg. (Heading)", yawAngle);
-            telemetry.addData("Yaw (Z) Filtered", "%.2f Deg. (Heading)", KalmanFilter.getEstimate());
+            telemetry.addData("Yaw (Z) Kalman", "%.2f Deg. (Heading)", KalmanFilter.getEstimate());
+            telemetry.addData("Yaw (Z) Moving Average", "%.2f Deg. (Heading)", movingAverageValue);
             telemetry.update();
 
             packet.put("Yaw (Z)", yawAngle);
-            packet.put("Yaw (Z) Filtered", KalmanFilter.getEstimate());
+            packet.put("Yaw (Z) Kalman", KalmanFilter.getEstimate());
+            packet.put("Yaw (Z) Moving Average", movingAverageValue);
 
 
             dashboard.sendTelemetryPacket(packet);
