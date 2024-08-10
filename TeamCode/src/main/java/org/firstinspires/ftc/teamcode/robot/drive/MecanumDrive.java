@@ -18,7 +18,6 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAcceleration
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -41,17 +40,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.TRACK_WIDTH;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.encoderTicksToInches;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.kV;
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.

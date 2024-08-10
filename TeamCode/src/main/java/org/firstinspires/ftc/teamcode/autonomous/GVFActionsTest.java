@@ -7,6 +7,9 @@ import com.roboracers.topgear.geometry.Vector2d;
 import com.roboracers.topgear.planner.CubicBezierCurve;
 import com.roboracers.topgear.planner.ParametricPath;
 
+import org.firstinspires.ftc.teamcode.actions.Action;
+import org.firstinspires.ftc.teamcode.actions.Actions;
+import org.firstinspires.ftc.teamcode.actions.SequentialAction;
 import org.firstinspires.ftc.teamcode.robot.customdrive.GVFMecanumDrive;
 
 
@@ -14,30 +17,24 @@ import org.firstinspires.ftc.teamcode.robot.customdrive.GVFMecanumDrive;
 // - Words to code by
 
 @Config
-@Autonomous(name = "GVF Test", group = "16481")
-public class GVFTest extends LinearOpMode{
-
-
+@Autonomous(name = "GVF w/ Actions Test", group = "16481")
+public class GVFActionsTest extends LinearOpMode{
     @Override
     public void runOpMode() {
 
         GVFMecanumDrive drive = new GVFMecanumDrive(hardwareMap);
 
         ParametricPath path1 = new CubicBezierCurve(new Vector2d(0,0), new Vector2d(36,-36), new Vector2d(36,36), new Vector2d(72,0));
-
-        while(!isStopRequested() && !opModeIsActive()) {
-
-        }
+        ParametricPath path2 = new CubicBezierCurve(new Vector2d(72,0), new Vector2d(36,36), new Vector2d(36,-36), new Vector2d(0,0));
 
         waitForStart();
 
         if (isStopRequested()) return;
 
-        drive.setPath(path1);
-        drive.setFollowing(true);
-        while (opModeIsActive()) {
-            drive.update();
-        }
-    }
+        Actions.runBlocking(new SequentialAction(
+                drive.followPath(path1),
+                drive.followPath(path2)
+        ));
 
+    }
 }

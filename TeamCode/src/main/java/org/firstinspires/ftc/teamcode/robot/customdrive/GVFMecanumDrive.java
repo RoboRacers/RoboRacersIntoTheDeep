@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.robot.customdrive;
 
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.encoderTicksToInches;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.roboracers.topgear.localization.Localizer;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -19,6 +20,7 @@ import com.roboracers.topgear.follower.GuidedVectorFieldFollower;
 import com.roboracers.topgear.geometry.Pose2d;
 import com.roboracers.topgear.planner.ParametricPath;
 
+import org.firstinspires.ftc.teamcode.actions.Action;
 import org.firstinspires.ftc.teamcode.util.roadrunner.util.LynxModuleUtil;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ import java.util.List;
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-public class CustomMecanumDrive {
+public class GVFMecanumDrive {
 
     public static double LATERAL_MULTIPLIER = 1.6;
 
@@ -40,15 +42,15 @@ public class CustomMecanumDrive {
 
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private List<DcMotorEx> motors;
-
     private BNO055IMU imu;
     private VoltageSensor batteryVoltageSensor;
-
     private Localizer localizer;
+
     public GuidedVectorFieldFollower follower;
 
-    private boolean isFollowing = false;
-    public CustomMecanumDrive(HardwareMap hardwareMap) {
+
+
+    public GVFMecanumDrive(HardwareMap hardwareMap) {
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
 
@@ -126,17 +128,11 @@ public class CustomMecanumDrive {
         // TODO: if desired, use setLocalizer() to change the localization method
         localizer = new CustomThreeTrackingWheelLocalizer(hardwareMap);
 
-        follower = new GuidedVectorFieldFollower(
-                TuneableConstants.tangentDistance,
-                TuneableConstants.xPIDCoeffs,
-                TuneableConstants.yPIDCoeffs,
-                TuneableConstants.headingPIDCoeffs,
-                TuneableConstants.maxSpeed
-        );
+        follower = new GuidedVectorFieldFollower(TuneableConstants.getParams());
 
     }
 
-
+    private boolean isFollowing = false;
 
     public void update() {
         updatePoseEstimate();
@@ -160,8 +156,32 @@ public class CustomMecanumDrive {
     public void setFollowing(boolean following) {
         isFollowing = following;
     }
-    
+
     /**
+     * Action that follows a path to completion.
+     * @param path
+     * @return action
+     */
+    public Action followPath(ParametricPath path) {
+        return new Action() {
+            boolean firstLoop = true;
+            @Override
+            public boolean run(TelemetryPacket p) {
+                if (firstLoop) {
+                    setPath(path);
+                    setFollowing(true);
+                    firstLoop = false;
+                    return true;
+                } else if (!follower.isComplete(getPoseEstimate())) {
+                    update();
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    /*
      * Motor Behavior Functions
      */
 
@@ -188,7 +208,7 @@ public class CustomMecanumDrive {
         }
     }
 
-    /**
+    /*
      * Drive functions
      */
 
@@ -229,7 +249,7 @@ public class CustomMecanumDrive {
         rightFront.setPower(v3);
     }
 
-    /**
+    /*
      * Wheel velocities and kinematics
      */
 
@@ -260,19 +280,18 @@ public class CustomMecanumDrive {
     }
 
     /**
-     * Localizer functions
+     * Runs one iteration of the localization algorithm.
      */
-
     public void updatePoseEstimate() {
         this.localizer.update();
     }
 
+    /**
+     * Returns the current estimated pose of the robot.
+     * @return the current pose of the robot
+     */
     public Pose2d getPoseEstimate() {
-        return new Pose2d(
-                localizer.getPoseEstimate().getX(),
-                localizer.getPoseEstimate().getY(),
-                localizer.getPoseEstimate().getHeading()
-        );
+        return localizer.getPoseEstimate();
     }
 
 }

@@ -1,45 +1,57 @@
 package org.firstinspires.ftc.teamcode.robot.customdrive;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.roboracers.pathfollower.controls.PIDCoefficients;
+import com.roboracers.topgear.controls.PIDCoefficients;
+import com.roboracers.topgear.follower.GuidedVectorFieldFollower;
 
 @Config
 public class TuneableConstants {
 
-    /*
-     * The PID coefficients for the x, y, and heading controllers, used to bring the robot to a stop at the end of GVF following.
-     */
     /**
      * The PID coefficients for the x controller.
      */
-    public static PIDCoefficients xPIDCoeffs = new PIDCoefficients(0.07,0,0.05);
+    public static PIDCoefficients X_PID_COEFFS = new PIDCoefficients(0.07,0,0.05);
     /**
      * The PID coefficients for the y controller.
      */
-    public static PIDCoefficients yPIDCoeffs = new PIDCoefficients(0.01,0,0.05);
+    public static PIDCoefficients Y_PID_COEFFS = new PIDCoefficients(0.01,0,0.05);
     /**
      * The PID coefficients for the heading controller.
      */
-    public static PIDCoefficients headingPIDCoeffs = new PIDCoefficients(0,0,0);
+    public static PIDCoefficients H_PID_COEFFS = new PIDCoefficients(0,0,0);
     /**
      * The distance between the closest point and the tangent point, measured in inches.
      */
-    public static double tangentDistance = 3;
+    public static double TANGENT_DISTANCE = 3;
     /**
      * Max speed of the robot while following the path.
      * Measured between 0 and 1.
      */
-    public static double maxSpeed = 0.65;
+    public static double GVF_FOLLOWING_MAX_SPEED = 0.65;
     /**
      * Threshold for the end PID to kick in, measured in inches.
      */
-    public static double PIDThreshold = 2;
-
+    public static double PID_FOLLOWING_THRESHOLD = 2;
     /**
-     * The default curvature for the bezier curve builder..
+     * The distance threshold for the end of the path, measured in inches.
      */
-    public static double DEFAULT_CURVATURE = 0.5;
+    public static double STOPPING_DISTANCE_THRESHOLD = 1;
+    /**
+     * The minimum power for the end of the path, measured between 0 and 1.
+     */
+    public static double STOPPING_POWER_THRESHOLD = 0.1;
 
-
+    public static GuidedVectorFieldFollower.Params getParams() {
+        return new GuidedVectorFieldFollower.Params(
+                TANGENT_DISTANCE,
+                GVF_FOLLOWING_MAX_SPEED,
+                PID_FOLLOWING_THRESHOLD,
+                STOPPING_DISTANCE_THRESHOLD,
+                STOPPING_POWER_THRESHOLD,
+                X_PID_COEFFS,
+                Y_PID_COEFFS,
+                H_PID_COEFFS
+        );
+    }
 
 }

@@ -6,7 +6,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
 public class Actions {
 
-    public void runBlocking(Action a) {
+    public static void runBlocking(Action a) {
         FtcDashboard dash = FtcDashboard.getInstance();
         Canvas c = new Canvas();
         a.preview(c);

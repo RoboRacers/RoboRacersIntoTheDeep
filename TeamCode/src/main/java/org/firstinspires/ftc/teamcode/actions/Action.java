@@ -4,7 +4,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.dashboard.canvas.Canvas;
 
 
-@FunctionalInterface
+
 public interface Action {
     /**
      * Runs a single uninterruptible block. Returns true if the action should run again and false if it has completed.

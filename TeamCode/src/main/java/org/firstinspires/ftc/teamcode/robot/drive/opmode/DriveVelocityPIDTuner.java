@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.robot.drive.MecanumDrive;
-import org.firstinspires.ftc.teamcode.robot.drive.DriveConstants;
+import org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants;
 
 import java.util.List;
 

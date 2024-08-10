@@ -17,12 +17,12 @@ import org.firstinspires.ftc.teamcode.robot.drive.MecanumDrive;
 
 import java.util.Objects;
 
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.robot.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.kV;
 
 /*
  * This routine is designed to tune the open-loop feedforward coefficients. Although it may seem unnecessary,
