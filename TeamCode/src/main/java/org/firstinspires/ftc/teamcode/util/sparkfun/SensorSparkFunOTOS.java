@@ -1,22 +1,33 @@
-package org.firstinspires.ftc.teamcode.test;
+/*
+    SPDX-License-Identifier: MIT
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+    Copyright (c) 2024 SparkFun Electronics
+*/
+package org.firstinspires.ftc.teamcode.util.sparkfun;
+
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.util.ElapsedTime;
+
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
-
-@TeleOp(name="Optical Odometry", group="Linear Opmode")
-public class ApticalOdo extends LinearOpMode {
-
+/*
+ * This OpMode illustrates how to use the SparkFun Qwiic Optical Tracking Odometry Sensor (OTOS)
+ *
+ * The OpMode assumes that the sensor is configured with a name of "sensor_otos".
+ *
+ * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
+ *
+ * See the sensor's product page: https://www.sparkfun.com/products/24904
+ */
+@TeleOp(name = "Sensor: SparkFun OTOS", group = "Sensor")
+@Disabled
+public class SensorSparkFunOTOS extends LinearOpMode {
+    // Create an instance of the sensor
     SparkFunOTOS myOtos;
 
     @Override
