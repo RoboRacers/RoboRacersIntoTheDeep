@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teamcode.test;
 
 public class kalmanfilter {
 
-    private double processNoise;
-    private double measurementNoise;
-    private double estimatedValue;
-    private double errorCovariance;
+    protected double processNoise;
+    protected double measurementNoise;
+    protected double estimatedValue;
+    protected double errorCovariance;
 
     public kalmanfilter(double processNoise, double measurementNoise, double initialEstimate) {
         this.processNoise = processNoise;
