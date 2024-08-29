@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.robot.customdrive.GVFMecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.drive.ThreeTrackingWheelLocalizer;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Subsystem;
@@ -19,7 +20,7 @@ public class RobotCore implements Subsystem {
     /*
      * Declare the different subsystems of the robot here.
      */
-    public MecanumDrive drive;
+    public GVFMecanumDrive drive;
 
     public List<Subsystem> subsystems;
 
@@ -30,7 +31,7 @@ public class RobotCore implements Subsystem {
     public RobotCore(HardwareMap hardwareMap){
 
         /* Initialize Subsystems */
-        drive = new MecanumDrive(hardwareMap);
+        drive = new GVFMecanumDrive(hardwareMap);
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -51,6 +52,7 @@ public class RobotCore implements Subsystem {
     }
 
     public void telemetrySelfCheck(Telemetry telemetry) {
+        /*
         telemetry.addLine("SELF CHECK -----");
 
         // Checks if the positions of the encoders to make sure they are not unplugged
@@ -71,5 +73,7 @@ public class RobotCore implements Subsystem {
         if (deadwheelPositions.get(2) == 0) {
             telemetry.addLine("PERPENDICULAR ENCODER UNPLUGGED, Check wiring of Port x");
         }
+
+         */
     }
 }

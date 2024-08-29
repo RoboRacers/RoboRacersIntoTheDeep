@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.robot.customdrive.TuneableConstants;
 
 public class GVFVectorTest {
     public static void main(String[] args) {
-        GuidedVectorFieldFollower follower = new GuidedVectorFieldFollower(TuneableConstants.getParams());
+        GuidedVectorFieldFollower follower = new GuidedVectorFieldFollower(1);
 
 
         Pose2d driveVel = follower.getDriveVelocity(new Pose2d(35.69, 27.82, Math.toRadians(0)));

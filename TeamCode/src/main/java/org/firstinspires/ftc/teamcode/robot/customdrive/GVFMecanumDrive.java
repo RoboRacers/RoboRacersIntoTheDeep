@@ -4,6 +4,8 @@ import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.MO
 import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.RUN_USING_ENCODER;
 import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.encoderTicksToInches;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.roboracers.topgear.localization.Localizer;
@@ -21,6 +23,8 @@ import com.roboracers.topgear.geometry.Pose2d;
 import com.roboracers.topgear.planner.ParametricPath;
 
 import org.firstinspires.ftc.teamcode.actions.Action;
+import org.firstinspires.ftc.teamcode.robot.subsystems.Subsystem;
+import org.firstinspires.ftc.teamcode.util.roadrunner.util.DashboardUtil;
 import org.firstinspires.ftc.teamcode.util.roadrunner.util.LynxModuleUtil;
 
 import java.util.ArrayList;
@@ -28,10 +32,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /*
- * Simple mecanum drive hardware implementation for REV hardware.
+ * Clone of RoadRunner 0.5.6's SampleMecanumDrive, modified for TopGear.
  */
 @Config
-public class GVFMecanumDrive {
+public class GVFMecanumDrive implements Subsystem {
 
     public static double LATERAL_MULTIPLIER = 1.6;
 
@@ -48,7 +52,7 @@ public class GVFMecanumDrive {
 
     public GuidedVectorFieldFollower follower;
 
-
+    public FtcDashboard dashboard;
 
     public GVFMecanumDrive(HardwareMap hardwareMap) {
 
@@ -128,12 +132,23 @@ public class GVFMecanumDrive {
         // TODO: if desired, use setLocalizer() to change the localization method
         localizer = new CustomThreeTrackingWheelLocalizer(hardwareMap);
 
-        follower = new GuidedVectorFieldFollower(TuneableConstants.getParams());
+        follower = new GuidedVectorFieldFollower(
+                TuneableConstants.TANGENT_DISTANCE,
+                TuneableConstants.X_PID_COEFFS,
+                TuneableConstants.Y_PID_COEFFS,
+                TuneableConstants.H_PID_COEFFS,
+                TuneableConstants.GVF_FOLLOWING_MAX_SPEED,
+                TuneableConstants.STOPPING_DISTANCE_THRESHOLD,
+                TuneableConstants.STOPPING_POWER_THRESHOLD
+        );
 
+        dashboard = FtcDashboard.getInstance();
+        dashboard.setTelemetryTransmissionInterval(25);
     }
 
-    private boolean isFollowing = false;
+    public boolean isFollowing = false;
 
+    @Override
     public void update() {
         updatePoseEstimate();
         // Only adhere to the follower when path following is enabled.
@@ -141,8 +156,22 @@ public class GVFMecanumDrive {
             // Check if the path is complete. If it is, stop following.
             if (follower.isComplete(getPoseEstimate())) {
                 isFollowing = false;
+                setDrivePower(new Pose2d(0,0,0));
             } else setDrivePower(follower.getDriveVelocity(getPoseEstimate()));
         }
+
+        // Dashboard
+        TelemetryPacket packet = new TelemetryPacket();
+        Canvas fieldOverlay = packet.fieldOverlay();
+
+        fieldOverlay.setStroke("#3F51B5");
+        DashboardUtil.drawRobot(fieldOverlay, new com.acmerobotics.roadrunner.geometry.Pose2d(
+                this.getPoseEstimate().getX(),
+                this.getPoseEstimate().getY(),
+                this.getPoseEstimate().getHeading()
+        ));
+
+        dashboard.sendTelemetryPacket(packet);
     }
 
     /*

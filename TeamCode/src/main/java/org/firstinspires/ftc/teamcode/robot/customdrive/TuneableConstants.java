@@ -27,7 +27,8 @@ public class TuneableConstants {
      * Max speed of the robot while following the path.
      * Measured between 0 and 1.
      */
-    public static double GVF_FOLLOWING_MAX_SPEED = 0.65;
+    public static double GVF_FOLLOWING_MAX_SPEED = 1;
+    // todo: IMPLETMENT THESE
     /**
      * Threshold for the end PID to kick in, measured in inches.
      */
@@ -35,12 +36,13 @@ public class TuneableConstants {
     /**
      * The distance threshold for the end of the path, measured in inches.
      */
-    public static double STOPPING_DISTANCE_THRESHOLD = 1;
+    public static double STOPPING_DISTANCE_THRESHOLD = 3;
     /**
      * The minimum power for the end of the path, measured between 0 and 1.
      */
     public static double STOPPING_POWER_THRESHOLD = 0.1;
 
+    /**
     public static GuidedVectorFieldFollower.Params getParams() {
         return new GuidedVectorFieldFollower.Params(
                 TANGENT_DISTANCE,
@@ -53,5 +55,6 @@ public class TuneableConstants {
                 H_PID_COEFFS
         );
     }
+     */
 
 }

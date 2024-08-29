@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.autonomous.test;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.robot.customdrive.GVFMecanumDrive;
 // - Words to code by
 
 @Config
-@Autonomous(name = "GVF Test", group = "16481")
-public class GVFTest extends LinearOpMode{
+@Autonomous(name = "GVF Test move back", group = "16481")
+public class GVFTestBack extends LinearOpMode{
 
 
     @Override
@@ -23,7 +23,7 @@ public class GVFTest extends LinearOpMode{
 
         GVFMecanumDrive drive = new GVFMecanumDrive(hardwareMap);
 
-        ParametricPath path1 = new CubicBezierCurve(new Vector2d(0,0), new Vector2d(36,-36), new Vector2d(36,36), new Vector2d(72,0));
+        ParametricPath path1 = new CubicBezierCurve(new Vector2d(0,0), new Vector2d(-36,-36), new Vector2d(-36,36), new Vector2d(-72,0));
 
         while(!isStopRequested() && !opModeIsActive()) {
 
