@@ -87,7 +87,7 @@ public class IMUTrackingWheelLocalizer implements Localizer {
                 (imuWeight * imuFilter.getEstimate()) + ((1-imuWeight) * localizerFilter.getEstimate())
         );
         //advanced kalman filter update
-        poseEstimate = new Pose2d(poseEstimate.getX(),
+        poseEstimate = new Pose2d(poseEstimate.getX(), 
                 poseEstimate.getY(),
                 (imuWeight * imuFilter2.getEstimate()) + ((1-imuWeight) * localizerFilter2.getEstimate())
         );
