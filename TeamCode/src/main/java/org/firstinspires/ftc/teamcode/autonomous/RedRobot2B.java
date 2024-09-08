@@ -26,11 +26,15 @@ public class RedRobot2B extends LinearOpMode{
         RobotCore robot = new RobotCore(hardwareMap);
 
         TrajectorySequence traj2 = robot.drive.trajectorySequenceBuilder(new Pose2d(-20.24, -65.33, Math.toRadians(90.00)))
-                .UNSTABLE_addTemporalMarkerOffset(5.85,() -> {})
                 .splineTo(new Vector2d(-63.25, -65.33), Math.toRadians(243.43))
                 .splineTo(new Vector2d(-52.87, -28.10), Math.toRadians(74.42))
                 .splineTo(new Vector2d(-59.10, -65.47), Math.toRadians(260.54))
+                .splineTo(new Vector2d(-52.87, -28.10), Math.toRadians(74.42))
+                .splineTo(new Vector2d(-59.10, -65.47), Math.toRadians(260.54))
+                .splineTo(new Vector2d(-52.87, -28.10), Math.toRadians(74.42))
+                .splineTo(new Vector2d(-59.10, -65.47), Math.toRadians(260.54))
                 .build();
+
 
 
 
