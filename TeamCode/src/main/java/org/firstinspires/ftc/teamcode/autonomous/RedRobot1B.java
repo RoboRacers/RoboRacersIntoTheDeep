@@ -14,9 +14,9 @@ import org.firstinspires.ftc.teamcode.util.roadrunner.trajectorysequence.Traject
 // - Words to code by
 
 @Config
-@Autonomous(name = "Template Autoop", group = "16481-Template")
+@Autonomous(name = "RedRobot1A", group = "16481-Template")
 @Disabled /* COMMENT THIS OUT WHEN YOU CREATE A NEW OPMODE */
-public class RedRobot2 extends LinearOpMode{
+public class RedRobot1B extends LinearOpMode{
 
 
     @Override
@@ -25,10 +25,16 @@ public class RedRobot2 extends LinearOpMode{
 
         RobotCore robot = new RobotCore(hardwareMap);
 
-        TrajectorySequence traj2 = robot.drive.trajectorySequenceBuilder(new Pose2d(-12, -60, Math.toRadians(90)))
-                .splineTo(new Vector2d(16.44, -40.18), Math.toRadians(168.93))
+        TrajectorySequence traj2 = robot.drive.trajectorySequenceBuilder(new Pose2d(15.20, -67.25, Math.toRadians(90.00)))
+                .splineTo(new Vector2d(15.79, -29.88), Math.toRadians(90.00))
+                .splineTo(new Vector2d(51.83, -27.51), Math.toRadians(90.00))
+                .splineTo(new Vector2d(52.57, -51.09), Math.toRadians(90.00))
+                .splineTo(new Vector2d(-60.14, -62.36), Math.toRadians(179.92))
+                .splineTo(new Vector2d(52.57, -51.09), Math.toRadians(90.00))
+                .splineTo(new Vector2d(-60.14, -62.36), Math.toRadians(179.92))
+                .splineTo(new Vector2d(52.57, -51.09), Math.toRadians(90.00))
+                .splineTo(new Vector2d(-60.14, -62.36), Math.toRadians(179.92))
                 .build();
-
 
         while(!isStopRequested() && !opModeIsActive()) {
 
