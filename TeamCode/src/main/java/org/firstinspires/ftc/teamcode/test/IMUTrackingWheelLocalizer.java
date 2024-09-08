@@ -25,8 +25,8 @@ public class IMUTrackingWheelLocalizer implements Localizer {
     kalmanfilter localizerFilter;
 
     //advanced kalman filter (with prediction)
-    KalmanFilterHeading imuFilter2;
-    KalmanFilterHeading localizerFilter2;
+    //KalmanFilterHeading imuFilter2;
+    //KalmanFilterHeading localizerFilter2;
 
     public IMUTrackingWheelLocalizer(HardwareMap hardwareMap){
         this.trackingWheelLocalizer = new org.firstinspires.ftc.teamcode.robot.drive.ThreeTrackingWheelLocalizer(hardwareMap);
@@ -41,8 +41,8 @@ public class IMUTrackingWheelLocalizer implements Localizer {
         imuFilter = new kalmanfilter(0.01, 0.01, 0.0);
         localizerFilter = new kalmanfilter(0.01, 0.01, 0.0);
 
-        imuFilter2 = new KalmanFilterHeading(0.01, 0.01, 0.0, 0.01);
-        localizerFilter2 = new KalmanFilterHeading(0.01, 0.01, 0.0, 0.01);
+        //imuFilter2 = new KalmanFilterHeading(0.01, 0.01, 0.0, 0.01);
+        //localizerFilter2 = new KalmanFilterHeading(0.01, 0.01, 0.0, 0.01);
     }
 
     @NonNull
@@ -71,12 +71,12 @@ public class IMUTrackingWheelLocalizer implements Localizer {
         localizerFilter.update(trackingWheelLocalizer.getPoseEstimate().getHeading());
 
         //angular velocity + more advanced kalman filter update
-        imuFilter2.setAngularVelocity(imu.getRobotAngularVelocity(AngleUnit.DEGREES).zRotationRate);
-        imuFilter2.predict();
-        imuFilter2.update(imu.getRobotYawPitchRollAngles().getYaw(org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES));
-        localizerFilter2.setAngularVelocity(trackingWheelLocalizer.getPoseVelocity().getHeading());
-        localizerFilter2.predict();
-        localizerFilter2.update(trackingWheelLocalizer.getPoseEstimate().getHeading());
+        //imuFilter2.setAngularVelocity(imu.getRobotAngularVelocity(AngleUnit.DEGREES).zRotationRate);
+        //imuFilter2.predict();
+        //imuFilter2.update(imu.getRobotYawPitchRollAngles().getYaw(org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES));
+        //localizerFilter2.setAngularVelocity(trackingWheelLocalizer.getPoseVelocity().getHeading());
+        //localizerFilter2.predict();
+        //localizerFilter2.update(trackingWheelLocalizer.getPoseEstimate().getHeading());
 
 
 
@@ -87,9 +87,9 @@ public class IMUTrackingWheelLocalizer implements Localizer {
                 (imuWeight * imuFilter.getEstimate()) + ((1-imuWeight) * localizerFilter.getEstimate())
         );
         //advanced kalman filter update
-        poseEstimate = new Pose2d(poseEstimate.getX(), 
-                poseEstimate.getY(),
-                (imuWeight * imuFilter2.getEstimate()) + ((1-imuWeight) * localizerFilter2.getEstimate())
-        );
+        //poseEstimate = new Pose2d(poseEstimate.getX(),
+        //        poseEstimate.getY(),
+        //        (imuWeight * imuFilter2.getEstimate()) + ((1-imuWeight) * localizerFilter2.getEstimate())
+        //);
     }
 }
