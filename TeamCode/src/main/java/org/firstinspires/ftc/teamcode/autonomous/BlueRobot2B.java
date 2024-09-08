@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.util.roadrunner.trajectorysequence.Traject
 // - Words to code by
 
 @Config
-@Autonomous(name = "RedRobot1A", group = "16481-Template")
+@Autonomous(name = "BlueRobot2B", group = "16481-Template")
 @Disabled /* COMMENT THIS OUT WHEN YOU CREATE A NEW OPMODE */
 public class BlueRobot2B extends LinearOpMode{
 
