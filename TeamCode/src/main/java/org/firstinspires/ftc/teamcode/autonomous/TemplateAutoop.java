@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
+
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -25,6 +26,7 @@ public class TemplateAutoop extends LinearOpMode{
 
         RobotCore robot = new RobotCore(hardwareMap);
 
+//        TrajectorySequence traj2 = robot.drive.trajectorySequenceBuilder(new Pose2d(12.75, -58.81, Math.toRadians(86.99)))
         TrajectorySequence traj2 = robot.drive.trajectorySequenceBuilder(new Pose2d(12.75, -58.81, Math.toRadians(86.99)))
                 .splineTo(new Vector2d(16.44, -40.18), Math.toRadians(168.93))
                 .splineTo(new Vector2d(-36.13, -38.77), Math.toRadians(88.26))
