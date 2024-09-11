@@ -13,7 +13,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.teamcode.robot.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.drive.DriveConstants;
 
 import java.util.List;
