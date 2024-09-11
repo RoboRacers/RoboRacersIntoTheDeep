@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode.util.roadrunner.util;
 
 import com.acmerobotics.dashboard.canvas.Canvas;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.path.Path;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.PosePath;
 
 import java.util.List;
 
@@ -15,18 +15,18 @@ public class DashboardUtil {
     private static final double ROBOT_RADIUS = 9; // in
 
 
-    public static void drawPoseHistory(Canvas canvas, List<Pose2d> poseHistory) {
-        double[] xPoints = new double[poseHistory.size()];
-        double[] yPoints = new double[poseHistory.size()];
-        for (int i = 0; i < poseHistory.size(); i++) {
-            Pose2d pose = poseHistory.get(i);
-            xPoints[i] = pose.getX();
-            yPoints[i] = pose.getY();
-        }
-        canvas.strokePolyline(xPoints, yPoints);
-    }
+//    public static void drawPoseHistory(Canvas canvas, List<Pose2d> poseHistory) {
+//        double[] xPoints = new double[poseHistory.size()];
+//        double[] yPoints = new double[poseHistory.size()];
+//        for (int i = 0; i < poseHistory.size(); i++) {
+//            Pose2d pose = poseHistory.get(i);
+//            xPoints[i] = pose.getX();
+//            yPoints[i] = pose.getY();
+//        }
+//        canvas.strokePolyline(xPoints, yPoints);
+//    }
 
-    public static void drawSampledPath(Canvas canvas, Path path, double resolution) {
+    public static void drawSampledPath(Canvas canvas, PosePath path, double resolution) {
         int samples = (int) Math.ceil(path.length() / resolution);
         double[] xPoints = new double[samples];
         double[] yPoints = new double[samples];
@@ -40,7 +40,7 @@ public class DashboardUtil {
         canvas.strokePolyline(xPoints, yPoints);
     }
 
-    public static void drawSampledPath(Canvas canvas, Path path) {
+    public static void drawSampledPath(Canvas canvas, PosePath path) {
         drawSampledPath(canvas, path, DEFAULT_RESOLUTION);
     }
 
