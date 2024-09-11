@@ -6,6 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.robot.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.drive.ThreeDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.util.TankDrive;
+import org.firstinspires.ftc.teamcode.util.TwoDeadWheelLocalizer;
+
 
 public final class ManualFeedbackTuner extends LinearOpMode {
     public static double DISTANCE = 64;
