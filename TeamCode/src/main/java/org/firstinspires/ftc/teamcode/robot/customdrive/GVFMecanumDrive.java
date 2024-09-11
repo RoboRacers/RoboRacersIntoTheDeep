@@ -132,15 +132,7 @@ public class GVFMecanumDrive implements Subsystem {
         // TODO: if desired, use setLocalizer() to change the localization method
         localizer = new CustomThreeTrackingWheelLocalizer(hardwareMap);
 
-        follower = new GuidedVectorFieldFollower(
-                TuneableConstants.TANGENT_DISTANCE,
-                TuneableConstants.X_PID_COEFFS,
-                TuneableConstants.Y_PID_COEFFS,
-                TuneableConstants.H_PID_COEFFS,
-                TuneableConstants.GVF_FOLLOWING_MAX_SPEED,
-                TuneableConstants.STOPPING_DISTANCE_THRESHOLD,
-                TuneableConstants.STOPPING_POWER_THRESHOLD
-        );
+        follower = new GuidedVectorFieldFollower(TuneableConstants.getParams());
 
         dashboard = FtcDashboard.getInstance();
         dashboard.setTelemetryTransmissionInterval(25);

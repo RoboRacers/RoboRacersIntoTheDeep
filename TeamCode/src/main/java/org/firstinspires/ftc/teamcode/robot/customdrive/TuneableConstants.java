@@ -42,7 +42,7 @@ public class TuneableConstants {
      */
     public static double STOPPING_POWER_THRESHOLD = 0.1;
 
-    /**
+
     public static GuidedVectorFieldFollower.Params getParams() {
         return new GuidedVectorFieldFollower.Params(
                 TANGENT_DISTANCE,
@@ -55,6 +55,6 @@ public class TuneableConstants {
                 H_PID_COEFFS
         );
     }
-     */
+
 
 }
