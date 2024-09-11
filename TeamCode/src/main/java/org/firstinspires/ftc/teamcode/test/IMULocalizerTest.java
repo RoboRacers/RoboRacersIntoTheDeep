@@ -22,8 +22,6 @@ public class IMULocalizerTest extends LinearOpMode {
         }
 
         while (!isStopRequested()) {
-            telemetry.addData("X", imuLocalizer.getPoseEstimate().getX());
-            telemetry.addData("Y", imuLocalizer.getPoseEstimate().getY());
             telemetry.addData("Heading", imuLocalizer.getPoseEstimate().getHeading());
 
             imuLocalizer.update();
