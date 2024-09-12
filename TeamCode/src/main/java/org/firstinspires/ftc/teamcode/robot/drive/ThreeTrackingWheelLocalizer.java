@@ -28,9 +28,9 @@ public class ThreeTrackingWheelLocalizer extends com.acmerobotics.roadrunner.loc
         ));
 
 
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Br")); // Port Number 2
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Bl")); // Port Number 2
-        frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Fr")); // Port Number 3
+        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightRear")); // Port Number 2
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear")); // Port Number 2
+        frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront")); // Port Number 3
 
         rightEncoder.setDirection(Encoder.Direction.REVERSE);
         leftEncoder.setDirection(Encoder.Direction.REVERSE);

@@ -19,7 +19,6 @@ public class IMUTrackingWheelLocalizer implements Localizer {
     ThreeTrackingWheelLocalizer trackingWheelLocalizer;
     IMU imu;
     Pose2d poseEstimate;
-    double imuWeight = 0.7;
     //basic kalman filter (minimal prediction)
     kalmanfilter imuFilter;
     kalmanfilter localizerFilter;
@@ -84,7 +83,7 @@ public class IMUTrackingWheelLocalizer implements Localizer {
         //basic kalman filter update
         poseEstimate = new Pose2d(poseEstimate.getX(),
                 poseEstimate.getY(),
-                (imuWeight * imuFilter.getEstimate()) + ((1-imuWeight) * localizerFilter.getEstimate())
+                ((imuFilter.getEstimate()) + localizerFilter.getEstimate())/2
         );
         //advanced kalman filter update
         //poseEstimate = new Pose2d(poseEstimate.getX(),

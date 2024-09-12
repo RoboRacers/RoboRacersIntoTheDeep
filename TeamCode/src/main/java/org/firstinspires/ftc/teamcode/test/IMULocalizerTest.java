@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.test;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -17,15 +18,17 @@ public class IMULocalizerTest extends LinearOpMode {
 
         robot = new RobotCore(hardwareMap);
         imuLocalizer = new IMUTrackingWheelLocalizer(hardwareMap);
+        imuLocalizer.setPoseEstimate(new Pose2d(0, 0, 0));
 
         while (opModeInInit()) {
         }
 
         while (!isStopRequested()) {
             telemetry.addData("Heading", imuLocalizer.getPoseEstimate().getHeading());
-
             imuLocalizer.update();
             robot.update();
+            telemetry.update();
+
         }
     }
 }
