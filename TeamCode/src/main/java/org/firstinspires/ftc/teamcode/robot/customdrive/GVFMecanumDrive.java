@@ -8,6 +8,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.roboracers.topgear.follower.Follower;
 import com.roboracers.topgear.geometry.Vector2d;
 import com.roboracers.topgear.localization.Localizer;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -19,7 +20,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
-import com.roboracers.topgear.follower.GuidedVectorFieldFollower;
+import com.roboracers.topgear.follower.CentripetalGuidedVectorFieldFollower;
 import com.roboracers.topgear.geometry.Pose2d;
 import com.roboracers.topgear.planner.ParametricPath;
 
@@ -51,7 +52,7 @@ public class GVFMecanumDrive implements Subsystem {
     private VoltageSensor batteryVoltageSensor;
     private Localizer localizer;
 
-    public GuidedVectorFieldFollower follower;
+    public Follower follower;
 
     public FtcDashboard dashboard;
 
@@ -133,7 +134,7 @@ public class GVFMecanumDrive implements Subsystem {
         // TODO: if desired, use setLocalizer() to change the localization method
         localizer = new CustomThreeTrackingWheelLocalizer(hardwareMap);
 
-        follower = new GuidedVectorFieldFollower(TuneableConstants.getParams());
+        follower = new CentripetalGuidedVectorFieldFollower(TuneableConstants.getParams());
 
         dashboard = FtcDashboard.getInstance();
         dashboard.setTelemetryTransmissionInterval(25);
@@ -151,7 +152,7 @@ public class GVFMecanumDrive implements Subsystem {
             if (follower.isComplete(getPoseEstimate())) {
                 isFollowing = false;
                 setDrivePower(new Pose2d(0,0,0));
-            } else setDrivePower(follower.getDriveVelocity2(getPoseEstimate(), localizer.getPoseVelocity()));
+            } else setDrivePower(follower.getDriveVelocity(getPoseEstimate(), localizer.getPoseVelocity()));
         }
 
         // Dashboard
@@ -159,6 +160,7 @@ public class GVFMecanumDrive implements Subsystem {
         Canvas fieldOverlay = packet.fieldOverlay();
 
         fieldOverlay.setStroke("#3F51B5");
+        // Draw robot
         DashboardUtil.drawRobot(fieldOverlay, new com.acmerobotics.roadrunner.geometry.Pose2d(
                 this.getPoseEstimate().getX(),
                 this.getPoseEstimate().getY(),
@@ -166,11 +168,20 @@ public class GVFMecanumDrive implements Subsystem {
         ));
 
         fieldOverlay.setStroke("#00FF00");
-        ParametricPath path = follower.getParametricPath();
-        for (double t = 0; t < 1; t += 0.01) {
+        // Draw path
+        ParametricPath path = follower.getPath();
+
+        double[] xPoints = new double[100];
+        double[] yPoints = new double[100];
+        int i = 0;
+        for (double t = 0; t < 1; t += (double) 1/100) {
             Vector2d pose = path.getPoint(t);
-            fieldOverlay.strokeCircle(pose.getX(), pose.getY(), 0.25);
+            xPoints[i] = pose.getX();
+            yPoints[i] = pose.getY();
+            i += 1;
         }
+
+        fieldOverlay.strokePolyline(xPoints, yPoints);
 
         poseHistory.add(new com.acmerobotics.roadrunner.geometry.Pose2d(
                 this.getPoseEstimate().getX(),

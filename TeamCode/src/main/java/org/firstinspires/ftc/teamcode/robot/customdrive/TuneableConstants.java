@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.robot.customdrive;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.roboracers.topgear.controls.PIDCoefficients;
-import com.roboracers.topgear.follower.GuidedVectorFieldFollower;
+import com.roboracers.topgear.follower.CentripetalGuidedVectorFieldFollower;
 
 @Config
 public class TuneableConstants {
@@ -24,11 +24,15 @@ public class TuneableConstants {
      */
     public static double TANGENT_DISTANCE = 3;
     /**
+     * Used to compute centripetal force.
+     * Not the literal mass of the robot, but a constant used in the calculation.
+     */
+    public static double CENTRIPETAL_MASS = 0.07;
+    /**
      * Max speed of the robot while following the path.
      * Measured between 0 and 1.
      */
     public static double GVF_FOLLOWING_MAX_SPEED = 1;
-    // todo: IMPLETMENT THESE
     /**
      * Threshold for the end PID to kick in, measured in inches.
      */
@@ -43,9 +47,10 @@ public class TuneableConstants {
     public static double STOPPING_POWER_THRESHOLD = 0.1;
 
 
-    public static GuidedVectorFieldFollower.Params getParams() {
-        return new GuidedVectorFieldFollower.Params(
+    public static CentripetalGuidedVectorFieldFollower.Params getParams() {
+        return new CentripetalGuidedVectorFieldFollower.Params(
                 TANGENT_DISTANCE,
+                CENTRIPETAL_MASS,
                 GVF_FOLLOWING_MAX_SPEED,
                 PID_FOLLOWING_THRESHOLD,
                 STOPPING_DISTANCE_THRESHOLD,
