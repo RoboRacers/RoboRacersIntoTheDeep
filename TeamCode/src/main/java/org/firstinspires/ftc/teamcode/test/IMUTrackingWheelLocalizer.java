@@ -5,12 +5,12 @@ import androidx.annotation.Nullable;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.localization.Localizer;
-import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.robot.drive.ThreeTrackingWheelLocalizer;
 
 import java.util.Objects;
 
@@ -46,13 +46,12 @@ public class IMUTrackingWheelLocalizer implements Localizer {
 
     @NonNull
     @Override
-    public Pose2d getPoseEstimate() {
-        return poseEstimate;
-    }
+    public Pose2d getPoseEstimate() {return poseEstimate;}
 
     @Override
     public void setPoseEstimate(@NonNull Pose2d pose2d) {
         poseEstimate = pose2d;
+        imu.resetYaw();
     }
 
     @Nullable
@@ -81,10 +80,10 @@ public class IMUTrackingWheelLocalizer implements Localizer {
 
         poseEstimate = trackingWheelLocalizer.getPoseEstimate();
         //basic kalman filter update
-        poseEstimate = new Pose2d(poseEstimate.getX(),
-                poseEstimate.getY(),
-                ((imuFilter.getEstimate()) + localizerFilter.getEstimate())/2
-        );
+        poseEstimate = new Pose2d(poseEstimate.getX(), poseEstimate.getY(), imuFilter.getEstimate());
+
+
+
         //advanced kalman filter update
         //poseEstimate = new Pose2d(poseEstimate.getX(),
         //        poseEstimate.getY(),
