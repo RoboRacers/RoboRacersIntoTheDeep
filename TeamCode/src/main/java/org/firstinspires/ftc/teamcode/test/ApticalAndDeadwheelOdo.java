@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
@@ -18,15 +19,22 @@ import org.firstinspires.ftc.teamcode.robot.drive.ThreeTrackingWheelLocalizer;
 import org.firstinspires.ftc.teamcode.util.roadrunner.util.Encoder;
 
 
-@TeleOp(name="Optical Odometry", group="Linear Opmode")
-public class ApticalOdo extends LinearOpMode {
+@TeleOp(name="Optical and Deadwheel Odometry", group="Linear Opmode")
+public class ApticalAndDeadwheelOdo extends LinearOpMode {
 
     SparkFunOTOS myOtos;
+    ThreeTrackingWheelLocalizer trackingWheelLocalizer;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
         // Get a reference to the sensor
         myOtos = hardwareMap.get(SparkFunOTOS.class, "sensor_otos");
+
+        // Get a reference to the deadwheel encoders
+        trackingWheelLocalizer = new ThreeTrackingWheelLocalizer(hardwareMap);
+
+
 
         // All the configuration for the OTOS is done in this helper method, check it out!
         configureOtos();
@@ -39,6 +47,8 @@ public class ApticalOdo extends LinearOpMode {
             // Get the latest position, which includes the x and y coordinates, plus the
             // heading angle
             SparkFunOTOS.Pose2D pos = myOtos.getPosition();
+
+
 
             // Reset the tracking if the user requests it
             if (gamepad1.y) {
@@ -59,6 +69,10 @@ public class ApticalOdo extends LinearOpMode {
             telemetry.addData("X coordinate", pos.x);
             telemetry.addData("Y coordinate", pos.y);
             telemetry.addData("Heading angle", pos.h);
+
+            telemetry.addData("odo pod x",trackingWheelLocalizer.getPoseEstimate().getX());
+            telemetry.addData("odo pod y",trackingWheelLocalizer.getPoseEstimate().getY());
+            telemetry.addData("odo pod heading",trackingWheelLocalizer.getPoseEstimate().getHeading());
 
             // Update the telemetry on the driver station
             telemetry.update();
