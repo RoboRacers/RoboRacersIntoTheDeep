@@ -8,6 +8,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.roboracers.topgear.geometry.Vector2d;
 import com.roboracers.topgear.localization.Localizer;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -139,6 +140,7 @@ public class GVFMecanumDrive implements Subsystem {
     }
 
     public boolean isFollowing = false;
+    List<com.acmerobotics.roadrunner.geometry.Pose2d> poseHistory = new ArrayList<>();
 
     @Override
     public void update() {
@@ -149,7 +151,7 @@ public class GVFMecanumDrive implements Subsystem {
             if (follower.isComplete(getPoseEstimate())) {
                 isFollowing = false;
                 setDrivePower(new Pose2d(0,0,0));
-            } else setDrivePower(follower.getDriveVelocity(getPoseEstimate()));
+            } else setDrivePower(follower.getDriveVelocity2(getPoseEstimate(), localizer.getPoseVelocity()));
         }
 
         // Dashboard
@@ -162,6 +164,22 @@ public class GVFMecanumDrive implements Subsystem {
                 this.getPoseEstimate().getY(),
                 this.getPoseEstimate().getHeading()
         ));
+
+        fieldOverlay.setStroke("#00FF00");
+        ParametricPath path = follower.getParametricPath();
+        for (double t = 0; t < 1; t += 0.01) {
+            Vector2d pose = path.getPoint(t);
+            fieldOverlay.strokeCircle(pose.getX(), pose.getY(), 0.25);
+        }
+
+        poseHistory.add(new com.acmerobotics.roadrunner.geometry.Pose2d(
+                this.getPoseEstimate().getX(),
+                this.getPoseEstimate().getY(),
+                this.getPoseEstimate().getHeading()
+        ));
+        if (poseHistory.size() > 100) poseHistory.remove(0);
+        fieldOverlay.setStroke("#3F51B5");
+        DashboardUtil.drawPoseHistory(fieldOverlay, poseHistory);
 
         dashboard.sendTelemetryPacket(packet);
     }

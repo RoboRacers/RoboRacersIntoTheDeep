@@ -64,11 +64,43 @@ public class CustomThreeTrackingWheelLocalizer extends ThreeTrackingWheelLocaliz
         );
     }
 
+    private Pose2d previousPose = null;
+    private long previousTime = 0;
     /**
      * Current robot pose velocity (optional)
      */
     @Override
     public com.roboracers.topgear.geometry.Pose2d getPoseVelocity() {
-        return null;
+        // Get the current time in milliseconds
+        long currentTime = System.currentTimeMillis();
+        Pose2d currentPose = getPoseEstimate();
+
+        // If it's the first update, store the current pose and time
+        if (previousPose == null) {
+            previousPose = currentPose;
+            previousTime = currentTime;
+            return new Pose2d(0, 0, 0);  // No velocity yet
+        }
+
+        // Calculate the time difference in seconds
+        double deltaTime = (currentTime - previousTime) / 1000.0;
+
+        // Compute the change in x, y, and heading (Δx, Δy, Δθ)
+        double deltaX = currentPose.getX() - previousPose.getX();
+        double deltaY = currentPose.getY() - previousPose.getY();
+        double deltaTheta = currentPose.getHeading() - previousPose.getHeading();
+
+        // Compute velocities
+        double velocityX = deltaX / deltaTime;
+        double velocityY = deltaY / deltaTime;
+        double angularVelocity = deltaTheta / deltaTime;
+
+        // Update previous pose and time
+        previousPose = currentPose;
+        previousTime = currentTime;
+
+        // Return a new Pose2D with individual x, y, and heading velocities
+        return new Pose2d(velocityX, velocityY, angularVelocity);
+
     }
 }
