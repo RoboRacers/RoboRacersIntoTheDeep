@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot.subsystems;
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -31,7 +32,7 @@ public class Vision implements Subsystem {
         aprilTagProcessor = new AprilTagProcessor.Builder()
                 .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
                 .setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
-                .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
+                .setOutputUnits(DistanceUnit.INCH, AngleUnit.RADIANS)
                 .build();
 
         portal = new VisionPortal.Builder()
@@ -39,6 +40,64 @@ public class Vision implements Subsystem {
                 .addProcessor(aprilTagProcessor)
                 .setAutoStopLiveView(true)
                 .build();
+    }
+    public ArrayList<Pose2d> getAprilTagPoses() {
+        ArrayList<AprilTagDetection> tags = new ArrayList<>();
+
+        if (portal.getProcessorEnabled(aprilTagProcessor)) {
+            tags = aprilTagProcessor.getDetections();
+        }
+
+        ArrayList<Pose2d> poses = new ArrayList<>();
+
+        for (AprilTagDetection tag: tags) {
+            if (tag.metadata != null) {
+
+                // Get the tag absolute position on the field
+                Transform3d tagPose = new Transform3d(
+                        tag.metadata.fieldPosition,
+                        tag.metadata.fieldOrientation
+                );
+
+                // Get the relative location of the tag from the camera
+                Transform3d cameraToTagTransform = new Transform3d(
+                        new VectorF(
+                                (float) tag.rawPose.x,
+                                (float) tag.rawPose.y,
+                                (float) tag.rawPose.z
+                        ),
+                        Transform3d.MatrixToQuaternion(tag.rawPose.R)
+                );
+
+                // Inverse the previous transform to get the location of the camera from the tag
+                Transform3d tagToCameraTransform = cameraToTagTransform.unaryMinusInverse();
+
+                // Add the tag position and the relative position of the camera to the tag
+                Transform3d cameraPose = tagPose.plus(tagToCameraTransform);
+
+                // The the relative location of the camera to the robot
+                //TODO: You have to tune this value for your camera
+                Transform3d robotToCameraTransform = new Transform3d(
+                        new VectorF(
+                                -8.30f,
+                                6.18f,
+                                8.50f
+                        ),
+                        new Quaternion(0,0,1f,0, System.nanoTime())
+                );
+
+                // Inverse the previous transform again to get the location of the robot from the camera
+                Transform3d cameraToRobotTransform = robotToCameraTransform.unaryMinusInverse();
+
+                // Add the relative location of the robot to location of the Camera
+                Transform3d robotPose = cameraPose.plus(cameraToRobotTransform);
+
+                // Convert from a 3D transform to a 2D pose
+                poses.add(robotPose.toPose2d());
+            }
+        }
+
+        return poses;
     }
 
     public List<AprilTagDetection> getDetections() {
