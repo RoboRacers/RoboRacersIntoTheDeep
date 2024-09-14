@@ -83,7 +83,7 @@ public class Vision implements Subsystem {
                                 6.18f,
                                 8.50f
                         ),
-                        new Quaternion(0,0,1f,0, System.nanoTime())
+                        yawToQuaternion(90)
                 );
 
                 // Inverse the previous transform again to get the location of the robot from the camera
@@ -117,6 +117,15 @@ public class Vision implements Subsystem {
     @Override
     public void update() {
 
+    }
+
+    public static Quaternion yawToQuaternion(double yaw) {
+        double halfYaw = yaw / 2.0;
+        double w = Math.cos(halfYaw);
+        double z = Math.sin(halfYaw);
+
+        // Since it's only yaw, x and y are 0
+        return new Quaternion((float) w, 0, 0,(float) z, System.nanoTime());
     }
 }
 
