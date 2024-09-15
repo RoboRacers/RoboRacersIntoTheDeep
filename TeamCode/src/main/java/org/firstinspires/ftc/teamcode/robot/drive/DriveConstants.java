@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robot.drive;
+package org.firstinspires.ftc.teamcode.modules.drive;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
@@ -87,9 +87,9 @@ public class DriveConstants {
      * You are free to raise this on your own if you would like. It is best determined through experimentation.
 
      */
-    public static double MAX_VEL = 40; // Default - 65
-    public static double MAX_ACCEL = 30; // Default - 45
-    public static double MAX_ANG_VEL = 105.58776531724327;
+    public static double MAX_VEL = 35; // Default - 65
+    public static double MAX_ACCEL = 35; // Default - 45
+    public static double MAX_ANG_VEL = Math.toRadians(230);
     public static double MAX_ANG_ACCEL = Math.toRadians(230);
 
 
