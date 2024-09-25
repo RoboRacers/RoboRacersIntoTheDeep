@@ -47,7 +47,8 @@ public class ApticalAndDeadwheelOdo extends LinearOpMode {
             // Get the latest position, which includes the x and y coordinates, plus the
             // heading angle
             SparkFunOTOS.Pose2D pos = myOtos.getPosition();
-
+            trackingWheelLocalizer.getPoseEstimate();
+            trackingWheelLocalizer.update();
 
 
             // Reset the tracking if the user requests it
@@ -58,6 +59,9 @@ public class ApticalAndDeadwheelOdo extends LinearOpMode {
             // Re-calibrate the IMU if the user requests it
             if (gamepad1.x) {
                 myOtos.calibrateImu();
+            }
+            if (gamepad1.b){
+                trackingWheelLocalizer.update();
             }
 
             // Inform user of available controls
@@ -70,6 +74,9 @@ public class ApticalAndDeadwheelOdo extends LinearOpMode {
             telemetry.addData("Y coordinate", pos.y);
             telemetry.addData("Heading angle", pos.h);
 
+//            telemetry.addData("odo pod x",trackingWheelLocalizer.getPoseEstimate().getX());
+//            telemetry.addData("odo pod y",trackingWheelLocalizer.getPoseEstimate().getY());
+//            telemetry.addData("odo pod heading",trackingWheelLocalizer.getPoseEstimate().getHeading());
             telemetry.addData("odo pod x",trackingWheelLocalizer.getPoseEstimate().getX());
             telemetry.addData("odo pod y",trackingWheelLocalizer.getPoseEstimate().getY());
             telemetry.addData("odo pod heading",trackingWheelLocalizer.getPoseEstimate().getHeading());
