@@ -25,7 +25,8 @@ import java.util.List;
 public class Vision implements Subsystem {
     private final AprilTagProcessor aprilTagProcessor;
     private final VisionPortal portal;
-    private final Vector2d cameraOffset = new Vector2d(5.3, 0);
+    private final VectorF cameraOffset = new VectorF(0f, 0f, 0f);
+    private final double cameraHeadingOffset = 0;
 
     public Vision(HardwareMap hardwareMap) {
 
@@ -78,12 +79,8 @@ public class Vision implements Subsystem {
                 // The the relative location of the camera to the robot
                 //TODO: You have to tune this value for your camera
                 Transform3d robotToCameraTransform = new Transform3d(
-                        new VectorF(
-                                -8.30f,
-                                6.18f,
-                                8.50f
-                        ),
-                        yawToQuaternion(90)
+                        cameraOffset,
+                        yawToQuaternion(cameraHeadingOffset)
                 );
 
                 // Inverse the previous transform again to get the location of the robot from the camera
