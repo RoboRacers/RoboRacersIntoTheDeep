@@ -1,0 +1,80 @@
+ekf_filter_node:
+  frequency: 30  # Frequency at which to run the EKF (Hz)
+
+  # Inputs: IMU, Odometry, and GPS
+  imu0: /imu/data
+  odom0: /odom
+  gps0: /gps/fix
+  
+  # Use the IMU for orientation and angular velocity (rotation).
+  imu0_config: [false, false, false,   # X Y Z positions from IMU
+                true, true, true,      # X Y Z velocities from IMU
+                false, false, false,   # Roll Pitch Yaw positions from IMU
+                true, true, true]      # Roll Pitch Yaw velocities from IMU
+
+  # Use odometry for position and velocity.
+  odom0_config: [true, true, true,     # X Y Z positions from odometry
+                 false, false, false,  # X Y Z velocities from odometry
+                 true, true, true,     # Roll Pitch Yaw positions from odometry
+                 false, false, false]  # Roll Pitch Yaw velocities from odometry
+
+  # Use GPS for position, but only in the X and Y directions.
+  gps0_config: [true, true, false,     # X Y Z positions from GPS
+                false, false, false,   # X Y Z velocities from GPS
+                false, false, false,   # Roll Pitch Yaw positions from GPS
+                false, false, false]   # Roll Pitch Yaw velocities from GPS
+
+  # Set the time delay for each sensor (if there is a known delay in their reporting).
+  imu0_delay: 0.0
+  odom0_delay: 0.0
+  gps0_delay: 0.0
+
+  # If your GPS or odometry data provides velocities, you can use them.
+  imu0_differential: false
+  odom0_differential: true
+  gps0_differential: false
+
+  # Remove gravitational acceleration from IMU data
+  imu0_remove_gravitational_acceleration: true
+
+  # IMU data queue size (larger queues can help smooth out noise but increase delay).
+  imu0_queue_size: 10
+
+  # Initial covariances for each sensor.
+  initial_estimate_covariance: 
+    pose: [0.5, 0, 0, 0, 0, 0,
+           0, 0.5, 0, 0, 0, 0,
+           0, 0, 0.5, 0, 0, 0,
+           0, 0, 0, 0.3, 0, 0,
+           0, 0, 0, 0, 0.3, 0,
+           0, 0, 0, 0, 0, 0.3]
+    twist: [0.1, 0, 0, 0, 0, 0,
+            0, 0.1, 0, 0, 0, 0,
+            0, 0, 0.1, 0, 0, 0,
+            0, 0, 0, 0.05, 0, 0,
+            0, 0, 0, 0, 0.05, 0,
+            0, 0, 0, 0, 0, 0.05]
+
+  # Process noise for pose (variance over time).
+  process_noise_covariance:
+    pose: [0.1, 0, 0, 0, 0, 0,
+           0, 0.1, 0, 0, 0, 0,
+           0, 0, 0.1, 0, 0, 0,
+           0, 0, 0, 0.05, 0, 0,
+           0, 0, 0, 0, 0.05, 0,
+           0, 0, 0, 0, 0, 0.05]
+    twist: [0.05, 0, 0, 0, 0, 0,
+            0, 0.05, 0, 0, 0, 0,
+            0, 0, 0.05, 0, 0, 0,
+            0, 0, 0, 0.02, 0, 0,
+            0, 0, 0, 0, 0.02, 0,
+            0, 0, 0, 0, 0, 0.02]
+
+  # Configure the world frame and odom frame
+  world_frame: "odom"
+  map_frame: "map"
+  odom_frame: "odom"
+  base_link_frame: "base_link"
+
+  # Enable or disable debug mode to visualize the EKF’s operation.
+  debug: false
