@@ -70,16 +70,15 @@ public class ApticalAndDeadwheelOdo extends LinearOpMode {
             telemetry.addLine();
 
             // Log the position to the telemetry
-            telemetry.addData("X coordinate", pos.x);
-            telemetry.addData("Y coordinate", pos.y);
-            telemetry.addData("Heading angle", pos.h);
+            telemetry.addData("optical X coordinate", pos.x);
+            telemetry.addData("optical Y coordinate", pos.y);
+            telemetry.addData("optical heading angle", pos.h);
 
-//            telemetry.addData("odo pod x",trackingWheelLocalizer.getPoseEstimate().getX());
-//            telemetry.addData("odo pod y",trackingWheelLocalizer.getPoseEstimate().getY());
-//            telemetry.addData("odo pod heading",trackingWheelLocalizer.getPoseEstimate().getHeading());
             telemetry.addData("odo pod x",trackingWheelLocalizer.getPoseEstimate().getX());
             telemetry.addData("odo pod y",trackingWheelLocalizer.getPoseEstimate().getY());
             telemetry.addData("odo pod heading",trackingWheelLocalizer.getPoseEstimate().getHeading());
+            telemetry.addData("odo pod heading (degrees)", Math.toDegrees(trackingWheelLocalizer.getPoseEstimate().getHeading()));
+
 
             // Update the telemetry on the driver station
             telemetry.update();
