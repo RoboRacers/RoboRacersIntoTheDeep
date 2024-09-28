@@ -1,16 +1,14 @@
-package SubSystems.Intake;
+package org.firstinspires.ftc.teamcode.SubSystems.Intake;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import SubSystems.Intake.ControlIntakeCommand;
+import org.firstinspires.ftc.teamcode.SubSystems.Intake.ControlIntakeCommand;
 import SubSystems.Intake.IntakeSubsystem;
 
 
 @TeleOp(name = "Intake Control LinearOpMode", group = "LinearOpMode")
 public class IntakeControlLinearOpMode extends LinearOpMode {
-
-
 
     @Override
     public void runOpMode() throws InterruptedException {
