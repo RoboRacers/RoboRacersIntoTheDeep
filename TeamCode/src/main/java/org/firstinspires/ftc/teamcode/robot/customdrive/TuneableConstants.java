@@ -27,7 +27,7 @@ public class TuneableConstants {
      * Used to compute centripetal force.
      * Not the literal mass of the robot, but a constant used in the calculation.
      */
-    public static double CENTRIPETAL_MASS = 0.07;
+    public static double CENTRIPETAL_MASS = 0.85;
     /**
      * Max speed of the robot while following the path.
      * Measured between 0 and 1.
