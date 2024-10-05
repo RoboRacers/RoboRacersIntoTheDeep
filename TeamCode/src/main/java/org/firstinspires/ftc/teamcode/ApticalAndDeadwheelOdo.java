@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -13,21 +16,22 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 public class ApticalAndDeadwheelOdo extends LinearOpMode {
 
     SparkFunOTOS myOtos;
-    MecanumDrive mecanumDrive;
+    //MecanumDrive mecanumDrive;
 
-    ThreeDeadWheelLocalizer threeDeadWheelLocalizer;
+    //ThreeDeadWheelLocalizer threeDeadWheelLocalizer;
     public double inPerTick = 0.00293977230995225853837679030481;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
         // Get a reference to the sensor
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
 
         myOtos = hardwareMap.get(SparkFunOTOS.class, "sensor_otos");
 
         // Get a reference to the deadwheel encoders
-        threeDeadWheelLocalizer = new ThreeDeadWheelLocalizer(hardwareMap, inPerTick);
+        //threeDeadWheelLocalizer = new ThreeDeadWheelLocalizer(hardwareMap, inPerTick);
 
 
 
@@ -43,21 +47,28 @@ public class ApticalAndDeadwheelOdo extends LinearOpMode {
             // heading angle
             SparkFunOTOS.Pose2D pos = myOtos.getPosition();
 
-            mecanumDrive.updatePoseEstimate();
-            threeDeadWheelLocalizer.update();
+            //mecanumDrive.updatePoseEstimate();
+            //threeDeadWheelLocalizer.update();
 
 
             // Reset the tracking if the user requests it
             if (gamepad1.y) {
                 myOtos.resetTracking();
             }
+            drive.setDrivePowers(new PoseVelocity2d(
+                    new Vector2d(
+                            -gamepad1.left_stick_y,
+                            -gamepad1.left_stick_x
+                    ),
+                    -gamepad1.right_stick_x
+            ));
 
             // Re-calibrate the IMU if the user requests it
             if (gamepad1.x) {
                 myOtos.calibrateImu();
             }
             if (gamepad1.b){
-                threeDeadWheelLocalizer.update();
+                //threeDeadWheelLocalizer.update();
             }
 
             // Inform user of available controls
@@ -70,9 +81,9 @@ public class ApticalAndDeadwheelOdo extends LinearOpMode {
             telemetry.addData("optical Y coordinate", pos.y);
             telemetry.addData("optical heading angle", pos.h);
 
-            telemetry.addData("odo pod position",mecanumDrive.pose.position);
+            //telemetry.addData("odo pod position",mecanumDrive.pose.position);
            // telemetry.addData("odo pod y",mecanumDrive.pose.heading);
-            telemetry.addData("odo pod heading",mecanumDrive.pose.heading);
+            //telemetry.addData("odo pod heading",mecanumDrive.pose.heading);
            // telemetry.addData("odo pod heading (degrees)", Math.toDegrees(mecanumDrive.pose.heading));
 
 
@@ -106,7 +117,7 @@ public class ApticalAndDeadwheelOdo extends LinearOpMode {
         // clockwise (negative rotation) from the robot's orientation, the offset
         // would be {-5, 10, -90}. These can be any value, even the angle can be
         // tweaked slightly to compensate for imperfect mounting (eg. 1.3 degrees).
-        SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(0, 0, 0);
+        SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(10.5, 7.25, 0);
         myOtos.setOffset(offset);
 
         // Here we can set the linear and angular scalars, which can compensate for
