@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.SubSystems.Intake.ControlIntakeCommand;
-import SubSystems.Intake.IntakeSubsystem;
+import org.firstinspires.ftc.teamcode.SubSystems.Intake.IntakeSubsystem;
 
 
 @TeleOp(name = "Intake Control LinearOpMode", group = "LinearOpMode")

@@ -4,7 +4,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class ControlIntakeCommand {
 
-    private final SubSystems.Intake.IntakeSubsystem intakeSubsystem;
+    private final IntakeSubsystem intakeSubsystem;
     private final Telemetry telemetry;
 
     // Enum for intake control state
@@ -15,7 +15,7 @@ public class ControlIntakeCommand {
     private final IntakeState intakeState;
 
     // Constructor
-    public ControlIntakeCommand(SubSystems.Intake.IntakeSubsystem intakeSubsystem,
+    public ControlIntakeCommand(IntakeSubsystem intakeSubsystem,
                                 IntakeState intakeState, Telemetry telemetry) {
         this.intakeSubsystem = intakeSubsystem;
         this.intakeState = intakeState;
