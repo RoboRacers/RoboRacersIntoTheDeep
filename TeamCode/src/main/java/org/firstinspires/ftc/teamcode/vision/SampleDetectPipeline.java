@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.vision;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,40 +35,26 @@ public class SampleDetectPipeline extends OpenCvPipeline {
         Imgproc.threshold(crMat, redMask, RED_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY);
         Imgproc.threshold(cbMat, yellowMask, YELLOW_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY_INV);
 
-        // Separate objects based on color masks
-        separateObjects(input, yellowMask, new Scalar(0, 255, 255)); // Yellow contours
-        separateObjects(input, blueMask, new Scalar(255, 0, 0));     // Blue contours
-        separateObjects(input, redMask, new Scalar(0, 0, 255));      // Red contours
+        // Detect and draw contours for each color
+        detectAndDrawContours(input, yellowMask, new Scalar(0, 255, 255)); // Yellow contours
+        detectAndDrawContours(input, blueMask, new Scalar(255, 0, 0));     // Blue contours
+        detectAndDrawContours(input, redMask, new Scalar(0, 0, 255));      // Red contours
 
         return input;
     }
 
-    public void separateObjects(Mat originalImage, Mat mask, Scalar color) {
+    public void detectAndDrawContours(Mat originalImage, Mat mask, Scalar color) {
         // Ensure the mask is binary and of type CV_8U
         if (mask.type() != CvType.CV_8U) {
             mask.convertTo(mask, CvType.CV_8U);
         }
 
-        // Distance transform
-        Mat distTransform = new Mat();
-        Imgproc.distanceTransform(mask, distTransform, Imgproc.DIST_L2, 5);
-
-        // Normalize the distance transform
-        Core.normalize(distTransform, distTransform, 0, 1, Core.NORM_MINMAX);
-
-        // Threshold the normalized distance transform to create markers
-        Mat markers = new Mat();
-        Imgproc.threshold(distTransform, markers, 0.4, 255, Imgproc.THRESH_BINARY);
-        markers.convertTo(markers, CvType.CV_32S);
-
-        // Apply watershed
-        Imgproc.watershed(originalImage, markers);
-
-        // Draw contours for each detected object
+        // Find contours
         List<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
-        Imgproc.findContours(markers, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
+        // Draw contours and process for angle detection
         for (MatOfPoint contour : contours) {
             double area = Imgproc.contourArea(contour);
             if (area < MIN_AREA_THRESHOLD || area > MAX_AREA_THRESHOLD) {
@@ -87,7 +74,8 @@ public class SampleDetectPipeline extends OpenCvPipeline {
             if (rotatedRect.size.width < rotatedRect.size.height) {
                 angle += 90;
             }
-            Imgproc.putText(originalImage, Math.round(angle) + " deg", new Point(rotatedRect.center.x - 50, rotatedRect.center.y + 25),
+            Imgproc.putText(originalImage, Math.round(angle) + " deg",
+                    new Point(rotatedRect.center.x - 50, rotatedRect.center.y + 25),
                     Imgproc.FONT_HERSHEY_PLAIN, 1.5, color, 2);
         }
     }
