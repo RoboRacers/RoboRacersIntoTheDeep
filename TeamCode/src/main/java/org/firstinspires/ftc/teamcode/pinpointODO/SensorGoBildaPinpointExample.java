@@ -22,12 +22,15 @@
 
 package org.firstinspires.ftc.teamcode.pinpointODO;
 
+import com.acmerobotics.dashboard.DashboardCore;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import com.acmerobotics.dashboard.FtcDashboard;
 
 import java.util.Locale;
 
@@ -66,6 +69,10 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
 
     double oldTime = 0;
 
+    TelemetryPacket packet = new TelemetryPacket();
+
+
+
 
     @Override
     public void runOpMode() {
@@ -83,7 +90,7 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
         the tracking point the Y (strafe) odometry pod is. forward of center is a positive number,
         backwards is a negative number.
          */
-        odo.setOffsets(0, -368.3); //these are tuned for 3110-0002-0001 Product Insight #1
+        odo.setOffsets(0, -368.3/25.4); //these are tuned for 3110-0002-0001 Product Insight #1
 
         /*
         Set the kind of pods used by your robot. If you're using goBILDA odometry pods, select either
@@ -91,7 +98,7 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
         If you're using another kind of odometry pod, uncomment setEncoderResolution and input the
         number of ticks per mm of your odometry pod.
          */
-        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
         //odo.setEncoderResolution(13.26291192);
 
 
@@ -121,6 +128,7 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
         telemetry.addData("Device Scalar", odo.getYawScalar());
         telemetry.update();
 
+
         // Wait for the game to start (driver presses START)
         waitForStart();
         resetRuntime();
@@ -134,6 +142,7 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
             from the device in a single I2C read.
              */
             odo.update();
+
 
             /*
             Optionally, you can update only the heading of the device. This takes less time to read, but will not
@@ -166,15 +175,17 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
             gets the current Position (x & y in mm, and heading in degrees) of the robot, and prints it.
              */
             Pose2D pos = odo.getPosition();
-            String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
+            String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", pos.getX(DistanceUnit.INCH), pos.getY(DistanceUnit.INCH), pos.getHeading(AngleUnit.DEGREES));
             telemetry.addData("Position", data);
+            packet.addLine("Position: " + data);
 
             /*
             gets the current Velocity (x & y in mm/sec and heading in degrees/sec) and prints it.
              */
             Pose2D vel = odo.getVelocity();
-            String velocity = String.format(Locale.US,"{XVel: %.3f, YVel: %.3f, HVel: %.3f}", vel.getX(DistanceUnit.MM), vel.getY(DistanceUnit.MM), vel.getHeading(AngleUnit.DEGREES));
+            String velocity = String.format(Locale.US,"{XVel: %.3f, YVel: %.3f, HVel: %.3f}", vel.getX(DistanceUnit.INCH), vel.getY(DistanceUnit.INCH), vel.getHeading(AngleUnit.DEGREES));
             telemetry.addData("Velocity", velocity);
+            packet.addLine("Velocity: " + velocity);
 
 
             /*
@@ -187,11 +198,17 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
             FAULT_Y_POD_NOT_DETECTED - The device does not detect a Y pod plugged in
             */
             telemetry.addData("Status", odo.getDeviceStatus());
+            packet.addLine("Status " + odo.getDeviceStatus());
 
             telemetry.addData("Pinpoint Frequency", odo.getFrequency()); //prints/gets the current refresh rate of the Pinpoint
+            packet.addLine("Pinpoint Frequency " + odo.getFrequency());
 
             telemetry.addData("REV Hub Frequency: ", frequency); //prints the control system refresh rate
+            packet.addLine("REV Hub Frequency: " + frequency);
+
+            FtcDashboard.getInstance().sendTelemetryPacket(packet);
             telemetry.update();
+            packet.clearLines();
 
         }
     }}
