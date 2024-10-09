@@ -28,7 +28,7 @@ public class ApticalAndDeadwheelOdo extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
 
-        myOtos = hardwareMap.get(SparkFunOTOS.class, "sensor_otos");
+        myOtos = hardwareMap.get(SparkFunOTOS.class, "sensor_otos"); //i2c bus 0 for expansion
 
         // Get a reference to the deadwheel encoders
         //threeDeadWheelLocalizer = new ThreeDeadWheelLocalizer(hardwareMap, inPerTick);
