@@ -135,8 +135,8 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
          */
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront"); //Fl
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear"); //Bl
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear"); //Br
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftBack"); //Bl
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightBack"); //Br
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");// Fr
 
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);

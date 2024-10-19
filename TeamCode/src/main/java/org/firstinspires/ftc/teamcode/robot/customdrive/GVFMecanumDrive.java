@@ -102,8 +102,8 @@ public class GVFMecanumDrive implements Subsystem {
          */
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront"); //Fl
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear"); //Bl
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear"); //Br
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftBack"); //Bl
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightBack"); //Br
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");// Fr
 
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -167,6 +167,7 @@ public class GVFMecanumDrive implements Subsystem {
                 this.getPoseEstimate().getHeading()
         ));
 
+
         fieldOverlay.setStroke("#00FF00");
         // Draw path
         ParametricPath path = follower.getPath();
@@ -202,7 +203,11 @@ public class GVFMecanumDrive implements Subsystem {
     public void setPath (ParametricPath parametricPath) {
         follower.setPath(parametricPath);
     }
-
+    public void setFollower(Follower follower) { this.follower = follower;
+    }
+    public void setPoseEstimate(Pose2d pose) {
+        localizer.setPoseEstimate(pose);
+    }
     public void setFollowing(boolean following) {
         isFollowing = following;
     }
