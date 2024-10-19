@@ -59,7 +59,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Config
-public class MecanumDrive {
+public class PinpointMecanumDrive {
     public static class Params {
         // IMU orientation
         // TODO: fill in these values based on
@@ -138,10 +138,10 @@ public class MecanumDrive {
         private boolean initialized;
 
         public DriveLocalizer() {
-            leftFront = new OverflowEncoder(new RawEncoder(MecanumDrive.this.leftFront));
-            leftBack = new OverflowEncoder(new RawEncoder(MecanumDrive.this.leftBack));
-            rightBack = new OverflowEncoder(new RawEncoder(MecanumDrive.this.rightBack));
-            rightFront = new OverflowEncoder(new RawEncoder(MecanumDrive.this.rightFront));
+            leftFront = new OverflowEncoder(new RawEncoder(PinpointMecanumDrive.this.leftFront));
+            leftBack = new OverflowEncoder(new RawEncoder(PinpointMecanumDrive.this.leftBack));
+            rightBack = new OverflowEncoder(new RawEncoder(PinpointMecanumDrive.this.rightBack));
+            rightFront = new OverflowEncoder(new RawEncoder(PinpointMecanumDrive.this.rightFront));
 
             imu = lazyImu.get();
 
@@ -213,7 +213,7 @@ public class MecanumDrive {
         }
     }
 
-    public MecanumDrive(HardwareMap hardwareMap, Pose2d pose) {
+    public PinpointMecanumDrive(HardwareMap hardwareMap, Pose2d pose) {
         this.pose = pose;
 
         LynxFirmware.throwIfModulesAreOutdated(hardwareMap);
@@ -236,8 +236,6 @@ public class MecanumDrive {
 
         // TODO: reverse motor directions if needed
         //   leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
-        rightBack.setDirection(DcMotorEx.Direction.REVERSE);
 
         // TODO: make sure your config has an IMU with this name (can be BNO or BHI)
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html

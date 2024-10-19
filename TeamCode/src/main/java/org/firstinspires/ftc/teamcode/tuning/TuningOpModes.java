@@ -23,6 +23,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
 
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.PinpointMecanumDrive;
 import org.firstinspires.ftc.teamcode.TwoDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.useless.TankDrive;
 import org.firstinspires.ftc.teamcode.ThreeDeadWheelLocalizer;
@@ -33,7 +34,7 @@ import java.util.List;
 
 public final class TuningOpModes {
     // TODO: change this to TankDrive.class if you're using tank
-    public static final Class<?> DRIVE_CLASS = MecanumDrive.class;
+    public static final Class<?> DRIVE_CLASS = PinpointMecanumDrive.class;
 
     public static final String GROUP = "quickstart";
     public static final boolean DISABLED = false;
@@ -147,7 +148,57 @@ public final class TuningOpModes {
                                 TankDrive.PARAMS.kA / TankDrive.PARAMS.inPerTick)
                 );
             };
-        } else {
+        }else if (DRIVE_CLASS.equals(PinpointMecanumDrive.class)) {
+            dvf = hardwareMap -> {
+                PinpointMecanumDrive md = new PinpointMecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+
+                List<Encoder> leftEncs = new ArrayList<>();
+                List<Encoder> rightEncs = new ArrayList<>();
+                List<Encoder> parEncs = new ArrayList<>();
+                List<Encoder> perpEncs = new ArrayList<>();
+
+                // Using the DriveLocalizer's encoder setup
+                if (md.localizer instanceof PinpointMecanumDrive.DriveLocalizer) {
+                    PinpointMecanumDrive.DriveLocalizer dl = (PinpointMecanumDrive.DriveLocalizer) md.localizer;
+                    leftEncs.add(dl.leftFront);
+                    leftEncs.add(dl.leftBack);
+                    rightEncs.add(dl.rightBack);
+                    rightEncs.add(dl.rightFront);
+                } else if (md.localizer instanceof ThreeDeadWheelLocalizer) {
+                    ThreeDeadWheelLocalizer dl = (ThreeDeadWheelLocalizer) md.localizer;
+                    parEncs.add(dl.par0);
+                    parEncs.add(dl.par1);
+                    perpEncs.add(dl.perp);
+                } else if (md.localizer instanceof TwoDeadWheelLocalizer) {
+                    TwoDeadWheelLocalizer dl = (TwoDeadWheelLocalizer) md.localizer;
+                    parEncs.add(dl.par);
+                    perpEncs.add(dl.perp);
+                } else {
+                    throw new RuntimeException("unknown localizer: " + md.localizer.getClass().getName());
+                }
+
+                return new DriveView(
+                        DriveType.MECANUM,
+                        PinpointMecanumDrive.PARAMS.inPerTick,
+                        PinpointMecanumDrive.PARAMS.maxWheelVel,
+                        PinpointMecanumDrive.PARAMS.minProfileAccel,
+                        PinpointMecanumDrive.PARAMS.maxProfileAccel,
+                        hardwareMap.getAll(LynxModule.class),
+                        Arrays.asList(md.leftFront, md.leftBack),
+                        Arrays.asList(md.rightBack, md.rightFront),
+                        leftEncs,
+                        rightEncs,
+                        parEncs,
+                        perpEncs,
+                        md.lazyImu,
+                        md.voltageSensor,
+                        () -> new MotorFeedforward(PinpointMecanumDrive.PARAMS.kS,
+                                PinpointMecanumDrive.PARAMS.kV / PinpointMecanumDrive.PARAMS.inPerTick,
+                                PinpointMecanumDrive.PARAMS.kA / PinpointMecanumDrive.PARAMS.inPerTick)
+                );
+            };
+        }
+        else {
             throw new RuntimeException();
         }
 
