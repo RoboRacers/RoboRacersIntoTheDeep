@@ -19,7 +19,7 @@ public class DrivetrainCommand {
 
     // Constructor
     public DrivetrainCommand(DrivetrainSubsystem drivetrainSubsystem,
-                                DrivetrainCommand.DrivetrainState drivetrainState, Telemetry telemetry) {
+                             DrivetrainCommand.DrivetrainState drivetrainState, Telemetry telemetry) {
         this.drivetrainSubsystem = drivetrainSubsystem;
         this.drivetrainState = drivetrainState;
         this.telemetry = telemetry;
@@ -43,14 +43,7 @@ public class DrivetrainCommand {
                 telemetry.addData("Command", "Intake Reversed");
                 break;
 
-            case LEFT:
-                drivetrainSubsystem.turnLeft();
-                telemetry.addData("Command", "Intake Started");
-                break;
-            case RIGHT:
-                drivetrainSubsystem.turnRight();
-                telemetry.addData("Command", "Intake Started");
-                break;
+
         }
         telemetry.update();
     }
