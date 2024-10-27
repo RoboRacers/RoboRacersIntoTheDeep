@@ -10,7 +10,7 @@ public class Rolling implements org.firstinspires.ftc.teamcode.robot.teleop.Subs
     public DcMotor slideMotor;
     public ServoImplEx flipLeftIntake;
     public ServoImplEx flipRightIntake;
-    public CRServoImplEx intakeMotor;
+//    public CRServoImplEx intakeMotor;
 
     public PIDController intakePID = new PIDController(0.15, 0.05, 0.2);
 
@@ -18,7 +18,7 @@ public class Rolling implements org.firstinspires.ftc.teamcode.robot.teleop.Subs
         slideMotor = hardwareMap.get(DcMotor.class, "Horizontal_Slides");
         flipLeftIntake = hardwareMap.get(ServoImplEx.class, "Flip_Left_Intake");
         flipRightIntake = hardwareMap.get(ServoImplEx.class, "Flip_Right_Intake");
-        intakeMotor = hardwareMap.get(CRServoImplEx.class, "Servo_Intake");
+//        intakeMotor = hardwareMap.get(CRServoImplEx.class, "Servo_Intake");
     }
 
 
@@ -37,17 +37,17 @@ public class Rolling implements org.firstinspires.ftc.teamcode.robot.teleop.Subs
         flipRightIntake.setPosition(position);
     }
 
-    public void setIntake(){
-        intakeMotor.setPower(0.8);
-    }
+//    public void setIntake(){
+//        intakeMotor.setPower(0.8);
+//    }
 
-    public void setOutake(){
-        intakeMotor.setPower(-0.8);
-    }
+//    public void setOutake(){
+//        intakeMotor.setPower(-0.8);
+//    }
 
-    public void stopIntake(){
-        intakeMotor.setPower(0);
-    }
+//    public void stopIntake(){
+//        intakeMotor.setPower(0);
+//    }
 
     // Preset Intake rotations
     public void setIntakeUp(){

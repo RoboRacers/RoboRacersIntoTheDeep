@@ -7,6 +7,8 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServoImpl;
+import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -26,6 +28,7 @@ public class TeleopLM1 extends LinearOpMode {
     public DcMotor backLeftMotor;
     public DcMotor frontRightMotor;
     public DcMotor backRightMotor;
+    public CRServoImpl intakeMotor;
 
     Deposit deposit;
     Rolling rollingIntake;
@@ -35,6 +38,7 @@ public class TeleopLM1 extends LinearOpMode {
 
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        intakeMotor = hardwareMap.get(CRServoImpl.class, "Servo_Intake");
 
         deposit = new Deposit(hardwareMap);
         rollingIntake = new Rolling(hardwareMap);
@@ -78,11 +82,12 @@ public class TeleopLM1 extends LinearOpMode {
 
             // Intake
             if (gamepad1.right_trigger > 0.5){
-                rollingIntake.intakeMotor.setPower(0.6);
+                intakeMotor.setDirection(CRServoImpl.Direction.FORWARD);
+                intakeMotor.setPower(0.5);
             } else if (gamepad1.left_trigger > 0.5){
-                rollingIntake.intakeMotor.setPower(-0.6);
-            } else{
-                rollingIntake.intakeMotor.setPower(0);
+                intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+                intakeMotor.setPower(0.5);
+
             }
 
             if (gamepad1.triangle){
