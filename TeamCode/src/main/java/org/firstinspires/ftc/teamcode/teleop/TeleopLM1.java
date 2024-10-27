@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.robot.RobotCore;
+import org.firstinspires.ftc.teamcode.robot.subsystems.Deposit;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Rolling;
 
 
@@ -22,10 +23,10 @@ public class TeleopLM1 extends LinearOpMode {
         Gamepad gamepad1 = new Gamepad();
         Gamepad gamepad2 = new Gamepad();
         Rolling rollingIntake = new Rolling(hardwareMap);
-        Servo depositClawServo;
-        depositClawServo = hardwareMap.get(Servo.class, "DepositClawServo");
+        Deposit deposit = new Deposit();
 
         while (opModeInInit()) {
+
         }
 
         while (!isStopRequested()) {

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot.subsystems;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
@@ -24,14 +25,14 @@ public class Deposit implements Subsystem{
     }
 
     public void goToGrab(){
-        flipRight.setPosition(1);
-        flipLeft.setPosition(1);
-        pitch.setPosition(1);
-    }
-    public void goToRelease(){
         flipRight.setPosition(0);
         flipLeft.setPosition(0);
         pitch.setPosition(0);
+    }
+    public void goToRelease(){
+        flipRight.setPosition(1);
+        flipLeft.setPosition(1);
+        pitch.setPosition(1);
     }
 
     private void setSlidePower(double power){
@@ -47,7 +48,7 @@ public class Deposit implements Subsystem{
 
     @Override
     public void update() {
+        telemetry.addData("Shreesh is ", "bum");
 
     }
-
 }
