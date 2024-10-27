@@ -35,9 +35,9 @@ public class DepositTesty extends LinearOpMode {
 
             if(gamepad1.dpad_down){
 
-                flipRight.setPosition(0.8);
-                flipLeft.setPosition(0.8);
-                pitch.setPosition(0.3);
+                flipRight.setPosition(0.85);
+                flipLeft.setPosition(0.85);
+                pitch.setPosition(0.2);
 
             }else if(gamepad1.dpad_up){
                 flipRight.setPosition(0);
@@ -47,15 +47,14 @@ public class DepositTesty extends LinearOpMode {
 
 
 
-            if(gamepad1.right_bumper) {claw.setPosition(0.4);}
-
-            if (gamepad1.left_bumper) {claw.setPosition(0.6);}
+            if(gamepad1.right_trigger > 0.1) {claw.setPosition(0.4);}
+            else if (gamepad1.left_trigger > 0.1) {claw.setPosition(0.7);}
 
             telemetry.addData("FlipRight Position", flipRight.getPosition());
             telemetry.addData("FFlipLeft Position", flipLeft.getPosition());
             telemetry.addData("Pitch", pitch.getPosition());
-            telemetry.addData("Claw", pitch.getPosition());
-
+            telemetry.addData("Claw", claw.getPosition());
+            telemetry.update();
         }
 
     }
