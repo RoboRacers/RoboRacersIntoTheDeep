@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robot.subsystems;
+package org.firstinspires.ftc.teamcode.teleop;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
@@ -6,7 +6,9 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
-public class Deposit implements Subsystem{
+import org.firstinspires.ftc.teamcode.teleop.PIDController;
+
+public class Deposit implements org.firstinspires.ftc.teamcode.robot.teleop.Subsystem {
     ServoImplEx flipRight = hardwareMap.get(ServoImplEx.class, "Flip_Right_Deposit");
     ServoImplEx flipLeft = hardwareMap.get(ServoImplEx.class, "Flip_Left_Deposit");
     ServoImplEx pitch = hardwareMap.get(ServoImplEx.class, "Pitch");
@@ -21,6 +23,7 @@ public class Deposit implements Subsystem{
     public void openClaw(){
         claw.setPosition(0);
     }
+
     public void closeClaw(){
         claw.setPosition(0.7);
     }
