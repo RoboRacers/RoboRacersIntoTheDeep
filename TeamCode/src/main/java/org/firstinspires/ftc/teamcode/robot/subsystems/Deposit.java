@@ -15,13 +15,13 @@ public class Deposit implements Subsystem{
     DcMotorImplEx slidesRight = hardwareMap.get(DcMotorImplEx.class, "Slides_Right");
     DcMotorImplEx slidesLeft = hardwareMap.get(DcMotorImplEx.class, "Slides_Left");
 
-    PIDController slidesPID = new PIDController(1, 1, 1);
+    PIDController slidesPID = new PIDController(0.1, 0.1, 0.1);
 
     public void openClaw(){
-        claw.setPosition(1);
+        claw.setPosition(0);
     }
     public void closeClaw(){
-        claw.setPosition(0);
+        claw.setPosition(0.7);
     }
 
     public void goToGrab(){
