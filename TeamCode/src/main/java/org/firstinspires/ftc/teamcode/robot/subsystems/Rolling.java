@@ -17,8 +17,19 @@ public class Rolling implements Subsystem {
     public void setIntakePower(double power) {
         intakeMotor.setPower(power);
     }
-    public void intakeFlip(){
-
+    //Dynamic Intake rotation
+    public void setIntakePosition(double position){
+        flipLeft.setPosition(position);
+        flipRight.setPosition(position);
+    }
+    // Preset Intake rotations
+    public void setIntakeUp(){
+        flipRight.setPosition(0.8);
+        flipLeft.setPosition(0.8);
+    }
+    public void setIntakeDown(){
+        flipLeft.setPosition(0.2);
+        flipRight.setPosition(0.2);
     }
     @Override
     public void update() {
