@@ -9,19 +9,19 @@ import com.qualcomm.robotcore.hardware.ServoImplEx;
 import org.firstinspires.ftc.teamcode.teleop.PIDController;
 
 public class Deposit implements org.firstinspires.ftc.teamcode.robot.teleop.Subsystem {
-    ServoImplEx flipRight = hardwareMap.get(ServoImplEx.class, "Flip_Right_Deposit");
-    ServoImplEx flipLeft = hardwareMap.get(ServoImplEx.class, "Flip_Left_Deposit");
-    ServoImplEx pitch = hardwareMap.get(ServoImplEx.class, "Pitch");
-    ServoImplEx claw = hardwareMap.get(ServoImplEx.class, "Claw");
+    public ServoImplEx flipRight = hardwareMap.get(ServoImplEx.class, "Flip_Right_Deposit");
+    public ServoImplEx flipLeft = hardwareMap.get(ServoImplEx.class, "Flip_Left_Deposit");
+    public ServoImplEx pitch = hardwareMap.get(ServoImplEx.class, "Pitch");
+    public ServoImplEx claw = hardwareMap.get(ServoImplEx.class, "Claw");
 
-    DcMotorImplEx slidesRight = hardwareMap.get(DcMotorImplEx.class, "Slides_Right");
-    DcMotorImplEx slidesLeft = hardwareMap.get(DcMotorImplEx.class, "Slides_Left");
+    public DcMotorImplEx slidesRight = hardwareMap.get(DcMotorImplEx.class, "Slides_Right");
+    public DcMotorImplEx slidesLeft = hardwareMap.get(DcMotorImplEx.class, "Slides_Left");
 
-    PIDController slidesPID = new PIDController(0.1, 0.01, 0.05);
+    public PIDController slidesPID = new PIDController(0.1, 0.01, 0.05);
 
 
     public void openClaw(){
-        claw.setPosition(0);
+        claw.setPosition(.4);
     }
 
     public void closeClaw(){
@@ -29,9 +29,9 @@ public class Deposit implements org.firstinspires.ftc.teamcode.robot.teleop.Subs
     }
 
     public void goToGrab(){
-        flipRight.setPosition(1);
-        flipLeft.setPosition(1);
-        pitch.setPosition(0.228);
+        flipRight.setPosition(0.85);
+        flipLeft.setPosition(0.85);
+        pitch.setPosition(0.2);
     }
     public void goToRelease(){
         flipRight.setPosition(0);
@@ -52,7 +52,13 @@ public class Deposit implements org.firstinspires.ftc.teamcode.robot.teleop.Subs
 
     @Override
     public void update() {
-        telemetry.addData("Shreesh is ", "bum");
-
+        telemetry.addData("Claw", claw.getPosition());
+        telemetry.addData("Deposit FlipLeft", flipLeft.getPosition());
+        telemetry.addData("Deposit Pitch", pitch.getPosition());
+        telemetry.addData("Deposit SlidesLeft Position", slidesLeft.getCurrentPosition());
+        telemetry.addData("Deposit SlideRight Position", slidesRight.getCurrentPosition());
+        telemetry.addData("Deposit SlideLeft Power", slidesLeft.getPower());
+        telemetry.addData("Deposit SlideRight Power", slidesRight.getPower());
+        telemetry.update();
     }
 }

@@ -4,9 +4,11 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.DepositTesty;
 import org.firstinspires.ftc.teamcode.teleop.Deposit;
 import org.firstinspires.ftc.teamcode.teleop.Rolling;
 
@@ -14,23 +16,27 @@ import org.firstinspires.ftc.teamcode.teleop.Rolling;
 
 @TeleOp(name = "LM1 Teleop", group = "16481-IntoTheDeep")
 public class TeleopLM1 extends LinearOpMode {
+    public DcMotor frontLeftMotor;
+    public DcMotor backLeftMotor;
+    public DcMotor frontRightMotor;
+    public DcMotor backRightMotor;
 
-
-
+    public Deposit deposit = new Deposit();
+    public Rolling rollingIntake = new Rolling();
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("Fl");
-        DcMotor backLeftMotor = hardwareMap.dcMotor.get("Bl");
-        DcMotor frontRightMotor = hardwareMap.dcMotor.get("Fr");
-        DcMotor backRightMotor = hardwareMap.dcMotor.get("Br");
+        frontLeftMotor = hardwareMap.dcMotor.get("Fl");
+        backLeftMotor = hardwareMap.dcMotor.get("Bl");
+        frontRightMotor = hardwareMap.dcMotor.get("Fr");
+        backRightMotor = hardwareMap.dcMotor.get("Br");
 
 
-        Gamepad gamepad1 = new Gamepad();
-        Gamepad gamepad2 = new Gamepad();
-        Rolling rollingIntake = new Rolling();
-        Deposit deposit = new Deposit();
+//        Gamepad gamepad1 = new Gamepad();
+//        Gamepad gamepad2 = new Gamepad();
+
+        //Deposit deposit = new Deposit();
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -52,6 +58,8 @@ public class TeleopLM1 extends LinearOpMode {
             double backLeftPower = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
+
+
             frontLeftMotor.setPower(frontLeftPower);
             backLeftMotor.setPower(backLeftPower);
             frontRightMotor.setPower(frontRightPower);
@@ -60,11 +68,14 @@ public class TeleopLM1 extends LinearOpMode {
 
             if (gamepad1.dpad_up){
                 // extend slides
-                rollingIntake.setSlidePower(0.5);
+                rollingIntake.setSlidePos(100);
             }
             else if (gamepad1.dpad_down) {
                 // retract slides
-                rollingIntake.setSlidePower(-0.5);
+                rollingIntake.setSlidePos(0);
+            }
+            else{
+                rollingIntake.setSlidePower(0);
             }
             // Intake
             if (gamepad1.right_trigger > 0.1){
@@ -75,7 +86,13 @@ public class TeleopLM1 extends LinearOpMode {
                 rollingIntake.setOutake();
             }
             else{
+
                 rollingIntake.stopIntake();
+            }
+            if (gamepad1.triangle){
+                rollingIntake.setIntakeUp();
+            } else if (gamepad1.cross) {
+                rollingIntake.setIntakeDown();
             }
             // End Gamepad 1 Controls
 
@@ -102,7 +119,7 @@ public class TeleopLM1 extends LinearOpMode {
             // vertical slides
             if (gamepad2.triangle){
                 // raise slides
-                deposit.setSlidePos(10); //change value
+                deposit.setSlidePos(50); //change value
             }
             else if (gamepad2.cross) {
                 // lower slides
@@ -110,7 +127,9 @@ public class TeleopLM1 extends LinearOpMode {
             }
 
             // End Gamepad 2 Controls
-
+            rollingIntake.update();
+            deposit.update();
+            telemetry.update();
 
         }
     }
