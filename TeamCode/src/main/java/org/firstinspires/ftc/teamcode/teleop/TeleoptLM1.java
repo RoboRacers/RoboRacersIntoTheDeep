@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.robot.RobotCore;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Deposit;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Rolling;
+
 
 
 @TeleOp(name = "LM1 Teleop", group = "16481-IntoTheDeep")
@@ -14,13 +14,14 @@ public class TeleopLM1 extends LinearOpMode {
 
     RobotCore robot;
 
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         robot = new RobotCore(hardwareMap);
         Gamepad gamepad1 = new Gamepad();
         Gamepad gamepad2 = new Gamepad();
-        Rolling rollingIntake = new Rolling();
+        Rolling rollingIntake = new org.firstinspires.ftc.teamcode.robot.subsystems.Rolling();
         Deposit deposit = new Deposit();
 
         while (opModeInInit()) {
