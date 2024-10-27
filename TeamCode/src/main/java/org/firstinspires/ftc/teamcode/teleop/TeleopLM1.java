@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+
+
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -7,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.DepositTesty;
 import org.firstinspires.ftc.teamcode.teleop.Deposit;
@@ -21,16 +24,20 @@ public class TeleopLM1 extends LinearOpMode {
     public DcMotor frontRightMotor;
     public DcMotor backRightMotor;
 
-    public Deposit deposit = new Deposit();
-    public Rolling rollingIntake = new Rolling();
+    Deposit deposit;
+    Rolling rollingIntake;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        frontLeftMotor = hardwareMap.dcMotor.get("Fl");
-        backLeftMotor = hardwareMap.dcMotor.get("Bl");
-        frontRightMotor = hardwareMap.dcMotor.get("Fr");
-        backRightMotor = hardwareMap.dcMotor.get("Br");
+
+        frontLeftMotor = hardwareMap.get(DcMotor.class, "Fl");
+        backLeftMotor = hardwareMap.get(DcMotor.class, "Bl");
+        frontRightMotor = hardwareMap.get(DcMotor.class, "Fr");
+        backRightMotor = hardwareMap.get(DcMotor.class, "Br");
+
+        deposit = new Deposit(hardwareMap);
+        rollingIntake = new Rolling(hardwareMap);
 
 
 //        Gamepad gamepad1 = new Gamepad();
@@ -68,27 +75,26 @@ public class TeleopLM1 extends LinearOpMode {
 
             if (gamepad1.dpad_up){
                 // extend slides
-                rollingIntake.setSlidePos(100);
+                rollingIntake.setSlidePos(10);
             }
             else if (gamepad1.dpad_down) {
                 // retract slides
                 rollingIntake.setSlidePos(0);
             }
-            else{
-                rollingIntake.setSlidePower(0);
-            }
+
             // Intake
-            if (gamepad1.right_trigger > 0.1){
+            if (gamepad1.right_trigger > 0.2){
                 rollingIntake.setIntake();
             }
             // Outake
-            else if (gamepad1.left_trigger > 0.1){
+            else if (gamepad1.left_trigger > 0.2){
                 rollingIntake.setOutake();
             }
             else{
 
                 rollingIntake.stopIntake();
             }
+
             if (gamepad1.triangle){
                 rollingIntake.setIntakeUp();
             } else if (gamepad1.cross) {
@@ -98,13 +104,13 @@ public class TeleopLM1 extends LinearOpMode {
 
             // Gamepad 2 Controls
             // deposit claw
-            if (gamepad2.left_bumper){
+            if (gamepad2.left_trigger > 0.1){
                 // claw close
-                deposit.closeClaw();
-            }
-            else if (gamepad2.right_bumper){
-                // claw open
                 deposit.openClaw();
+            }
+            else if (gamepad2.right_trigger > 0.1){
+                // claw open
+                deposit.closeClaw();
             }
             // deposit flip
             if (gamepad2.dpad_down){
@@ -119,7 +125,7 @@ public class TeleopLM1 extends LinearOpMode {
             // vertical slides
             if (gamepad2.triangle){
                 // raise slides
-                deposit.setSlidePos(50); //change value
+                deposit.setSlidePos(10); //change value
             }
             else if (gamepad2.cross) {
                 // lower slides
@@ -127,9 +133,9 @@ public class TeleopLM1 extends LinearOpMode {
             }
 
             // End Gamepad 2 Controls
-            rollingIntake.update();
-            deposit.update();
-            telemetry.update();
+//            rollingIntake.update();
+//            deposit.update();
+//            telemetry.update();
 
         }
     }

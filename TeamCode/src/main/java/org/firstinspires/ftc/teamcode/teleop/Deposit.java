@@ -4,38 +4,50 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.har
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
-import org.firstinspires.ftc.teamcode.teleop.PIDController;
-
 public class Deposit implements org.firstinspires.ftc.teamcode.robot.teleop.Subsystem {
-    public ServoImplEx flipRight = hardwareMap.get(ServoImplEx.class, "Flip_Right_Deposit");
-    public ServoImplEx flipLeft = hardwareMap.get(ServoImplEx.class, "Flip_Left_Deposit");
-    public ServoImplEx pitch = hardwareMap.get(ServoImplEx.class, "Pitch");
-    public ServoImplEx claw = hardwareMap.get(ServoImplEx.class, "Claw");
+    public ServoImplEx flipRightDeposit;
+    public ServoImplEx flipLeftDeposit;
+    public ServoImplEx pitch;
+    public ServoImplEx claw;
 
-    public DcMotorImplEx slidesRight = hardwareMap.get(DcMotorImplEx.class, "Slides_Right");
-    public DcMotorImplEx slidesLeft = hardwareMap.get(DcMotorImplEx.class, "Slides_Left");
+    public DcMotorImplEx slidesRight;
+    public DcMotorImplEx slidesLeft;
 
     public PIDController slidesPID = new PIDController(0.1, 0.01, 0.05);
 
+    public Deposit(HardwareMap hardwareMap){
+        flipRightDeposit = hardwareMap.get(ServoImplEx.class, "Flip_Right_Deposit");
+        flipLeftDeposit = hardwareMap.get(ServoImplEx.class, "Flip_Left_Deposit");
+        pitch = hardwareMap.get(ServoImplEx.class, "Pitch");
+        claw = hardwareMap.get(ServoImplEx.class, "Claw");
 
-    public void openClaw(){
-        claw.setPosition(.4);
+        slidesRight = hardwareMap.get(DcMotorImplEx.class, "Slides_Right");
+        slidesLeft = hardwareMap.get(DcMotorImplEx.class, "Slides_Left");
+
+        slidesLeft.setDirection(DcMotorImplEx.Direction.REVERSE);
     }
 
-    public void closeClaw(){
+
+    public void openClaw(){
         claw.setPosition(0.7);
     }
 
+    public void closeClaw(){
+        claw.setPosition(0.45);
+    }
+
     public void goToGrab(){
-        flipRight.setPosition(0.85);
-        flipLeft.setPosition(0.85);
-        pitch.setPosition(0.2);
+        flipRightDeposit.setPosition(0.87);
+        flipLeftDeposit.setPosition(0.87);
+        pitch.setPosition(0.25);
     }
     public void goToRelease(){
-        flipRight.setPosition(0);
-        flipLeft.setPosition(0);
+        flipRightDeposit.setPosition(0);
+        flipLeftDeposit.setPosition(0);
         pitch.setPosition(0.28);
     }
 
@@ -52,13 +64,13 @@ public class Deposit implements org.firstinspires.ftc.teamcode.robot.teleop.Subs
 
     @Override
     public void update() {
-        telemetry.addData("Claw", claw.getPosition());
-        telemetry.addData("Deposit FlipLeft", flipLeft.getPosition());
-        telemetry.addData("Deposit Pitch", pitch.getPosition());
-        telemetry.addData("Deposit SlidesLeft Position", slidesLeft.getCurrentPosition());
-        telemetry.addData("Deposit SlideRight Position", slidesRight.getCurrentPosition());
-        telemetry.addData("Deposit SlideLeft Power", slidesLeft.getPower());
-        telemetry.addData("Deposit SlideRight Power", slidesRight.getPower());
-        telemetry.update();
+//        telemetry.addData("Claw", claw.getPosition());
+//        telemetry.addData("Deposit FlipLeft", flipLeftDeposit.getPosition());
+//        telemetry.addData("Deposit Pitch", pitch.getPosition());
+//        telemetry.addData("Deposit SlidesLeft Position", slidesLeft.getCurrentPosition());
+//        telemetry.addData("Deposit SlideRight Position", slidesRight.getCurrentPosition());
+//        telemetry.addData("Deposit SlideLeft Power", slidesLeft.getPower());
+//        telemetry.addData("Deposit SlideRight Power", slidesRight.getPower());
+//        telemetry.update();
     }
 }
