@@ -9,6 +9,8 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServoImplEx;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -28,6 +30,11 @@ public class DepositTest extends LinearOpMode {
     public CRServoImplEx rolling;
 
     public ServoImplEx flipRight;
+    public DcMotorEx intakeSlide;
+
+    public Servo depositLeft;
+    public Servo deposoitRight;
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -40,6 +47,10 @@ public class DepositTest extends LinearOpMode {
             intakeMotorRight = hardwareMap.get(DcMotorImplEx.class,"intakeRollRight");
 //            depositRight = hardwareMap.get(ServoImplEx.class, "")
             rolling = hardwareMap.get(CRServoImplEx.class,"rolling");
+            intakeSlide = hardwareMap.get(DcMotorEx.class, "intakeSlide");
+
+            depositLeft = hardwareMap.get(Servo.class, "depLeft");
+            deposoitRight = hardwareMap.get(Servo.class, "depRight");
 
             waitForStart();
 
@@ -55,21 +66,21 @@ public class DepositTest extends LinearOpMode {
 //                    rolling.setPower(0.5);
 //                }
                 //flipLeft.setDirection(ServoImplEx.Direction.REVERSE);
-                if (gamepad1.dpad_up){
+                if (gamepad2.dpad_up){
 
                     flipLeft.setPosition(0.719);
                     flipRight.setPosition(0.7);
-                } else if (gamepad1.dpad_down) {
+                } else if (gamepad2.dpad_down) {
 
-                    flipLeft.setPosition(0);
-                    flipRight.setPosition(0);
+                    flipLeft.setPosition(0.2);
+                    flipRight.setPosition(0.2);
                 }
-                else if (gamepad1.dpad_left) {
+                else if (gamepad2.dpad_left) {
 
                     flipLeft.setPosition(1);
                     flipRight.setPosition(1);
                 }
-                else if (gamepad1.dpad_right) {
+                else if (gamepad2.dpad_right) {
 
                     flipLeft.setPosition(0.91);
                     flipRight.setPosition(0.91);
@@ -82,7 +93,35 @@ public class DepositTest extends LinearOpMode {
 
                 } else if (gamepad2.left_trigger<0.1 && gamepad2.right_trigger<0.1) {
                     rolling.setPower(0);
+                }
 
+                intakeSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+                if (gamepad2.right_bumper) {
+                    intakeSlide.setPower(0.5);
+
+                }else if (gamepad2.left_bumper) {
+                    intakeSlide.setPower(-0.5);
+
+                } else if (!gamepad2.left_bumper && !gamepad2.right_bumper) {
+                    intakeSlide.setPower(0);
+                }
+
+
+
+                if (gamepad1.dpad_up){
+
+                    deposoitRight.setPosition(1);
+                    depositLeft.setPosition(1);
+                } else if (gamepad1.dpad_down) {
+
+                    depositLeft.setPosition(0.5);
+                    deposoitRight.setPosition(0.5);
+                }
+                else if (gamepad1.dpad_left) {
+
+                    depositLeft.setPosition(0);
+                    deposoitRight.setPosition(0);
                 }
 
                 //flipRight.setPosition(gamepad2.left_stick_y);
