@@ -23,14 +23,13 @@ public class Rolling implements Subsystem {
         flipRight.setPosition(position);
     }
     // Preset Intake rotations
-    // The position values below are test values i.e. modify these to be the actual position values.
     public void setIntakeUp(){
-        flipRight.setPosition(1);
-        flipLeft.setPosition(1);
+        flipRight.setPosition(0.8);
+        flipLeft.setPosition(0.8);
     }
     public void setIntakeDown(){
-        flipLeft.setPosition(0);
-        flipRight.setPosition(0);
+        flipLeft.setPosition(0.2);
+        flipRight.setPosition(0.2);
     }
     @Override
     public void update() {
