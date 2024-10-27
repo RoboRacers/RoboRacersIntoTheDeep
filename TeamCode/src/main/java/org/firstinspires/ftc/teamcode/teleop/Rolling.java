@@ -12,7 +12,7 @@ public class Rolling implements org.firstinspires.ftc.teamcode.robot.teleop.Subs
     public ServoImplEx flipRightIntake;
     public CRServoImplEx intakeMotor;
 
-    public PIDController intakePID = new PIDController(0.1, 0.01, 0.05);
+    public PIDController intakePID = new PIDController(0.15, 0.05, 0.2);
 
     public Rolling(HardwareMap hardwareMap){
         slideMotor = hardwareMap.get(DcMotor.class, "Horizontal_Slides");

@@ -55,34 +55,34 @@ public class TeleopLM1 extends LinearOpMode {
 
         while (!isStopRequested()) {
             // Gamepad 1 Controls
-
             drive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
-                            -gamepad1.left_stick_y,
-                            -gamepad1.left_stick_x
+                            gamepad1.left_stick_y,
+                            gamepad1.left_stick_x
                     ),
-                    -gamepad1.right_stick_x
+                    gamepad1.right_stick_x
             ));
+            drive.updatePoseEstimate();
 
-            if (gamepad1.dpad_up){
+            if (gamepad1.right_bumper){
                 // extend slides
-                rollingIntake.setSlidePos(10);
+                rollingIntake.setSlidePower(0.5);
             }
-            else if (gamepad1.dpad_down) {
+            else if (gamepad1.left_bumper) {
                 // retract slides
-                rollingIntake.setSlidePos(2);
+                rollingIntake.setSlidePower(-0.5);
+            }
+            else {
+                rollingIntake.setSlidePower(0);
             }
 
             // Intake
-            if (gamepad1.right_trigger > 0.2){
-                rollingIntake.setIntake();
-            }
-            // Outake
-            else if (gamepad1.left_trigger > 0.2){
-                rollingIntake.setOutake();
-            }
-            else{
-                rollingIntake.stopIntake();
+            if (gamepad1.right_trigger > 0.5){
+                rollingIntake.intakeMotor.setPower(0.6);
+            } else if (gamepad1.left_trigger > 0.5){
+                rollingIntake.intakeMotor.setPower(-0.6);
+            } else{
+                rollingIntake.intakeMotor.setPower(0);
             }
 
             if (gamepad1.triangle){
@@ -115,11 +115,13 @@ public class TeleopLM1 extends LinearOpMode {
             // vertical slides
             if (gamepad2.triangle){
                 // raise slides
-                deposit.setSlidePos(30); //change value
+                deposit.setSlidePower(0.5); //change value
             }
             else if (gamepad2.cross) {
                 // lower slides
-                deposit.setSlidePos(0);//change value
+                deposit.setSlidePower(-0.5);//change value
+            }else{
+                deposit.setSlidePower(0);
             }
 
             // End Gamepad 2 Controls

@@ -10,10 +10,12 @@ public class SlidesTest extends LinearOpMode {
     DcMotorImplEx slidesRight;
     DcMotorImplEx slidesLeft;
 
+
     @Override
     public void runOpMode() throws InterruptedException {
         slidesRight = hardwareMap.get(DcMotorImplEx.class, "Slides_Right");
         slidesLeft = hardwareMap.get(DcMotorImplEx.class, "Slides_Left");
+        slidesLeft.setDirection(DcMotorImplEx.Direction.REVERSE);
 
         while(isStopRequested() == false){
             slidesRight.setPower(0.5 * gamepad1.right_stick_y);

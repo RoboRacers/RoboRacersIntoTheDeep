@@ -17,7 +17,7 @@ public class Deposit implements org.firstinspires.ftc.teamcode.robot.teleop.Subs
     public DcMotorImplEx slidesRight;
     public DcMotorImplEx slidesLeft;
 
-    public PIDController slidesPID = new PIDController(0.1, 0.01, 0.05);
+    public PIDController slidesPID = new PIDController(0.15, 0.1, 0.25);
 
     public Deposit(HardwareMap hardwareMap){
         flipRightDeposit = hardwareMap.get(ServoImplEx.class, "Flip_Right_Deposit");
@@ -51,7 +51,7 @@ public class Deposit implements org.firstinspires.ftc.teamcode.robot.teleop.Subs
         pitch.setPosition(0.28);
     }
 
-    private void setSlidePower(double power){
+    public void setSlidePower(double power){
         slidesRight.setPower(power);
         slidesLeft.setPower(power);
     }
