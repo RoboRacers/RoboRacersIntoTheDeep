@@ -7,13 +7,13 @@ import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 public class Deposit implements Subsystem{
-    ServoImplEx flipRight = hardwareMap.get(ServoImplEx.class, "Flip_Right");
-    ServoImplEx flipLeft = hardwareMap.get(ServoImplEx.class, "Flip_Left");
+    ServoImplEx flipRight = hardwareMap.get(ServoImplEx.class, "Flip_Right_Deposit");
+    ServoImplEx flipLeft = hardwareMap.get(ServoImplEx.class, "Flip_Left_Deposit");
     ServoImplEx pitch = hardwareMap.get(ServoImplEx.class, "Pitch");
     ServoImplEx claw = hardwareMap.get(ServoImplEx.class, "Claw");
 
-    DcMotorImplEx slidesRight = hardwareMap.get(DcMotorImplEx.class, "slides_Right");
-    DcMotorImplEx slidesLeft = hardwareMap.get(DcMotorImplEx.class, "slides_Left");
+    DcMotorImplEx slidesRight = hardwareMap.get(DcMotorImplEx.class, "Slides_Right");
+    DcMotorImplEx slidesLeft = hardwareMap.get(DcMotorImplEx.class, "Slides_Left");
 
     PIDController slidesPID = new PIDController(1, 1, 1);
 
@@ -25,14 +25,14 @@ public class Deposit implements Subsystem{
     }
 
     public void goToGrab(){
-        flipRight.setPosition(0);
-        flipLeft.setPosition(0);
-        pitch.setPosition(0);
-    }
-    public void goToRelease(){
         flipRight.setPosition(1);
         flipLeft.setPosition(1);
-        pitch.setPosition(1);
+        pitch.setPosition(0.228);
+    }
+    public void goToRelease(){
+        flipRight.setPosition(0);
+        flipLeft.setPosition(0);
+        pitch.setPosition(0.28);
     }
 
     private void setSlidePower(double power){

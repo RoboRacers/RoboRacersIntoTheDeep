@@ -2,9 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.robot.RobotCore;
 import org.firstinspires.ftc.teamcode.robot.subsystems.Deposit;
@@ -22,7 +20,7 @@ public class TeleopLM1 extends LinearOpMode {
         robot = new RobotCore(hardwareMap);
         Gamepad gamepad1 = new Gamepad();
         Gamepad gamepad2 = new Gamepad();
-        Rolling rollingIntake = new Rolling(hardwareMap);
+        Rolling rollingIntake = new Rolling();
         Deposit deposit = new Deposit();
 
         while (opModeInInit()) {
@@ -35,61 +33,61 @@ public class TeleopLM1 extends LinearOpMode {
                     gamepad1.left_stick_y,
                     gamepad1.left_stick_x,
                     -gamepad1.right_stick_x));
-            // Slides
+
             if (gamepad1.dpad_up){
                 // extend slides
+                rollingIntake.setSlidePower(0.5);
             }
             else if (gamepad1.dpad_down) {
                 // retract slides
+                rollingIntake.setSlidePower(-0.5);
             }
             // Intake
             if (gamepad1.right_trigger > 0.1){
-                rollingIntake.setIntakePower(gamepad1.right_trigger);
+                rollingIntake.setIntake();
             }
             // Outake
             else if (gamepad1.left_trigger > 0.1){
-                rollingIntake.setIntakePower(-gamepad1.left_trigger);
+                rollingIntake.setOutake();
             }
             else{
-                rollingIntake.setIntakePower(0);
+                rollingIntake.stopIntake();
             }
             // End Gamepad 1 Controls
+
             // Gamepad 2 Controls
             // deposit claw
-            boolean depositClawClosed = false;
-            if (gamepad2.cross && depositClawClosed == false){
+            if (gamepad2.left_bumper){
                 // claw close
-                // depositClawServo.setPosition();     find this value later
-                depositClawClosed = true;
+                deposit.closeClaw();
             }
-            else if (gamepad2.cross){
+            else if (gamepad2.right_bumper){
                 // claw open
-                // depositClawServo.setPosition();     find this value later
-                depositClawClosed = false;
+                deposit.openClaw();
             }
             // deposit flip
-            if (gamepad2.left_stick_y > 0){
+            if (gamepad2.dpad_down){
                 // flip deposit thingy upwards
+                deposit.goToGrab();
             }
-            else if (gamepad2.left_stick_y < 0){
+            else if (gamepad2.dpad_up){
                 // flip deposit thingy downwards
+                deposit.goToRelease();
             }
-            // deposit claw angle
-            if (gamepad2.right_stick_y > 0){
-                // angle the deposit claw upwards/towards the back of the bot
-            }
-            else if (gamepad2.right_stick_y < 0){
-                // angle the deposit claw downards/towards the front of the bot
-            }
+
             // vertical slides
-            if (gamepad2.dpad_up){
-                // extend slides
+            if (gamepad2.triangle){
+                // raise slides
+                deposit.setSlidePos(1); //change value
             }
-            else if (gamepad2.dpad_down){
-                // retract slides
+            else if (gamepad2.cross) {
+                // lower slides
+                deposit.setSlidePos(0);//change value
             }
+
             // End Gamepad 2 Controls
             robot.update();
+
         }
     }
 }
