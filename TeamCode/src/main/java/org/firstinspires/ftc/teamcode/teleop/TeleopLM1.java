@@ -66,11 +66,11 @@ public class TeleopLM1 extends LinearOpMode {
 
             if (gamepad1.dpad_up){
                 // extend slides
-                rollingIntake.setSlidePos(25);
+                rollingIntake.setSlidePos(10);
             }
             else if (gamepad1.dpad_down) {
                 // retract slides
-                rollingIntake.setSlidePos(0);
+                rollingIntake.setSlidePos(2);
             }
 
             // Intake
@@ -82,7 +82,6 @@ public class TeleopLM1 extends LinearOpMode {
                 rollingIntake.setOutake();
             }
             else{
-
                 rollingIntake.stopIntake();
             }
 
