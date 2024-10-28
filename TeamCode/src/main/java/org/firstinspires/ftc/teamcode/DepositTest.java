@@ -1,167 +1,159 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;    
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServoImpl;
 import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
 
-@TeleOp(name ="Deposit", group = "16481-IntoTheDeep")
+@TeleOp(name ="DepositWORK", group = "16481-IntoTheDeep")
 public class DepositTest extends LinearOpMode {
     public DcMotorImplEx intakeMotorLeft;
     public DcMotorImplEx intakeMotorRight;
-    public ServoImplEx flipLeft;
 
+    public DcMotor slideMotor;
+    public ServoImplEx flipLeftIntake;
+    public ServoImplEx flipRightIntake;
 
     public CRServoImplEx rolling;
 
-    public ServoImplEx flipRight;
-    public DcMotorEx intakeSlide;
 
+
+    public CRServoImplEx intakeMotor;
     public Servo depositLeft;
     public Servo depositRight;
-public boolean BrawlStars;
+
+    public ServoImplEx flipRightDeposit;
+    public ServoImplEx flipLeftDeposit;
+    public ServoImplEx pitch;
+    public ServoImplEx claw;
+
+    public DcMotorImplEx slidesRight;
+    public DcMotorImplEx slidesLeft;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-    BrawlStars = true;
-        if (TuningOpModes.DRIVE_CLASS.equals(MecanumDrive.class)) {
-           // MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-            flipLeft = hardwareMap.get(ServoImplEx.class, "flipLeft");
-            flipRight = hardwareMap.get(ServoImplEx.class, "flipRight");
-            intakeMotorLeft = hardwareMap.get(DcMotorImplEx.class,"intakeRollLeft");
-            intakeMotorRight = hardwareMap.get(DcMotorImplEx.class,"intakeRollRight");
-//            depositRight = hardwareMap.get(ServoImplEx.class, "")
-            rolling = hardwareMap.get(CRServoImplEx.class,"rolling");
-            intakeSlide = hardwareMap.get(DcMotorEx.class, "intakeSlide");
 
-            depositLeft = hardwareMap.get(Servo.class, "depLeft");
-            depositRight = hardwareMap.get(Servo.class, "depRight");
+
+           // MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        slideMotor = hardwareMap.get(DcMotor.class, "Horizontal_Slides");
+        flipLeftIntake = hardwareMap.get(ServoImplEx.class, "Flip_Left_Intake");
+        flipRightIntake = hardwareMap.get(ServoImplEx.class, "Flip_Right_Intake");
+        intakeMotor = hardwareMap.get(CRServoImplEx.class, "Servo_Intake");
+
+
+//            depositRight = hardwareMap.get(ServoImplEx.class, "")
+
+
+        flipRightDeposit = hardwareMap.get(ServoImplEx.class, "Flip_Right_Deposit");
+        flipLeftDeposit = hardwareMap.get(ServoImplEx.class, "Flip_Left_Deposit");
+        pitch = hardwareMap.get(ServoImplEx.class, "Pitch");
+        claw = hardwareMap.get(ServoImplEx.class, "Claw");
+
+        slidesRight = hardwareMap.get(DcMotorImplEx.class, "Slides_Right");
+        slidesLeft = hardwareMap.get(DcMotorImplEx.class, "Slides_Left");
+
+        slidesLeft.setDirection(DcMotorImplEx.Direction.REVERSE);
+        intakeMotor.setDirection(CRServoImplEx.Direction.REVERSE);
+
 
             waitForStart();
 
             while (opModeIsActive()) {
-//                if (gamepad1.a){
-//                    flipLeft.setPosition(0.7);
-//                }
-//                else if(gamepad1.b){
-                //flipRight = 0.7182
-//                    flipRight.setPosition(0.3);
-//                }
-//                else if(gamepad1.right_trigger>0.1){
-//                    rolling.setPower(0.5);
-//                }
-                //flipLeft.setDirection(ServoImplEx.Direction.REVERSE);
-                if (gamepad2.dpad_up){
 
-                    flipLeft.setPosition(0.719);
-                    flipRight.setPosition(0.7);
-                } else if (gamepad2.dpad_down) {
-
-                    flipLeft.setPosition(0.2);
-                    flipRight.setPosition(0.2);
+                if (gamepad1.right_bumper){
+                    // extend slides
+                     slideMotor.setPower(0.4);
                 }
-                else if (gamepad2.dpad_left) {
-
-                    flipLeft.setPosition(1);
-                    flipRight.setPosition(1);
-                }
-                else if (gamepad2.dpad_right) {
-
-                    flipLeft.setPosition(0.91);
-                    flipRight.setPosition(0.91);
-                }
-                if (gamepad2.right_trigger>0.1) {
-                    rolling.setPower(0.95);
-
-                }else if (gamepad2.left_trigger>0.1) {
-                    rolling.setPower(-0.95);
-
-                } else if (gamepad2.left_trigger<0.1 && gamepad2.right_trigger<0.1) {
-                    rolling.setPower(0);
-                }
-
-                intakeSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-                if (gamepad2.right_bumper) {
-                    intakeSlide.setPower(0.5);
-
-                }else if (gamepad2.left_bumper) {
-                    intakeSlide.setPower(-0.5);
-
-                } else if (!gamepad2.left_bumper && !gamepad2.right_bumper) {
-                    intakeSlide.setPower(0);
-                }
-
-
-
-                if (gamepad1.dpad_up){
-
-                    depositRight.setPosition(1);
-                    depositLeft.setPosition(1);
-                } else if (gamepad1.dpad_left) {
-
-                    depositLeft.setPosition(0.5);
-                    depositRight.setPosition(0.5);
+                else if (gamepad1.left_bumper) {
+                    // retract slides
+                    slideMotor.setPower(-0.4);
                 }
                 else if (gamepad1.dpad_down) {
-
-                    depositLeft.setPosition(0);
-                    depositRight.setPosition(0);
+                    intakeMotor.setPower(-0.4);
+                } else if (gamepad1.dpad_up) {
+                    intakeMotor.setPower(0.7);
+                } else {
+                    slideMotor.setPower(0);
+                    intakeMotor.setPower(0);
+                }
+                if (gamepad1.cross){
+                    flipLeftIntake.setPosition(0.92);
+                    flipRightIntake.setPosition(0.92);
+                } else if (gamepad1.square) {
+                    flipLeftIntake.setPosition(0.3);
+                    flipRightIntake.setPosition(0.3);
+                }
+                else if (gamepad2.cross){
+                    pitch.setPosition(0.275);
+                }
+                else if (gamepad2.square){
+                    pitch.setPosition(0.28);
+                }
+                else if (gamepad2.circle){
+                    pitch.setPosition(0);
+                } else if (gamepad2.triangle){
+                    pitch.setPosition(1);
+                }
+                else if(gamepad2.right_bumper){
+                    claw.setPosition(0.45);
+                }
+                else if(gamepad2.left_bumper){
+                    claw.setPosition(0.7);
+                } else if (gamepad2.left_stick_x>0.1) {
+                    flipLeftDeposit.setPosition(gamepad2.left_stick_x);
+                    flipRightDeposit.setPosition(gamepad2.left_stick_x);
                 }
 
-                if(gamepad1.triangle && BrawlStars==true) {
-                    depositRight.setPosition(depositRight.getPosition() + 0.01);
-                    BrawlStars=false;
-                }
-                else if(gamepad1.triangle && BrawlStars==false) {
-                    BrawlStars=true;
-                }
-                else if(gamepad1.cross && BrawlStars==true) {
-                    depositRight.setPosition(depositRight.getPosition() - 0.01);
-                    BrawlStars=false;
-                }
-                else if(gamepad1.cross && BrawlStars==false) {
-                    BrawlStars=true;
-                }
-
-                //flipRight.setPosition(gamepad2.left_stick_y);
-
-                intakeMotorRight.setDirection(DcMotorImplEx.Direction.REVERSE);
-                intakeMotorLeft.setPower(gamepad1.right_stick_y);
-                intakeMotorRight.setPower(gamepad1.right_stick_y);
-
+                // Intake
+//                if (gamepad1.right_trigger > 0.5){
+//                    intakeMotor.setDirection(CRServoImpl.Direction.FORWARD);
+//                    intakeMotor.setPower(0.5);
+//                } else if (gamepad1.left_trigger > 0.5){
+//                    intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//                    intakeMotor.setPower(0.5);
+//
+//                }
+//
+//                if (gamepad1.triangle){
+//                     setIntakeUp();
+//                } else if (gamepad1.cross) {
+//                     setIntakeDown();
+//                }
 
 
 
 
                 //drive.updatePoseEstimate();
-                telemetry.addData("Flip Right value", flipRight.getPosition());
-                telemetry.addData("Flip Left value", flipLeft.getPosition());
-                telemetry.addData("Flip Left value", rolling.getPower());
-                telemetry.addData("ServoPos", depositRight.getPosition());
-                telemetry.addData("ServoPos", depositLeft.getPosition());
+//                telemetry.addData("Flip Right value", flipRightIntake.getPosition());
+//                telemetry.addData("Flip Left value", flipLeftIntake.getPosition());
+//                telemetry.addData("Flip Left value", rolling.getPower());
+//                telemetry.addData("ServoPos", depositRight.getPosition());
+//                telemetry.addData("ServoPos", depositLeft.getPosition());
+//
+//                telemetry.addData("slidePosLeft", intakeMotorLeft.getCurrentPosition());
+//                telemetry.addData("slidePosRight", intakeMotorRight.getCurrentPosition());
+                telemetry.addData("Intake Slides", slideMotor.getCurrentPosition());
 
-                telemetry.addData("slidePosLeft", intakeMotorLeft.getCurrentPosition());
-                telemetry.addData("slidePosRight", intakeMotorRight.getCurrentPosition());
+                telemetry.addData("Flip Left Deposit", flipLeftDeposit.getPosition());
+                telemetry.addData("Flip Right Deposit", flipRightDeposit.getPosition());
+
                 telemetry.update();
 
                 TelemetryPacket packet = new TelemetryPacket();
                 packet.fieldOverlay().setStroke("#3F51B5");
               //  Drawing.drawRobot(packet.fieldOverlay(), drive.pose);
-                FtcDashboard.getInstance().sendTelemetryPacket(packet);
             }
-        } else {
-            throw new RuntimeException();
-        }
+
     }
 }
