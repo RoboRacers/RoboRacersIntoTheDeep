@@ -154,15 +154,23 @@ public class DepositTest extends LinearOpMode {
                     flipRightIntake.setPosition(0.35);
                 }
                 else if (gamepad2.cross){
-                    pitch.setPosition(0.275);
+                    //pitch.setPosition(0.275);
+                    flipRightDeposit.setPosition(0.3);
+                    flipLeftDeposit.setPosition(0.3);
                 }
                 else if (gamepad2.square){
-                    pitch.setPosition(0.28);
+                    //pitch.setPosition(0.28);
+                    flipRightDeposit.setPosition(flipRightDeposit.getPosition()-0.05);
+                    flipLeftDeposit.setPosition(flipLeftDeposit.getPosition()-0.05);
                 }
                 else if (gamepad2.circle){
-                    pitch.setPosition(0);
+                   // pitch.setPosition(0);
+                    flipRightDeposit.setPosition(flipRightDeposit.getPosition()+0.05);
+                    flipLeftDeposit.setPosition(flipLeftDeposit.getPosition()+0.05);
                 } else if (gamepad2.triangle){
-                    pitch.setPosition(1);
+                    //pitch.setPosition(1);
+                    flipRightDeposit.setPosition(0.7);
+                    flipLeftDeposit.setPosition(0.7);
                 }
                 else if(gamepad2.right_bumper){
                     claw.setPosition(0.45);
