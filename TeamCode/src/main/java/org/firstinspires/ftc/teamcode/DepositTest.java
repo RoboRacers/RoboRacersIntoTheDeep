@@ -10,30 +10,37 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.teleop.PIDController;
 import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
 
 @TeleOp(name ="DepositWORK", group = "16481-IntoTheDeep")
 public class DepositTest extends LinearOpMode {
-    public DcMotorImplEx intakeMotorLeft;
-    public DcMotorImplEx intakeMotorRight;
 
+
+//    private ElapsedTime runtime = new ElapsedTime();
+//
+//    // PID coefficients
+//    public static final double Kp = 0.01;  // Proportional coefficient
+//    public static final double Ki = 0.00; // Integral coefficient
+//    public static final double Kd = 0.05; // Derivative coefficient
+//
+//    private double integral = 0;
+//    private double previousError = 0;
     public DcMotor slideMotor;
     public ServoImplEx flipLeftIntake;
     public ServoImplEx flipRightIntake;
 
-    public CRServoImplEx rolling;
-
-
 
     public CRServoImplEx intakeMotor;
-    public Servo depositLeft;
-    public Servo depositRight;
+
 
     public ServoImplEx flipRightDeposit;
     public ServoImplEx flipLeftDeposit;
@@ -42,8 +49,9 @@ public class DepositTest extends LinearOpMode {
 
     public DcMotorImplEx slidesRight;
     public DcMotorImplEx slidesLeft;
+//    public double targetPosition = 0;
 
-
+    public PIDController pidController;
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -69,9 +77,16 @@ public class DepositTest extends LinearOpMode {
         slidesLeft.setDirection(DcMotorImplEx.Direction.REVERSE);
         intakeMotor.setDirection(CRServoImplEx.Direction.REVERSE);
 
+//        slidesRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        slidesRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        slidesLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        slidesLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-
-
+        while(opModeInInit()){
+            slidesRight.setPower(0);
+            slidesLeft.setPower(0);
+        }
             waitForStart();
 
             while (opModeIsActive()) {
@@ -83,6 +98,38 @@ public class DepositTest extends LinearOpMode {
                         ),
                         -gamepad1.right_stick_x
                 ));
+
+
+                // Set your target position in encoder ticks
+//                double currentPositionLeft = slidesLeft.getCurrentPosition();
+//                double currentPositionRight = slidesRight.getCurrentPosition();
+//                double error = targetPosition - ((currentPositionLeft + currentPositionRight)/2);
+//
+//                // Calculate the integral and derivative terms
+//                integral += error * runtime.time();
+//                double derivative = (error - previousError) / runtime.time();
+//
+//                // Calculate the output power
+//                double output = (Kp * error) + (Ki * integral) + (Kd * derivative);
+
+                // Set the motor power
+//                slidesLeft.setPower(-output);
+//                slidesRight.setPower(-output);
+
+                // Update the previous error
+//                previousError = error;
+//
+//
+//                // Reset the runtime for the next loop
+//                runtime.reset();
+
+                // Show telemetry
+//                telemetry.addData("Target Position", targetPosition);
+//                telemetry.addData("Current Position Left", currentPositionLeft);
+//                telemetry.addData("Current Position Right", currentPositionRight);
+//                telemetry.addData("Error", error);
+//                telemetry.addData("Motor Power", output);
+
                 if (gamepad1.right_bumper){
                     // extend slides
                      slideMotor.setPower(0.4);
@@ -120,12 +167,31 @@ public class DepositTest extends LinearOpMode {
                 else if(gamepad2.right_bumper){
                     claw.setPosition(0.45);
                 }
-                else if(gamepad2.left_bumper){
+                else if(gamepad2.left_bumper) {
                     claw.setPosition(0.7);
-                } else if (gamepad2.left_stick_x>0.1) {
-                    flipLeftDeposit.setPosition(gamepad2.left_stick_x);
-                    flipRightDeposit.setPosition(gamepad2.left_stick_x);
                 }
+//               else if (gamepad2.dpad_up) {
+//                    targetPosition=15;
+//                }
+                else if (gamepad2.dpad_up){
+                    slidesLeft.setPower(0.3);
+                    slidesRight.setPower(0.3);
+                } else if (gamepad2.dpad_down) {
+                    slidesLeft.setPower(-0.6);
+                    slidesRight.setPower(-0.6);
+                }
+                else if (gamepad2.dpad_left){
+                    slidesLeft.setPower(slidesLeft.getPower()-0.1);
+                    slidesRight.setPower(slidesRight.getPower()-0.1);
+                } else if (gamepad2.dpad_right) {
+                    slidesLeft.setPower(slidesLeft.getPower()+0.1);
+                    slidesRight.setPower(slidesRight.getPower()+0.1);
+                }
+                else {
+                    slidesRight.setPower(0);
+                    slidesLeft.setPower(0);
+                }
+
 
                 // Intake
 //                if (gamepad1.right_trigger > 0.5){
@@ -156,6 +222,8 @@ public class DepositTest extends LinearOpMode {
 //                telemetry.addData("slidePosLeft", intakeMotorLeft.getCurrentPosition());
 //                telemetry.addData("slidePosRight", intakeMotorRight.getCurrentPosition());
                 telemetry.addData("Intake Slides", slideMotor.getCurrentPosition());
+                telemetry.addData("slide Right", slidesRight.getCurrentPosition());
+                telemetry.addData("slide Left", slidesLeft.getCurrentPosition());
 
                 telemetry.addData("Flip Left Deposit", flipLeftDeposit.getPosition());
                 telemetry.addData("Flip Right Deposit", flipRightDeposit.getPosition());
