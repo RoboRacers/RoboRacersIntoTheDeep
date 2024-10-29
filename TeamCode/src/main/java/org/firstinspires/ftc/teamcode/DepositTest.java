@@ -12,6 +12,9 @@ import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Vector2d;
 
 import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
 
@@ -66,11 +69,20 @@ public class DepositTest extends LinearOpMode {
         slidesLeft.setDirection(DcMotorImplEx.Direction.REVERSE);
         intakeMotor.setDirection(CRServoImplEx.Direction.REVERSE);
 
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+
 
             waitForStart();
 
             while (opModeIsActive()) {
 
+                drive.setDrivePowers(new PoseVelocity2d(
+                        new Vector2d(
+                                -gamepad1.left_stick_y,
+                                -gamepad1.left_stick_x
+                        ),
+                        -gamepad1.right_stick_x
+                ));
                 if (gamepad1.right_bumper){
                     // extend slides
                      slideMotor.setPower(0.4);
@@ -88,11 +100,11 @@ public class DepositTest extends LinearOpMode {
                     intakeMotor.setPower(0);
                 }
                 if (gamepad1.cross){
-                    flipLeftIntake.setPosition(0.92);
-                    flipRightIntake.setPosition(0.92);
+                    flipLeftIntake.setPosition(0.85);
+                    flipRightIntake.setPosition(0.85);
                 } else if (gamepad1.square) {
-                    flipLeftIntake.setPosition(0.3);
-                    flipRightIntake.setPosition(0.3);
+                    flipLeftIntake.setPosition(0.35);
+                    flipRightIntake.setPosition(0.35);
                 }
                 else if (gamepad2.cross){
                     pitch.setPosition(0.275);
