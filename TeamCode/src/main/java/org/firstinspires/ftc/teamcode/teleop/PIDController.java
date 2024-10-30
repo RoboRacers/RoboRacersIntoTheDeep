@@ -5,8 +5,10 @@ public class PIDController {
     private double setpoint;
     private double lastError;
     private double integral;
-    private double outputMin = Double.NEGATIVE_INFINITY;
-    private double outputMax = Double.POSITIVE_INFINITY;
+//    private double outputMin = Double.NEGATIVE_INFINITY;
+//    private double outputMax = Double.POSITIVE_INFINITY;
+    private double outputMin = 0;
+    private double outputMax = 1100;
 
     public PIDController(double kP, double kI, double kD) {
         this.kP = kP;
