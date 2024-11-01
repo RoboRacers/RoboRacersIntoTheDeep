@@ -25,6 +25,8 @@ public class Drive extends LinearOpMode {
     public DcMotorImplEx slidesRight;
     public DcMotorImplEx slidesLeft;
 
+    public DcMotor slideMotor;
+
     DcMotorImplEx leftFront;
     DcMotorImplEx leftBack;
     DcMotorImplEx rightFront;
@@ -53,8 +55,9 @@ public class Drive extends LinearOpMode {
 
         slidesLeft.setDirection(DcMotorImplEx.Direction.REVERSE);
 //
-        flipRightDeposit = hardwareMap.get(ServoImplEx.class, "Flip_Right_Deposit");
-        flipLeftDeposit = hardwareMap.get(ServoImplEx.class, "Flip_Left_Deposit");
+        slideMotor = hardwareMap.get(DcMotor.class, "Horizontal_Slides");
+        slideMotor.setDirection(DcMotor.Direction.REVERSE);
+
 
         waitForStart();
 
@@ -73,6 +76,12 @@ public class Drive extends LinearOpMode {
            rightFront.setPower(frontRightPower);
            leftBack.setPower(backLeftPower);
            rightBack.setPower(backRightPower);
+
+           if (gamepad1.right_bumper){
+                slideMotor.setPower(0.5);
+           } else if (gamepad1.left_bumper) {
+                slideMotor.setPower(-0.5);
+           }
 
 
 //           if (gamepad2.square){
@@ -121,6 +130,8 @@ public class Drive extends LinearOpMode {
                slidesRight.setPower(0);
                slidesLeft.setPower(0);
            }
+
+
 
 
 //            telemetry.addData("x", drive.pose.position.x);
