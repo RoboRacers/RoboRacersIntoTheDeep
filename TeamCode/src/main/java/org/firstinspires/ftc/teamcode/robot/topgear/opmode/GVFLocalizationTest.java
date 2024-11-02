@@ -1,12 +1,11 @@
-package org.firstinspires.ftc.teamcode.robot.customdrive.opmode;
+package org.firstinspires.ftc.teamcode.robot.topgear.opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.roboracers.topgear.geometry.Pose2d;
 
-import org.firstinspires.ftc.teamcode.robot.customdrive.GVFMecanumDrive;
-import org.firstinspires.ftc.teamcode.robot.drive.MecanumDrive;
+import org.firstinspires.ftc.teamcode.robot.topgear.GVFMecanumDrive;
 
 /**
  * This is a simple teleop routine for testing localization. Drive the robot around like a normal

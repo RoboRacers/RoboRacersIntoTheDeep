@@ -3,14 +3,12 @@ package org.firstinspires.ftc.teamcode.autonomous.test;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.roboracers.topgear.follower.GuidedVectorFieldFollower;
 import com.roboracers.topgear.geometry.Pose2d;
 import com.roboracers.topgear.geometry.Vector2d;
 import com.roboracers.topgear.planner.CubicBezierCurve;
 import com.roboracers.topgear.planner.ParametricPath;
 
-import org.firstinspires.ftc.teamcode.robot.customdrive.GVFMecanumDrive;
-import org.firstinspires.ftc.teamcode.robot.customdrive.TuneableConstants;
+import org.firstinspires.ftc.teamcode.robot.topgear.GVFMecanumDrive;
 
 
 // Localization if it shows drift, follower if it doesn't
