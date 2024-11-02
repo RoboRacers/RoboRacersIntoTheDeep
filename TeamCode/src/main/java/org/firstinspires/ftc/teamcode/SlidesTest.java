@@ -18,8 +18,8 @@ public class SlidesTest extends LinearOpMode {
         slidesLeft.setDirection(DcMotorImplEx.Direction.REVERSE);
 
         while(isStopRequested() == false){
-            slidesRight.setPower(0.5 * gamepad1.right_stick_y);
-            slidesLeft.setPower(0.5 * gamepad1.right_stick_y);
+            slidesRight.setPower(1 * gamepad1.right_stick_y);
+            slidesLeft.setPower(1 * gamepad1.right_stick_y);
 
             telemetry.addData("RIGHT SLIDES", slidesRight.getCurrentPosition());
             telemetry.addData("LEFT SLIDES", slidesLeft.getCurrentPosition());

@@ -212,15 +212,27 @@ public class DepositTest extends LinearOpMode {
                 }
 
 
-                if(gamepad2.right_bumper){
-                    claw.setPosition(0.425);
+                if(gamepad2.right_bumper && !gamepad2.circle){
+                    claw.setPosition(0.05);
                 }
-                else if(gamepad2.left_bumper) {
-                    claw.setPosition(0.7);
+                else if(gamepad2.left_bumper && !gamepad2.circle) {
+                    claw.setPosition(0.3);
                 }
 //               else if (gamepad2.dpad_up) {
 //                    targetPosition=15;
 //                }
+
+//                if (gamepad2.circle && gamepad2.right_bumper){
+//                    if (!gamepad2.right_bumper)
+//                        claw.setPosition(claw.getPosition() + 0.1);
+//                }
+//                if (gamepad2.circle && gamepad2.left_bumper){
+//                    if (!gamepad2.right_bumper)
+//                        claw.setPosition(claw.getPosition() - 0.1);
+//                }
+
+                if(gamepad2.circle)
+                    claw.setPosition(gamepad2.touchpad_finger_1_x);
 
                 if (gamepad2.left_trigger>0.1){
                     slidesLeft.setPower(0.3);
@@ -280,6 +292,8 @@ public class DepositTest extends LinearOpMode {
 
                 telemetry.addData("Flip Left Deposit", flipLeftDeposit.getPosition());
                 telemetry.addData("Flip Right Deposit", flipRightDeposit.getPosition());
+
+                telemetry.addData("CLAW:", claw.getPosition());
 
                 telemetry.update();
 

@@ -37,7 +37,7 @@ public class Drive extends LinearOpMode {
 
 
 
-    public PIDController slidesPID = new PIDController(0.03, 0.01, 0.04);
+    public PIDController slidesPID = new PIDController(0.25, 0, 0.0);
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -56,6 +56,7 @@ public class Drive extends LinearOpMode {
         slidesRight = hardwareMap.get(DcMotorImplEx.class, "Slides_Right");
         slidesLeft = hardwareMap.get(DcMotorImplEx.class, "Slides_Left");
 
+        intakeMotor = hardwareMap.get(CRServoImplEx.class, "Servo_Intake");
         slidesLeft.setDirection(DcMotorImplEx.Direction.REVERSE);
 //
         slideMotor = hardwareMap.get(DcMotor.class, "Horizontal_Slides");
@@ -64,9 +65,19 @@ public class Drive extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            double drive = 0;
+            double strafe = 0;
+            if (gamepad1.touchpad_finger_1){
+                drive = gamepad1.touchpad_finger_1_y; // make negative
+                strafe = gamepad1.touchpad_finger_1_x;
 
-           double drive = -gamepad1.left_stick_y;
-           double strafe = gamepad1.left_stick_x;
+            }else{
+                drive = 0; // make negative
+                strafe = 0;
+            }
+
+//           double drive = -gamepad1.touchpad_finger_1_y;
+//           double strafe = gamepad1.touchpad_finger_1_x;
            double rotate = gamepad1.right_stick_x;
 
            double frontLeftPower = drive + strafe + rotate;
