@@ -236,10 +236,10 @@ public class DepositTest extends LinearOpMode {
 
 
                 if(gamepad2.right_bumper && !gamepad2.circle){
-                    claw.setPosition(0.05);
+                    claw.setPosition(0.27);
                 }
                 else if(gamepad2.left_bumper && !gamepad2.circle) {
-                    claw.setPosition(0.3);
+                    claw.setPosition(0);
                 }
 //               else if (gamepad2.dpad_up) {
 //                    targetPosition=15;
@@ -260,9 +260,9 @@ public class DepositTest extends LinearOpMode {
                 if (gamepad2.left_trigger>0.1){
                     slidesLeft.setPower(0.3);
                     slidesRight.setPower(0.3);
-                    claw.setPosition(0.425);
+                    //claw.setPosition(0.425);
                 } else if (gamepad2.right_trigger>0.1) {
-                    claw.setPosition(0.425);
+                    //claw.setPosition(0.425);
 
                     slidesLeft.setPower(-0.6);
                     slidesRight.setPower(-0.6);
