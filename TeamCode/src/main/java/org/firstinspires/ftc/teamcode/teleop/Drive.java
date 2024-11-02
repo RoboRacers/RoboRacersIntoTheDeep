@@ -33,6 +33,9 @@ public class Drive extends LinearOpMode {
     DcMotorImplEx rightBack;
     public ServoImplEx flipRightDeposit;
     public ServoImplEx flipLeftDeposit;
+    public CRServoImplEx intakeMotor;
+
+
 
     public PIDController slidesPID = new PIDController(0.03, 0.01, 0.04);
     @Override
@@ -58,7 +61,6 @@ public class Drive extends LinearOpMode {
         slideMotor = hardwareMap.get(DcMotor.class, "Horizontal_Slides");
         slideMotor.setDirection(DcMotor.Direction.REVERSE);
 
-
         waitForStart();
 
         while (opModeIsActive()) {
@@ -81,7 +83,22 @@ public class Drive extends LinearOpMode {
                 slideMotor.setPower(0.5);
            } else if (gamepad1.left_bumper) {
                 slideMotor.setPower(-0.5);
+           }else{
+               slideMotor.setPower(0.0000000000000000000000000000000000);
            }
+
+
+
+           if (gamepad1.right_trigger > 0.1){
+               intakeMotor.setPower(0.5);
+           }else if(gamepad1.left_trigger > 0.1){
+               intakeMotor.setPower(-0.5);
+           }else{
+               intakeMotor.setPower(0.0000000000000000000000000000000000);
+           }
+
+
+
 
 
 //           if (gamepad2.square){

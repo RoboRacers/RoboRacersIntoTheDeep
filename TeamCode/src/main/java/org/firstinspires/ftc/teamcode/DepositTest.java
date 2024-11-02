@@ -136,7 +136,7 @@ public class DepositTest extends LinearOpMode {
                     slideMotor.setPower(-0.4);
                 }
                 else {
-                    intakeMotor.setPower(0);
+                    slideMotor.setPower(0);
                 }
 
                 if (gamepad1.dpad_down) {
@@ -144,7 +144,7 @@ public class DepositTest extends LinearOpMode {
                 } else if (gamepad1.dpad_up) {
                     intakeMotor.setPower(0.7);
                 } else {
-                    slideMotor.setPower(0);
+                    intakeMotor.setPower(0);
                 }
 
                 if (gamepad1.cross){
@@ -163,8 +163,9 @@ public class DepositTest extends LinearOpMode {
 
                 if (gamepad2.cross){
                     //pitch.setPosition(0.1);
-                    flipRightDeposit.setPosition(0.77);
-                    flipLeftDeposit.setPosition(0.77);
+                    flipRightDeposit.setPosition(0.80);
+                    flipLeftDeposit.setPosition(0.80);
+                    pitch.setPosition(0.45);
 
                 }
                 else if (gamepad2.square){
@@ -179,9 +180,9 @@ public class DepositTest extends LinearOpMode {
 //                }
                 else if (gamepad2.triangle){
                    // pitch.setPosition(0.15);
-                    flipRightDeposit.setPosition(0.15);
-                    flipLeftDeposit.setPosition(0.15);
-                    pitch.setPosition(0.35);
+                    flipRightDeposit.setPosition(0.10);
+                    flipLeftDeposit.setPosition(0.10);
+                    pitch.setPosition(0.75);
                 }
 
 
@@ -227,7 +228,7 @@ public class DepositTest extends LinearOpMode {
                     claw.setPosition(0.425);
                 } else if (gamepad2.right_trigger>0.1) {
                     claw.setPosition(0.425);
-                    wait(2);
+
                     slidesLeft.setPower(-0.6);
                     slidesRight.setPower(-0.6);
 
