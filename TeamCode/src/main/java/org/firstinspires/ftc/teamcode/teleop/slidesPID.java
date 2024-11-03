@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Config
 @TeleOp(name = "Slides Custom PID Control", group = "Examples")
@@ -24,10 +25,16 @@ public class slidesPID extends LinearOpMode {
     private double integralSum = 0;
     private double lastError = 0;
 
+    private DcMotorImplEx slideMotorLeft;
+    private DcMotorImplEx slideMotorRight;
+
+
     @Override
     public void runOpMode() {
         // Initialize the motor
-        DcMotorImplEx slideMotor = hardwareMap.get(DcMotorImplEx.class, "Slides_Left"); //Slides_Left
+        slideMotorLeft = hardwareMap.get(DcMotorImplEx.class, "Slides_Left"); //Slides_Left
+        slideMotorRight = hardwareMap.get(DcMotorImplEx.class, "Slides_Right"); //Slides_Left
+        slideMotorRight.setDirection(DcMotorImplEx.Direction.REVERSE);
         //slideMotor = hardwareMap.get(DcMotor.class, "Horizontal_Slides");
 
 
@@ -49,31 +56,40 @@ public class slidesPID extends LinearOpMode {
         while (opModeIsActive()) {
 
             // Calculate the error
-            double currentPosition = slideMotor.getCurrentPosition();
-            double error = TARGET_POSITION - slideMotor.getCurrentPosition();
+            double currentPosition = (slideMotorLeft.getCurrentPosition()+slideMotorRight.getCurrentPosition())/2.0;
+            telemetry.addData("Left Position", slideMotorLeft.getCurrentPosition());
+            telemetry.addData("Right Position", slideMotorRight.getCurrentPosition());
+            telemetry.addData("Code Position", currentPosition);
+
+            double error = TARGET_POSITION - currentPosition;
+            telemetry.addData("Error", error);
 
             // Calculate the integral and derivative terms
             integralSum += error;
+            telemetry.addData("Integral Sum", integralSum);
             double derivative = error - lastError;
+            telemetry.addData("derivative", derivative);
 
             // Calculate the control signal (motor power)
             double power = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
+            telemetry.addData("power", power);
 
             // Apply power to the motor
-            slideMotor.setPower(power);
+            slideMotorLeft.setPower(power);
+            slideMotorRight.setPower(power);
 
             // Update the last error
             lastError = error;
 
             // Send telemetry to FTC Dashboard
-            telemetry.addData("Current Position", currentPosition);
+            telemetry.addData("Last error", lastError);
 
-            telemetry.addData("Real Position", slideMotor.getCurrentPosition());
+            telemetry.addData("Right Power", slideMotorRight.getPower());
 
-            telemetry.addData("Real Power Position", slideMotor.getPower());
+            telemetry.addData("LeftPower", slideMotorLeft.getPower());
             telemetry.addData("Target Position", TARGET_POSITION);
-            telemetry.addData("Error", error);
-            telemetry.addData("Power", power);
+
+
             telemetry.addData("Kp", Kp);
             telemetry.addData("Ki", Ki);
             telemetry.addData("Kd", Kd);

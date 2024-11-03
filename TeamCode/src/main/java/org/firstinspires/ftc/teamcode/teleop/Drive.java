@@ -35,9 +35,13 @@ public class Drive extends LinearOpMode {
     public ServoImplEx flipLeftDeposit;
     public CRServoImplEx intakeMotor;
 
+    public static double kp = 0.25;
+    public static double ki = 0;
+    public static double kd = 0;
 
 
-    public PIDController slidesPID = new PIDController(0.25, 0, 0.0);
+
+    public PIDController slidesPID = new PIDController(kp, ki, kd);
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
