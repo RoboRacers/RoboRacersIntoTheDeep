@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.teleop.Rolling;
 
 
 
-@TeleOp(name = "LM1 Teleop", group = "16481-IntoTheDeep")
+@TeleOp(name = "Bad Subsystems", group = "16481-IntoTheDeep")
 public class TeleopLM1 extends LinearOpMode {
     public DcMotor frontLeftMotor;
     public DcMotor backLeftMotor;

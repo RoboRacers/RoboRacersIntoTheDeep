@@ -21,7 +21,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.teleop.PIDController;
 import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
 
-@TeleOp(name ="DepositWORK", group = "16481-IntoTheDeep")
+@TeleOp(name ="LM1", group = "16481-IntoTheDeep")
 public class DepositTest extends LinearOpMode {
 
 
@@ -251,10 +251,10 @@ public class DepositTest extends LinearOpMode {
 
 
                 if(gamepad2.right_bumper && !gamepad2.circle){
-                    claw.setPosition(0.23);
+                    claw.setPosition(0.25);
                 }
                 else if(gamepad2.left_bumper && !gamepad2.circle) {
-                    claw.setPosition(0);
+                    claw.setPosition(0.1);
                 } else if (gamepad2.share) {
                     claw.setPosition(0.35);
                 }
