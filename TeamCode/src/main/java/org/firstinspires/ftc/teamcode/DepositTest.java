@@ -206,7 +206,7 @@ public class DepositTest extends LinearOpMode {
                     //pitch.setPosition(0.1);
                     flipRightDeposit.setPosition(0.80);
                     flipLeftDeposit.setPosition(0.80);
-                    pitch.setPosition(0.85);
+                    //pitch.setPosition(0.85);
 
                 }
                 else if (gamepad2.dpad_up){

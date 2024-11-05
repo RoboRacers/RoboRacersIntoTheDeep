@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Trajectory;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -27,8 +28,8 @@ import org.firstinspires.ftc.teamcode.teleop.PIDController;
 import org.firstinspires.ftc.teamcode.teleop.Rolling;
 
 
-@Autonomous(name = "LM1 Auton Score", group = "16481-IntoTheDeep")
-public class autoLM1 extends LinearOpMode {
+@Autonomous(name = "LM1 Auton Score + Park", group = "16481-IntoTheDeep")
+public class autoLM1_2 extends LinearOpMode {
 
     MecanumDrive drive;
     public DcMotor slideMotor;
@@ -83,12 +84,16 @@ public class autoLM1 extends LinearOpMode {
                 .build();
 
         Action traj2 = drive.actionBuilder(new Pose2d(12,36, -45))
-                        .strafeToConstantHeading(new Vector2d(8,40))
+                .strafeToConstantHeading(new Vector2d(9,43))
                 .build();
 
-        Action traj3 = drive.actionBuilder(new Pose2d(5, 40, -45))
-                        .strafeTo(new Vector2d(62, 10))
-                        .build();
+        Action traj3 = drive.actionBuilder(new Pose2d(5, 40, 90))
+                .strafeTo(new Vector2d(48, 40))
+                .build();
+
+        Action traj4 = drive.actionBuilder(new Pose2d(46, 10, 90))
+                .splineToConstantHeading(new Vector2d(60, 0), 90)
+                .build();
 
         Actions.runBlocking(new SequentialAction(
                 (p) -> {
@@ -107,8 +112,8 @@ public class autoLM1 extends LinearOpMode {
                 },
                 traj1,
                 (p) -> {
-                    slidesLeft.setTargetPosition(-1850);
-                    slidesRight.setTargetPosition(-1900);
+                    slidesLeft.setTargetPosition(-1900);
+                    slidesRight.setTargetPosition(-1950);
 
                     slidesLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     slidesRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -147,15 +152,16 @@ public class autoLM1 extends LinearOpMode {
 
                     slidesLeft.setPower(0);
                     slidesRight.setPower(0);
-
+                    sleep(100);
+                    flipLeftIntake.setPosition(0.35);
+                    flipRightIntake.setPosition(0.35);
                     return false;
                 },
                 traj3,
                 (p) -> {
-                    flipLeftIntake.setPosition(0.35);
-                    flipRightIntake.setPosition(0.35);
                     return false;
-                }
+                },
+                traj4
 
         ));
 
