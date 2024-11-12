@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.vision;
+package org.firstinspires.ftc.teamcode.teleop;
 
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
@@ -7,26 +7,12 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SampleDetectDataPipeline extends OpenCvPipeline {
+public class SampleDetectPipeline extends OpenCvPipeline {
     static final int YELLOW_MASK_THRESHOLD = 55;
     static final int BLUE_MASK_THRESHOLD = 150;
     static final int RED_MASK_THRESHOLD = 200;
     static final double MIN_AREA_THRESHOLD = 500;
     static final double MAX_AREA_THRESHOLD = 20000;
-
-    public static class DetectedObject {
-        public String color;
-        public Point center;
-        public Point[] corners;
-
-        public DetectedObject(String color, Point center, Point[] corners) {
-            this.color = color;
-            this.center = center;
-            this.corners = corners;
-        }
-    }
-
-    public List<DetectedObject> detectedObjects = new ArrayList<>();
 
     @Override
     public Mat processFrame(Mat input) {
@@ -36,9 +22,6 @@ public class SampleDetectDataPipeline extends OpenCvPipeline {
         Mat yellowMask = new Mat();
         Mat blueMask = new Mat();
         Mat redMask = new Mat();
-
-        // Clear previously detected objects
-        detectedObjects.clear();
 
         // Convert to YCrCb color space
         Imgproc.cvtColor(input, ycrcbImage, Imgproc.COLOR_BGR2YCrCb);
@@ -53,14 +36,14 @@ public class SampleDetectDataPipeline extends OpenCvPipeline {
         Imgproc.threshold(cbMat, yellowMask, YELLOW_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY_INV);
 
         // Detect and draw contours for each color
-        detectAndDrawContours(input, yellowMask, new Scalar(0, 255, 0), "Yellow"); // Yellow contours
-        detectAndDrawContours(input, blueMask, new Scalar(255, 0, 0), "Blue");      // Blue contours
-        detectAndDrawContours(input, redMask, new Scalar(0, 0, 255), "Red");        // Red contours
+        detectAndDrawContours(input, yellowMask, new Scalar(0, 255, 255)); // Yellow contours
+        detectAndDrawContours(input, blueMask, new Scalar(255, 0, 0));     // Blue contours
+        detectAndDrawContours(input, redMask, new Scalar(0, 0, 255));      // Red contours
 
         return input;
     }
 
-    public void detectAndDrawContours(Mat originalImage, Mat mask, Scalar color, String colorName) {
+    public void detectAndDrawContours(Mat originalImage, Mat mask, Scalar color) {
         // Ensure the mask is binary and of type CV_8U
         if (mask.type() != CvType.CV_8U) {
             mask.convertTo(mask, CvType.CV_8U);
@@ -85,22 +68,6 @@ public class SampleDetectDataPipeline extends OpenCvPipeline {
             MatOfPoint2f contour2f = new MatOfPoint2f(contour.toArray());
             RotatedRect rotatedRect = Imgproc.minAreaRect(contour2f);
             drawRotatedRect(rotatedRect, originalImage, color);
-
-            // Get the center and corner points of the rectangle
-            Point[] corners = new Point[4];
-            rotatedRect.points(corners);
-            Point center = rotatedRect.center;
-
-            // Draw the center point on the image
-            Imgproc.circle(originalImage, center, 5, color, -1);
-
-            // Add detected object (color, center, and corners) to the list
-            detectedObjects.add(new DetectedObject(colorName, center, corners));
-
-            // Draw corner points on the image
-            for (Point corner : corners) {
-                Imgproc.circle(originalImage, corner, 5, color, -1);
-            }
 
             // Get and draw the angle of the rectangle
             double angle = rotatedRect.angle;

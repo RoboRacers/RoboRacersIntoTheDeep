@@ -18,6 +18,8 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     /*
      * Working image buffers
      */
+
+    public double targetAngle;
     Mat ycrcbMat = new Mat();
     Mat crMat = new Mat();
     Mat cbMat = new Mat();
@@ -255,7 +257,7 @@ public class SampleOtherTeamCode extends OpenCvPipeline
 
             // Store the detected stone information
             AnalyzedStone analyzedStone = new AnalyzedStone();
-            analyzedStone.angle = rotRectAngle;
+            analyzedStone.angle = -(rotRectAngle - 180);
             analyzedStone.color = color;
             analyzedStone.rotatedRect = rotatedRectFitToContour; // Store the rotated rectangle
             internalStoneList.add(analyzedStone);
@@ -277,6 +279,8 @@ public class SampleOtherTeamCode extends OpenCvPipeline
             // Check if the stone's color matches the target color
             if (stone.color.equals(targetColor))
             {
+
+
                 // Get the center of the rotated rectangle
                 Point center = stone.rotatedRect.center;
 
@@ -295,6 +299,8 @@ public class SampleOtherTeamCode extends OpenCvPipeline
         if (closestStone != null)
         {
             drawRotatedRect(closestStone.rotatedRect, input, "Green");
+            targetAngle = closestStone.angle;
+
         }
     }
 
@@ -328,6 +334,6 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     void drawTagText(RotatedRect rect, String text, Mat drawOn, String color)
     {
         Point center = rect.center;
-        Imgproc.putText(drawOn, text, new Point(center.x - 15, center.y - 15), Imgproc.FONT_HERSHEY_PLAIN, 0.5, getColorScalar(color), 1);
+        Imgproc.putText(drawOn, text, new Point(center.x - 15, center.y - 15), Imgproc.FONT_HERSHEY_PLAIN, 0.5, new Scalar(50,50,50), 1);
     }
 }
