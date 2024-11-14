@@ -17,7 +17,7 @@ public class ClawAllignOpMode extends LinearOpMode {
     SampleOtherTeamCode pipeline;
 
     CRServo rotateClaw;
-    Servo claw;
+    //Servo claw;
 
     // Constants for controlling the servo
     private static final double ROTATE_KP = 0.01; // Adjust this to fine-tune control
@@ -29,7 +29,7 @@ public class ClawAllignOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        claw = hardwareMap.get(Servo.class,"claw");
+        //claw = hardwareMap.get(Servo.class,"claw");
         rotateClaw = hardwareMap.get(CRServo.class,"rotateClaw");
 
         // Initialize the camera
@@ -124,7 +124,7 @@ public class ClawAllignOpMode extends LinearOpMode {
             telemetry.addData("Target angle", targetAngle);
             telemetry.addData("Ranged Target Angle", output);
 
-            telemetry.addData("Claw Position", claw.getPosition());
+           // telemetry.addData("Claw Position", claw.getPosition());
             telemetry.update();
 
             sleep(100);
