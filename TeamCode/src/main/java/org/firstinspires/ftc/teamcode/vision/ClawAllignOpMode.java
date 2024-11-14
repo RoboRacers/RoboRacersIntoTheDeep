@@ -17,7 +17,7 @@ public class ClawAllignOpMode extends LinearOpMode {
     SampleOtherTeamCode pipeline;
 
     CRServo rotateClaw;
-    Servo claw;
+   // Servo claw;
 
     // Constants for controlling the servo
     private static final double ROTATE_KP = 0.01; // Adjust this to fine-tune control
@@ -29,7 +29,7 @@ public class ClawAllignOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        claw = hardwareMap.get(Servo.class,"claw");
+       // claw = hardwareMap.get(Servo.class,"claw");
         rotateClaw = hardwareMap.get(CRServo.class,"rotateClaw");
 
         // Initialize the camera
@@ -96,10 +96,18 @@ public class ClawAllignOpMode extends LinearOpMode {
 //                rotateClaw.setPower(-gamepad1.left_stick_x*0.05);
 //            }
 //
-            if(targetAngle > 20 && targetAngle < 160)
+            if(targetAngle < 160 && targetAngle > 90 && pipeline.getDetectedStones().size()>0) {
                 rotateClaw.setPower(-0.1);
-            else
+            }
+            else if(targetAngle > 20 && targetAngle <= 90 && pipeline.getDetectedStones().size()>0){
+                rotateClaw.setPower(0.1);
+            }
+            else if(pipeline.getDetectedStones().size()==0){
                 rotateClaw.setPower(0);
+            }
+            else {
+                rotateClaw.setPower(0);
+            }
 
 //            if(targetAngle > 10 && targetAngle < 170)
 //                rotateClaw.setPower(0.05);
@@ -119,12 +127,11 @@ public class ClawAllignOpMode extends LinearOpMode {
 //                rotateClaw.setPower(0);
 //            }
 
-
             telemetry.addData("Target angle", targetAngle);
             telemetry.addData("Target angle", targetAngle);
             telemetry.addData("Ranged Target Angle", output);
 
-            telemetry.addData("Claw Position", claw.getPosition());
+          //  telemetry.addData("Claw Position", claw.getPosition());
             telemetry.update();
 
             sleep(100);
