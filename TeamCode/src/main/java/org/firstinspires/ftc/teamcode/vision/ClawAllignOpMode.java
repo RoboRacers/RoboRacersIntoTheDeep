@@ -102,6 +102,12 @@ public class ClawAllignOpMode extends LinearOpMode {
             else if(targetAngle > 20 && targetAngle <= 90 && pipeline.getDetectedStones().size()>0){
                 rotateClaw.setPower(0.1);
             }
+            else if(targetAngle > 20 && targetAngle <= 90 && pipeline.getDetectedStones().size()>0){
+                rotateClaw.setPower(0.1);
+            }
+            else if(targetAngle > 20 && targetAngle <= 90 && pipeline.getDetectedStones().size()>0){
+                rotateClaw.setPower(0.1);
+            }
             else if(pipeline.getDetectedStones().size()==0){
                 rotateClaw.setPower(0);
             }
