@@ -37,9 +37,9 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     /*
      * Threshold values
      */
-    static final int YELLOW_MASK_THRESHOLD = 57;
+    static final int YELLOW_MASK_THRESHOLD = 80;
     static final int BLUE_MASK_THRESHOLD = 150;
-    static final int RED_MASK_THRESHOLD = 198;
+    static final int RED_MASK_THRESHOLD = 255;
 
     /*
      * Area threshold for detected objects
@@ -162,7 +162,9 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     {
         return clientStoneList;
     }
-
+    ArrayList<MatOfPoint> blueClist = new ArrayList<>();
+    ArrayList<MatOfPoint> redClist = new ArrayList<>();
+    ArrayList<MatOfPoint> yClist = new ArrayList<>();
     void findContours(Mat input)
     {
         // Convert the input image to YCrCb color space
@@ -174,8 +176,8 @@ public class SampleOtherTeamCode extends OpenCvPipeline
 
         // Threshold the channels to form masks
         Imgproc.threshold(cbMat, blueThresholdMat, BLUE_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY);
-        Imgproc.threshold(crMat, redThresholdMat, RED_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY);
-        Imgproc.threshold(cbMat, yellowThresholdMat, YELLOW_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY_INV);
+        Imgproc.threshold(crMat, redThresholdMat, 220, 255, Imgproc.THRESH_BINARY);
+        Imgproc.threshold(cbMat, yellowThresholdMat, 50, 110, Imgproc.THRESH_BINARY_INV);
 
         // Apply morphology to the masks
         morphMask(blueThresholdMat, morphedBlueThreshold);
@@ -184,18 +186,21 @@ public class SampleOtherTeamCode extends OpenCvPipeline
 
         // Find contours in the masks
         ArrayList<MatOfPoint> blueContoursList = new ArrayList<>();
+        blueClist = blueContoursList;
         Imgproc.findContours(morphedBlueThreshold, blueContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         ArrayList<MatOfPoint> redContoursList = new ArrayList<>();
+        redClist = redContoursList;
         Imgproc.findContours(morphedRedThreshold, redContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         ArrayList<MatOfPoint> yellowContoursList = new ArrayList<>();
+        yClist = yellowContoursList;
         Imgproc.findContours(morphedYellowThreshold, yellowContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         // Create a plain image for drawing contours
         contoursOnPlainImageMat = Mat.zeros(input.size(), input.type());
 
-        // Analyze and draw contours
+//         Analyze and draw contours
         for(MatOfPoint contour : blueContoursList)
         {
             analyzeContour(contour, input, "Blue");
