@@ -1,14 +1,15 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 public class PIDController {
     private double kP, kI, kD;
     private double setpoint;
     private double lastError;
     private double integral;
-//    private double outputMin = Double.NEGATIVE_INFINITY;
-//    private double outputMax = Double.POSITIVE_INFINITY;
-    private double outputMin = 0;
-    private double outputMax = 1100;
+    private double outputMin = -1000;
+    private double outputMax = 1000;
+    private ElapsedTime timer = new ElapsedTime();
 
     public PIDController(double kP, double kI, double kD) {
         this.kP = kP;
@@ -27,7 +28,17 @@ public class PIDController {
         outputMax = max;
     }
 
+    public void setCoeffiecents (double kP, double kI, double kD) {
+        this.kP = kP;
+        this.kI = kI;
+        this.kD = kD;
+    }
+
     public double calculate(double current) {
+
+        double deltaTime = timer.seconds();
+        timer.reset();
+
         // Calculate error
         double error = setpoint - current;
 
@@ -35,11 +46,11 @@ public class PIDController {
         double P = kP * error;
 
         // Integral term
-        integral += error;
+        integral += error * deltaTime;
         double I = kI * integral;
 
         // Derivative term
-        double D = kD * (error - lastError);
+        double D = kD * (error - lastError) / deltaTime;
 
         // Compute the output
         double output = P + I + D;
