@@ -17,9 +17,9 @@ public class DepositPIDTest extends LinearOpMode {
     public DcMotorImplEx pitchMotor;
 
     double kG = 0.2444;
-    public static double kP = 0;
+    public static double kP = 0.1;
     public static  double kI = 0;
-    public static  double kD = 0;
+    public static  double kD = 0.1;
 
     PIDController pitchControl;
 
