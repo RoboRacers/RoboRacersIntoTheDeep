@@ -159,17 +159,17 @@ public class SampleOtherTeamCodeHSV extends OpenCvPipeline
         Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2HSV);
 
         // Threshold for blue color in HSV
-        Core.inRange(hsvMat, new Scalar(100, 150, 50), new Scalar(140, 255, 255), blueThresholdMat);
+        Core.inRange(hsvMat, new Scalar(100, 150, 50), new Scalar(140, 255, 255), blueThresholdMat); // lower (90,150,100) and upper is (130,255,255)
 
         // Threshold for red color in HSV (two ranges for red in HSV)
         Mat lowerRed = new Mat();
         Mat upperRed = new Mat();
         Core.inRange(hsvMat, new Scalar(0, 120, 70), new Scalar(10, 255, 255), lowerRed);
-        Core.inRange(hsvMat, new Scalar(170, 120, 70), new Scalar(180, 255, 255), upperRed);
+        Core.inRange(hsvMat, new Scalar(170, 120, 70), new Scalar(180, 255, 255), upperRed); // could also be (170, 100, 100) for red
         Core.addWeighted(lowerRed, 1.0, upperRed, 1.0, 0.0, redThresholdMat);
 
         // Threshold for yellow color in HSV
-        Core.inRange(hsvMat, new Scalar(20, 150, 50), new Scalar(30, 255, 255), yellowThresholdMat);
+        Core.inRange(hsvMat, new Scalar(20, 150, 50), new Scalar(30, 255, 255), yellowThresholdMat); // lower is (20,100,100) and upper is fine
 
         // Apply morphology to the masks
         morphMask(blueThresholdMat, morphedBlueThreshold);
