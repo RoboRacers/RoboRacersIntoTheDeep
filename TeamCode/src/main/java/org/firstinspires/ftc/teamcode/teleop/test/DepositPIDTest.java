@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-import org.firstinspires.ftc.teamcode.teleop.PIDController;
+import org.firstinspires.ftc.teamcode.modules.PIDController;
 
 @Config
 @TeleOp(name = "Pitch PID Test", group = "Test")
