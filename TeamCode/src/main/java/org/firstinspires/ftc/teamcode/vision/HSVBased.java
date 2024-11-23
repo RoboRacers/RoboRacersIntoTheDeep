@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.vision;
 
+import org.firstinspires.ftc.teamcode.vision.HSVBasedPipeline;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp(name = "HSV Vision OpMode", group = "Vision")
-public class HSVBasedVisionOpMode extends LinearOpMode {
+public class HSVBased extends LinearOpMode {
     OpenCvCamera camera;
     HSVBasedPipeline pipeline;
 
