@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -43,6 +44,7 @@ public class IntakeTesty extends LinearOpMode {
             }else if(gamepad1.right_bumper){
                 slideMotor.setPower(-1);
             }
+
 
             telemetry.addData("FlipRight Position", flipRight.getPosition());
             telemetry.addData("FFlipLeft Position", flipLeft.getPosition());
