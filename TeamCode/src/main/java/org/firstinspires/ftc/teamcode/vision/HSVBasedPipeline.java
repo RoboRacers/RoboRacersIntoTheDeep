@@ -10,6 +10,7 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,24 +20,22 @@ class HSVBasedPipeline extends OpenCvPipeline {
     private double targetAngle = 0;
     private int detectedObjectsCount = 0;
 
-    private final Scalar lowerYellow = new Scalar(20, 100, 100);
-    private final Scalar upperYellow = new Scalar(30, 255, 255);
+    private final Scalar lowerYellow = new Scalar(20, 101, 100);
+    private final Scalar upperYellow = new Scalar(28, 255, 254);
 
-    private final Scalar lowerBlue = new Scalar(100, 150, 100);
-    private final Scalar upperBlue = new Scalar(140, 255, 255);
+    private final Scalar lowerBlue = new Scalar(108, 150, 31);
+    private final Scalar upperBlue = new Scalar(130, 255, 166);
 
-    private final Scalar lowerRed1 = new Scalar(0, 120, 100);
-    private final Scalar upperRed1 = new Scalar(10, 255, 255);
-    private final Scalar lowerRed2 = new Scalar(160, 120, 100);
-    private final Scalar upperRed2 = new Scalar(180, 255, 255);
-
+    private final Scalar lowerRed1 = new Scalar(0, 120, 70);
+    private final Scalar upperRed1 = new Scalar(10, 255, 240);
+//    private final Scalar lowerRed2 = new Scalar(100, 100, 100);   // also changed it to not read these values below
+//    private final Scalar upperRed2 = new Scalar(119, 196, 182);
     private final Mat hsvFrame = new Mat();
     private final Mat mask = new Mat();
     private final Mat hierarchy = new Mat();
 
     private final List<MatOfPoint> contours = new ArrayList<>();
 
-    @Override
     public Mat processFrame(Mat input) {
         // Convert the frame to HSV
         Imgproc.cvtColor(input, hsvFrame, Imgproc.COLOR_BGR2HSV);
@@ -53,7 +52,7 @@ class HSVBasedPipeline extends OpenCvPipeline {
                 Mat lowerRedMask = new Mat();
                 Mat upperRedMask = new Mat();
                 Core.inRange(hsvFrame, lowerRed1, upperRed1, lowerRedMask);
-                Core.inRange(hsvFrame, lowerRed2, upperRed2, upperRedMask);
+//                Core.inRange(hsvFrame, lowerRed2, upperRed2, upperRedMask);
                 Core.addWeighted(lowerRedMask, 1.0, upperRedMask, 1.0, 0.0, mask);
                 lowerRedMask.release();
                 upperRedMask.release();

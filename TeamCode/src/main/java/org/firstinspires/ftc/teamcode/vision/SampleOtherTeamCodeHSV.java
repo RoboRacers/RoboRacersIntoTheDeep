@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.vision;
 
-import org.openftc.easyopencv.OpenCvPipeline;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -10,19 +9,17 @@ import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 
-public class SampleOtherTeamCode extends OpenCvPipeline
+public class SampleOtherTeamCodeHSV extends OpenCvPipeline
 {
     /*
      * Working image buffers
      */
-
     public double targetAngle;
-    Mat ycrcbMat = new Mat();
-    Mat crMat = new Mat();
-    Mat cbMat = new Mat();
+    Mat hsvMat = new Mat();
 
     Mat blueThresholdMat = new Mat();
     Mat redThresholdMat = new Mat();
@@ -35,13 +32,6 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     Mat contoursOnPlainImageMat = new Mat();
 
     /*
-     * Threshold values
-     */
-    public static final int YELLOW_MASK_THRESHOLD = 80;
-    public static final int BLUE_MASK_THRESHOLD = 150;
-    public static final int RED_MASK_THRESHOLD = 255;
-
-    /*
      * Area threshold for detected objects
      */
     public static final double AREA_THRESHOLD = 500.0; // Adjust this value as needed
@@ -49,8 +39,8 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     /*
      * Elements for noise reduction
      */
-    Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
-    Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
+    Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
+    Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
 
     /*
      * Colors
@@ -78,7 +68,7 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     enum Stage
     {
         FINAL,
-        YCrCb,
+        HSV,
         MASKS,
         MASKS_NR,
         CONTOURS;
@@ -95,7 +85,7 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     {
         int nextStageNum = stageNum + 1;
 
-        if(nextStageNum >= stages.length)
+        if (nextStageNum >= stages.length)
         {
             nextStageNum = 0;
         }
@@ -120,9 +110,9 @@ public class SampleOtherTeamCode extends OpenCvPipeline
          */
         switch (stages[stageNum])
         {
-            case YCrCb:
+            case HSV:
             {
-                return ycrcbMat;
+                return hsvMat;
             }
 
             case FINAL:
@@ -162,22 +152,24 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     {
         return clientStoneList;
     }
-    ArrayList<MatOfPoint> blueClist = new ArrayList<>();
-    ArrayList<MatOfPoint> redClist = new ArrayList<>();
-    ArrayList<MatOfPoint> yClist = new ArrayList<>();
+
     void findContours(Mat input)
     {
-        // Convert the input image to YCrCb color space
-        Imgproc.cvtColor(input, ycrcbMat, Imgproc.COLOR_RGB2YCrCb);
+        // Convert the input image to HSV color space
+        Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        // Extract the Cb and Cr channels
-        Core.extractChannel(ycrcbMat, cbMat, 2); // Cb channel index is 2
-        Core.extractChannel(ycrcbMat, crMat, 1); // Cr channel index is 1
+        // Threshold for blue color in HSV
+        Core.inRange(hsvMat, new Scalar(100, 150, 50), new Scalar(140, 255, 255), blueThresholdMat);
 
-        // Threshold the channels to form masks
-        Imgproc.threshold(cbMat, blueThresholdMat, BLUE_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY);
-        Imgproc.threshold(crMat, redThresholdMat, 200, 255, Imgproc.THRESH_BINARY);
-        Imgproc.threshold(cbMat, yellowThresholdMat, 50, 110, Imgproc.THRESH_BINARY_INV);
+        // Threshold for red color in HSV (two ranges for red in HSV)
+        Mat lowerRed = new Mat();
+        Mat upperRed = new Mat();
+        Core.inRange(hsvMat, new Scalar(0, 120, 70), new Scalar(10, 255, 255), lowerRed);
+        Core.inRange(hsvMat, new Scalar(170, 120, 70), new Scalar(180, 255, 255), upperRed);
+        Core.addWeighted(lowerRed, 1.0, upperRed, 1.0, 0.0, redThresholdMat);
+
+        // Threshold for yellow color in HSV
+        Core.inRange(hsvMat, new Scalar(20, 150, 50), new Scalar(30, 255, 255), yellowThresholdMat);
 
         // Apply morphology to the masks
         morphMask(blueThresholdMat, morphedBlueThreshold);
@@ -186,32 +178,29 @@ public class SampleOtherTeamCode extends OpenCvPipeline
 
         // Find contours in the masks
         ArrayList<MatOfPoint> blueContoursList = new ArrayList<>();
-        blueClist = blueContoursList;
         Imgproc.findContours(morphedBlueThreshold, blueContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         ArrayList<MatOfPoint> redContoursList = new ArrayList<>();
-        redClist = redContoursList;
         Imgproc.findContours(morphedRedThreshold, redContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         ArrayList<MatOfPoint> yellowContoursList = new ArrayList<>();
-        yClist = yellowContoursList;
         Imgproc.findContours(morphedYellowThreshold, yellowContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         // Create a plain image for drawing contours
         contoursOnPlainImageMat = Mat.zeros(input.size(), input.type());
 
-//         Analyze and draw contours
-        for(MatOfPoint contour : blueContoursList)
+        // Analyze and draw contours
+        for (MatOfPoint contour : blueContoursList)
         {
             analyzeContour(contour, input, "Blue");
         }
 
-        for(MatOfPoint contour : redContoursList)
+        for (MatOfPoint contour : redContoursList)
         {
             analyzeContour(contour, input, "Red");
         }
 
-        for(MatOfPoint contour : yellowContoursList)
+        for (MatOfPoint contour : yellowContoursList)
         {
             analyzeContour(contour, input, "Yellow");
         }
@@ -276,36 +265,25 @@ public class SampleOtherTeamCode extends OpenCvPipeline
         // Get the center of the camera view
         Point cameraCenter = new Point(input.width() / 2.0, input.height() / 2.0);
 
-        double closestDistance = Double.MAX_VALUE;
-        AnalyzedStone closestStone = null;
+        double minDistance = Double.MAX_VALUE;
+        AnalyzedStone closestObject = null;
 
         for (AnalyzedStone stone : internalStoneList)
         {
-            // Check if the stone's color matches the target color
             if (stone.color.equals(targetColor))
             {
-
-
-                // Get the center of the rotated rectangle
-                Point center = stone.rotatedRect.center;
-
-                // Calculate the distance to the camera center
-                double distance = Math.sqrt(Math.pow(center.x - 640, 2) + Math.pow(center.y - cameraCenter.y, 2));
-
-                if (distance < closestDistance)
+                double distance = Math.abs(stone.rotatedRect.center.x - cameraCenter.x);
+                if (distance < minDistance)
                 {
-                    closestDistance = distance;
-                    closestStone = stone;
+                    closestObject = stone;
+                    minDistance = distance;
                 }
             }
         }
 
-        // Draw a green rectangle around the closest detected object
-        if (closestStone != null)
+        if (closestObject != null)
         {
-            drawRotatedRect(closestStone.rotatedRect, input, "Green");
-            targetAngle = closestStone.angle;
-
+            drawRotatedRect(closestObject.rotatedRect, input, "Green");
         }
     }
 
@@ -313,32 +291,29 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     {
         Point[] points = new Point[4];
         rect.points(points);
-        for (int i = 0; i < 4; i++)
-        {
-            Imgproc.line(drawOn, points[i], points[(i + 1) % 4], getColorScalar(color), CONTOUR_LINE_THICKNESS);
-        }
-    }
 
-    static Scalar getColorScalar(String color)
-    {
-        switch (color)
+        Scalar s;
+        if (color.equals("Red")) s = RED;
+        else if (color.equals("Blue")) s = BLUE;
+        else if (color.equals("Yellow")) s = YELLOW;
+        else if (color.equals("Green")) s = GREEN;
+        else s = RED;
+
+        for (int i = 0; i < 4; ++i)
         {
-            case "Red":
-                return RED;
-            case "Blue":
-                return BLUE;
-            case "Yellow":
-                return YELLOW;
-            case "Green":
-                return GREEN;
-            default:
-                return RED;
+            Imgproc.line(drawOn, points[i], points[(i + 1) % 4], s, CONTOUR_LINE_THICKNESS);
         }
     }
 
     void drawTagText(RotatedRect rect, String text, Mat drawOn, String color)
     {
-        Point center = rect.center;
-        Imgproc.putText(drawOn, text, new Point(center.x - 15, center.y - 15), Imgproc.FONT_HERSHEY_PLAIN, 0.5, new Scalar(50,50,50), 1);
+        Scalar s;
+        if (color.equals("Red")) s = RED;
+        else if (color.equals("Blue")) s = BLUE;
+        else if (color.equals("Yellow")) s = YELLOW;
+        else if (color.equals("Green")) s = GREEN;
+        else s = RED;
+
+        Imgproc.putText(drawOn, text, rect.center, Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, s, 1);
     }
 }

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.vision;
 
-import org.openftc.easyopencv.OpenCvPipeline;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -10,10 +9,11 @@ import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 
-public class SampleOtherTeamCode extends OpenCvPipeline
+public class SampleOtherTeamCode2 extends OpenCvPipeline
 {
     /*
      * Working image buffers
@@ -49,8 +49,8 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     /*
      * Elements for noise reduction
      */
-    Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
-    Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
+    Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5)); // Larger size
+    Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5)); // Larger size
 
     /*
      * Colors
@@ -176,8 +176,8 @@ public class SampleOtherTeamCode extends OpenCvPipeline
 
         // Threshold the channels to form masks
         Imgproc.threshold(cbMat, blueThresholdMat, BLUE_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY);
-        Imgproc.threshold(crMat, redThresholdMat, 200, 255, Imgproc.THRESH_BINARY);
-        Imgproc.threshold(cbMat, yellowThresholdMat, 50, 110, Imgproc.THRESH_BINARY_INV);
+        Imgproc.threshold(crMat, redThresholdMat, 180, 255, Imgproc.THRESH_BINARY);
+        Imgproc.threshold(cbMat, yellowThresholdMat, 60, 130, Imgproc.THRESH_BINARY_INV);
 
         // Apply morphology to the masks
         morphMask(blueThresholdMat, morphedBlueThreshold);
@@ -200,6 +200,8 @@ public class SampleOtherTeamCode extends OpenCvPipeline
         // Create a plain image for drawing contours
         contoursOnPlainImageMat = Mat.zeros(input.size(), input.type());
 
+        Imgproc.equalizeHist(crMat, crMat);
+        Imgproc.equalizeHist(cbMat, cbMat);
 //         Analyze and draw contours
         for(MatOfPoint contour : blueContoursList)
         {

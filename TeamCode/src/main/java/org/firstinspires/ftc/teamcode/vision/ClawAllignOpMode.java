@@ -38,7 +38,7 @@ public class ClawAllignOpMode extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
-        claw = hardwareMap.get(Servo.class, "claw");
+       // claw = hardwareMap.get(Servo.class, "claw");
 
         // Initialize the pipeline
         pipeline = new SampleOtherTeamCode();
@@ -128,37 +128,37 @@ public class ClawAllignOpMode extends LinearOpMode {
                     rotateClaw.setPower(-0.1);
                 } else if (pipeline.getDetectedStones().size()==0) {
                     rotateClaw.setPower(0);
-                } else if (targetAngle<20 && targetAngle > 160) {
-                    claw.setPosition(0.8);
-
+//                } else if (targetAngle<20 && targetAngle > 160) {
+//                    claw.setPosition(0.8);
+//
                 } else{
                     rotateClaw.setPower(0);
-                    claw.setPosition(0.2);
+                   // claw.setPosition(0.2);
                 }
             }
             else if(gamepad1.left_bumper){
-                if(targetAngle < 80 && pipeline.getDetectedStones().size()>0){
+                if(targetAngle < 70 && pipeline.getDetectedStones().size()>0){
                     rotateClaw.setPower(-0.1);
                 }
-                else if(targetAngle > 100 && pipeline.getDetectedStones().size()>0){
+                else if(targetAngle > 110 && pipeline.getDetectedStones().size()>0){
                     rotateClaw.setPower(0.1);
                 }
                 else if(pipeline.getDetectedStones().size()==0){
                     rotateClaw.setPower(0);
                 }
-                else if (targetAngle>=80 && targetAngle <= 100) {
-                    claw.setPosition(0.8);
-
-                }
+//                else if (targetAngle>=80 && targetAngle <= 100) {
+//                    claw.setPosition(0.8);
+//
+//                }
                 else{
                     rotateClaw.setPower(0);
-                    claw.setPosition(0.2);
+                    //claw.setPosition(0.2);
                 }
 
             }
             else{
                 rotateClaw.setPower(0);
-                claw.setPosition(0.2);
+                //claw.setPosition(0.2);
             }
 
 //            if(targetAngle > 10 && targetAngle < 170)

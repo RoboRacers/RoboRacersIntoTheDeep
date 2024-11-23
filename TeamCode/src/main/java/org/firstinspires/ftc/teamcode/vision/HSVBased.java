@@ -4,6 +4,7 @@ import org.firstinspires.ftc.teamcode.vision.HSVBasedPipeline;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -21,14 +22,14 @@ public class HSVBased extends LinearOpMode {
     OpenCvCamera camera;
     HSVBasedPipeline pipeline;
 
-    Servo rotateClaw;
+    CRServo rotateClaw;
     Servo claw;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         claw = hardwareMap.get(Servo.class, "claw");
-        rotateClaw = hardwareMap.get(Servo.class, "rotateClaw");
+        rotateClaw = hardwareMap.get(CRServo.class, "rotateClaw");
 
         // Initialize the camera
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -74,7 +75,7 @@ public class HSVBased extends LinearOpMode {
             telemetry.addData("Target Angle", targetAngle);
             telemetry.addData("Detected Objects", pipeline.getDetectedObjectsCount());
             telemetry.addData("Claw Value", claw.getPosition());
-            telemetry.addData("Rotate Value", rotateClaw.getPosition());
+            telemetry.addData("Rotate Value", rotateClaw.getDirection());
             telemetry.update();
 
             // Sleep to reduce CPU usage
