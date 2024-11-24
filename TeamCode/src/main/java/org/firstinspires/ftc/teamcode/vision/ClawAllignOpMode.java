@@ -180,7 +180,7 @@ public class ClawAllignOpMode extends LinearOpMode {
 //            }
 
             telemetry.addData("Target angle", targetAngle);
-            telemetry.addData("Target angle", targetAngle);
+//            telemetry.addData("Target angle", targetAngle);
             telemetry.addData("Ranged Target Angle", output);
 
           //  telemetry.addData("Claw Position", claw.getPosition());

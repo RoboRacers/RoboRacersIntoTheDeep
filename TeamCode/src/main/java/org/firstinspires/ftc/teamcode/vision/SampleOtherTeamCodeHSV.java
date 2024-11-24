@@ -39,8 +39,8 @@ public class SampleOtherTeamCodeHSV extends OpenCvPipeline
     /*
      * Elements for noise reduction
      */
-    Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
-    Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
+    Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(4, 4));
+    Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(4, 4));
 
     /*
      * Colors
@@ -169,7 +169,7 @@ public class SampleOtherTeamCodeHSV extends OpenCvPipeline
         Core.addWeighted(lowerRed, 1.0, upperRed, 1.0, 0.0, redThresholdMat);
 
         // Threshold for yellow color in HSV
-        Core.inRange(hsvMat, new Scalar(20, 130, 40), new Scalar(30, 255, 255), yellowThresholdMat); // lower is (20,100,100) and upper is fine
+        Core.inRange(hsvMat, new Scalar(17, 130, 40), new Scalar(32, 255, 255), yellowThresholdMat); // lower is (20,100,100) and upper is fine
 
         // Apply morphology to the masks
         morphMask(blueThresholdMat, morphedBlueThreshold);
