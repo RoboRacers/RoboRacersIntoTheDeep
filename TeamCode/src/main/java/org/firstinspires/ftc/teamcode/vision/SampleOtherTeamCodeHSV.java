@@ -169,7 +169,7 @@ public class SampleOtherTeamCodeHSV extends OpenCvPipeline
         Core.addWeighted(lowerRed, 1.0, upperRed, 1.0, 0.0, redThresholdMat);
 
         // Threshold for yellow color in HSV
-        Core.inRange(hsvMat, new Scalar(20, 150, 50), new Scalar(30, 255, 255), yellowThresholdMat); // lower is (20,100,100) and upper is fine
+        Core.inRange(hsvMat, new Scalar(20, 130, 40), new Scalar(30, 255, 255), yellowThresholdMat); // lower is (20,100,100) and upper is fine
 
         // Apply morphology to the masks
         morphMask(blueThresholdMat, morphedBlueThreshold);

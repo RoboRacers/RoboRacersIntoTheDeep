@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.vision.SampleOtherTeamCode;
 @TeleOp(name = "Sample Claw Allign", group = "Vision")
 public class ClawAllignOpMode extends LinearOpMode {
     OpenCvCamera camera;
-    SampleOtherTeamCode pipeline;
+    SampleOtherTeamCodeHSV pipeline;
 
     Servo claw;
 
@@ -41,7 +41,7 @@ public class ClawAllignOpMode extends LinearOpMode {
        // claw = hardwareMap.get(Servo.class, "claw");
 
         // Initialize the pipeline
-        pipeline = new SampleOtherTeamCode();
+        pipeline = new SampleOtherTeamCodeHSV();
         camera.setPipeline(pipeline);
 
         // Open the camera
@@ -61,9 +61,9 @@ public class ClawAllignOpMode extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            telemetry.addData("Blue Contours", pipeline.blueClist.size());
-            telemetry.addData("Yellow Contours", pipeline.yClist.size());
-            telemetry.addData("Red Contours", pipeline.redClist.size());
+//            telemetry.addData("Blue Contours", pipeline.blueClist.size());
+//            telemetry.addData("Yellow Contours", pipeline.yClist.size());
+//            telemetry.addData("Red Contours", pipeline.redClist.size());
             telemetry.addData("Detected Stones", pipeline.getDetectedStones().size());
 
             if (gamepad1.triangle) {
