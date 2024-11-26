@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.modules.PIDController;
 public class DepositkGTest extends LinearOpMode {
     public DcMotorImplEx pitchMotor;
 
-    public static double kG = 0.32;
+    public static double kG = 0.35;
     public static double kP = 0;
     public static double kI = 0;
     public static double kD = 0;
@@ -32,7 +32,7 @@ public class DepositkGTest extends LinearOpMode {
 
         pitchControl = new PIDController(kP, kI, kD);
 
-        final double ticksToDegrees = (double) 90 /286;
+        final double ticksToDegrees = (double) 90 /260;
 
         while (opModeInInit()) {
         }
