@@ -14,7 +14,7 @@ Servo dos;
     @Override
     public void runOpMode() throws InterruptedException {
     uno = hardwareMap.get(Servo.class, "flipLeft");
-//        dos = hardwareMap.get(Servo.class, "flipRight");
+        dos = hardwareMap.get(Servo.class, "flipRight");
 
         while (opModeInInit()) {
         }
@@ -44,23 +44,23 @@ Servo dos;
             //ALWAYS MULTIPLY THE RIGHT FLIP OR DOS BY 0.95 TO MAKE IT SYNC WITH THE LEFT DEPOSIT OR UNO
             if(gamepad1.cross){
                 uno.setPosition(0.25);
-//                dos.setPosition(0.25*0.95);
+                dos.setPosition(0.25*0.95);
             }
             else if(gamepad1.circle){
                 uno.setPosition(0.5);
-//                dos.setPosition(0.5*0.95);
+                dos.setPosition(0.5*0.95);
             }
             else if(gamepad1.triangle){
                 uno.setPosition(0.75);
-//                dos.setPosition(0.75*0.95);
+                dos.setPosition(0.75*0.95);
             }
             else{
                 uno.setPosition(gamepad1.right_stick_x);
-//                dos.setPosition(gamepad1.right_stick_x*0.95);
+                dos.setPosition(gamepad1.right_stick_x*0.95);
 
             }
             telemetry.addData("Uno pos", uno.getPosition());
-//            telemetry.addData("Dos pos", dos.getPosition());
+            telemetry.addData("Dos pos", dos.getPosition());
             telemetry.update();
 
 

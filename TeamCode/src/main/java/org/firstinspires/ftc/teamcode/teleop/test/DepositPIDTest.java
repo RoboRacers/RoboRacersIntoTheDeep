@@ -17,9 +17,10 @@ public class DepositPIDTest extends LinearOpMode {
     public DcMotorImplEx pitchMotor;
 
     public static double kG = 0.35;
-    public static double kP = 0.5;
+    public static double kP = 0.1;
     public static  double kI = 0;
-    public static  double kD = 0;
+    public static  double kD = 0.05;
+    public static double target = 100;
 
     PIDController pitchControl;
 
@@ -28,7 +29,7 @@ public class DepositPIDTest extends LinearOpMode {
 
         pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
 
-        double target = 0;
+
 
         pitchControl = new PIDController(kP, kI, kD);
 
@@ -50,7 +51,7 @@ public class DepositPIDTest extends LinearOpMode {
             } else if (gamepad1.cross) {
                 target = 200;
             } else if (gamepad1.circle) {
-                target = 100;
+                target = 150;
             }
 
             pitchControl.setSetpoint(target);
