@@ -35,8 +35,6 @@ public class DepositkGTest extends LinearOpMode {
         final double ticksToDegrees = (double) 90 /371.0;
 
         while (opModeInInit()) {
-            // 175
-            // 420
         }
 
         pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -44,16 +42,13 @@ public class DepositkGTest extends LinearOpMode {
 
         while (!isStopRequested()) {
 
-
             target = pitchMotor.getCurrentPosition();
 
             pitchControl.setSetpoint(target);
 
             double feedforward = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() + 53) * ticksToDegrees)) + 0.1;
 
-            telemetry.addLine("" + (pitchMotor.getCurrentPosition() + 53) * ticksToDegrees);
-            telemetry.addLine("" + Math.toRadians((pitchMotor.getCurrentPosition() + 53)* ticksToDegrees));
-            telemetry.addLine("" + Math.cos((pitchMotor.getCurrentPosition() + 53) * ticksToDegrees));
+            telemetry.addData("Feedforward", feedforward);
 
             pitchMotor.setPower(feedforward);
 

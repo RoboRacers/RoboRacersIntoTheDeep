@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.modules.PIDController;
 public class DepositPIDTest extends LinearOpMode {
     public DcMotorImplEx pitchMotor;
 
-    double kG = 0.2444;
+    public static double kG = 0.2444;
     public static double kP = 0.5;
     public static  double kI = 0;
     public static  double kD = 0;
@@ -32,11 +32,10 @@ public class DepositPIDTest extends LinearOpMode {
 
         pitchControl = new PIDController(kP, kI, kD);
 
-        final double ticksToDegrees = (double) 90 /371.0;
+        final double ticksToDegrees = (double) 90 / 371.0;
 
         while (opModeInInit()) {
-            // 175
-            // 420
+
         }
 
         pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -46,17 +45,11 @@ public class DepositPIDTest extends LinearOpMode {
 
             pitchControl.setCoeffiecents(kP, kI, kD);
 
-
-
-
             if (gamepad1.triangle) {
                 target = 300;
             } else if (gamepad1.cross) {
                 target = 200;
             } else if (gamepad1.circle) {
-                target = 100;
-            }
-            else{
                 target = 100;
             }
 
