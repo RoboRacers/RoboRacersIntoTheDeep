@@ -33,7 +33,7 @@ public class DepositPIDTest extends LinearOpMode {
 
         pitchControl = new PIDController(kP, kI, kD);
 
-        final double ticksToDegrees = (double) 90 /260;
+        final double ticksToDegrees = (double) 90 /380;
 
         while (opModeInInit()) {
 
