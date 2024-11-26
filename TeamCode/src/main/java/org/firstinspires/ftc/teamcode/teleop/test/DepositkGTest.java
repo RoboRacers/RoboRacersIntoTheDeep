@@ -46,7 +46,7 @@ public class DepositkGTest extends LinearOpMode {
 
             pitchControl.setSetpoint(target);
 
-            double feedforward = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - 40) * ticksToDegrees)) + 0.05;
+            double feedforward = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - 20) * ticksToDegrees)) + 0.05;
 
             telemetry.addData("Feedforward", feedforward);
 
@@ -55,6 +55,7 @@ public class DepositkGTest extends LinearOpMode {
             telemetry.addData("Pitch Motor Position", pitchMotor.getCurrentPosition());
             telemetry.addData("Pitch Motor Power", pitchMotor.getPower());
             telemetry.addData("Pitch Current", pitchMotor.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Pitch Motor Angle", (pitchMotor.getCurrentPosition() - 20 ) * ticksToDegrees);
             telemetry.update();
 
         }
