@@ -2,49 +2,61 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 
-//@Disabled // Comment out this line to add to the opmode list
-@TeleOp(name = "MotorTest", group = "Test")
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+
+
+@TeleOp(name = "Motor Test", group = "Test")
 public class MotorTest extends LinearOpMode {
-Servo uno;
-Servo dos;
+    public DcMotorImplEx slidesMotor;
+
     @Override
     public void runOpMode() throws InterruptedException {
-    uno = hardwareMap.get(Servo.class, "flipLeft");
-        dos = hardwareMap.get(Servo.class, "flipRight");
+
+        slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
 
         while (opModeInInit()) {
+            // 175
+            // 420
         }
 
+//        pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        pitchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (!isStopRequested()) {
 
-//ALWAYS MULTIPLY THE RIGHT FLIP OR DOS BY 0.95 TO MAKE IT SYNC WITH THE LEFT DEPOSIT OR UNO
-            if(gamepad1.cross){
-                dos.setPosition(0.952);
-            } else if (gamepad1.circle) {
-                dos.setPosition(0.5*0.95);
-                uno.setPosition(0.5);
-            }
-            else if (gamepad1.square) {
-                dos.setPosition(0.975);
-            }
-            else if (gamepad1.triangle) {
-                dos.setPosition(0.985);
-            }else{
-                dos.setPosition(gamepad1.right_stick_x*0.95);
-                uno.setPosition(gamepad1.left_stick_x);
-            }
-            telemetry.addData("Uno pos", uno.getPosition());
-            telemetry.addData("Dos pos", dos.getPosition());
-            telemetry.update();
+//            if (gamepad1.triangle) {
+//                pitchMotor.setTargetPosition(420);
+//                pitchMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                pitchMotor.setPower(0.75);
+//            } else if (gamepad1.cross) {
+//                pitchMotor.setTargetPosition(175);
+//                pitchMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                pitchMotor.setPower(0.75);
+//            } else if (gamepad1.circle) {
+//                pitchMotor.setTargetPosition(30);
+//                pitchMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                pitchMotor.setPower(0.75);
+//            } else {
+//                pitchMotor.setPower(gamepad1.left_stick_y);
+//            }
 
+//            telemetry.addData("Pitch Motor Position", pitchMotor.getCurrentPosition());
+//            telemetry.addData("Pitch Motor Power", pitchMotor.getPower());
+//            telemetry.addData("Pitch Current", pitchMotor.getCurrent(CurrentUnit.MILLIAMPS));
+            if(gamepad1.a){
+                slidesMotor.setPower(gamepad1.right_stick_x);
+            }else {
+                slidesMotor.setPower(gamepad1.right_stick_x*0.4);
+            }
+            telemetry.addData("Slides Power", slidesMotor.getPower());
+            telemetry.addData("slides Pos", slidesMotor.getCurrentPosition());
+
+            telemetry.update();
 
         }
     }
