@@ -1,7 +1,4 @@
 package org.firstinspires.ftc.teamcode.teleop;
-
-
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -14,7 +11,7 @@ Servo dos;
     @Override
     public void runOpMode() throws InterruptedException {
     uno = hardwareMap.get(Servo.class, "flipLeft");
-        dos = hardwareMap.get(Servo.class, "flipRight");
+    dos = hardwareMap.get(Servo.class, "flipRight");
 
         while (opModeInInit()) {
         }
