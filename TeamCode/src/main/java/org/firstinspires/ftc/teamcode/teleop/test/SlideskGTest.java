@@ -34,7 +34,7 @@ public class SlideskGTest extends LinearOpMode {
 
         slidesControl = new PIDController(kP, kI, kD);
 
-        final double ticksToDegrees = (double) 90 /380;
+        final double ticksToDegrees = (double) 90 /334;
 
         while (opModeInInit()) {
         }
@@ -48,7 +48,7 @@ public class SlideskGTest extends LinearOpMode {
 
             slidesControl.setSetpoint(target);
 
-            double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - 20) * ticksToDegrees)) + 0;
+            double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - 45) * ticksToDegrees)) + 0;
 
             telemetry.addData("Feedforward", feedforward);
 
@@ -57,7 +57,7 @@ public class SlideskGTest extends LinearOpMode {
             telemetry.addData("Pitch Motor Position", slidesMotor.getCurrentPosition());
             telemetry.addData("Pitch Motor Power", slidesMotor.getPower());
             telemetry.addData("Pitch Current", slidesMotor.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Pitch Motor Angle", (slidesMotor.getCurrentPosition() - 20 ) * ticksToDegrees);
+            telemetry.addData("Pitch Motor Angle", (slidesMotor.getCurrentPosition() - 45 ) * ticksToDegrees);
             telemetry.update();
 
         }

@@ -17,9 +17,9 @@ public class DepositPIDTest extends LinearOpMode {
     public DcMotorImplEx pitchMotor;
 
     public static double kG = 0.35;
-    public static double kP = 0.1;
+    public static double kP = 0.05;
     public static  double kI = 0;
-    public static  double kD = 0.05;
+    public static  double kD = 0.0003;
     public static double target = 100;
 
     PIDController pitchControl;
@@ -33,7 +33,7 @@ public class DepositPIDTest extends LinearOpMode {
 
         pitchControl = new PIDController(kP, kI, kD);
 
-        final double ticksToDegrees = (double) 90 /380;
+        final double ticksToDegrees = (double) 90 /334;
 
         while (opModeInInit()) {
 
@@ -56,7 +56,7 @@ public class DepositPIDTest extends LinearOpMode {
 
             pitchControl.setSetpoint(target);
 
-            double feedforward = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - 20) * ticksToDegrees)) + 0;
+            double feedforward = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - 45) * ticksToDegrees)) + 0;
 
             double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
 
@@ -67,7 +67,7 @@ public class DepositPIDTest extends LinearOpMode {
             telemetry.addData("Pitch Motor Position", pitchMotor.getCurrentPosition());
             telemetry.addData("Pitch Motor Power", pitchMotor.getPower());
             telemetry.addData("Pitch Current", pitchMotor.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Pitch Motor Angle", (pitchMotor.getCurrentPosition() - 20 ) * ticksToDegrees);
+            telemetry.addData("Pitch Motor Angle", (pitchMotor.getCurrentPosition() - 45 ) * ticksToDegrees);
             telemetry.update();
 
         }
