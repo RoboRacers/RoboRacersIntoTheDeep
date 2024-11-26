@@ -1,13 +1,10 @@
-package org.firstinspires.ftc.teamcode.teleop.test;
+package org.firstinspires.ftc.teamcode.teleop;
 
 
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
-
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 
 @TeleOp(name = "Slides Test", group = "Test")
@@ -17,7 +14,7 @@ public class SlidesTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        slidesMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
+        slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
 
         while (opModeInInit()) {
             // 175

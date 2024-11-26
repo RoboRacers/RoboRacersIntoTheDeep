@@ -1,23 +1,20 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.teleop.test;
 
 
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
-
-@TeleOp(name = "Motor Test", group = "Test")
-public class MotorTest extends LinearOpMode {
-    public DcMotorImplEx slidesMotor;
+@TeleOp(name = "Pitch Test", group = "Test")
+public class PitchTest extends LinearOpMode {
+    public DcMotorImplEx pitchMotor;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
+        pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
 
         while (opModeInInit()) {
             // 175
@@ -49,12 +46,12 @@ public class MotorTest extends LinearOpMode {
 //            telemetry.addData("Pitch Motor Power", pitchMotor.getPower());
 //            telemetry.addData("Pitch Current", pitchMotor.getCurrent(CurrentUnit.MILLIAMPS));
             if(gamepad1.a){
-                slidesMotor.setPower(gamepad1.right_stick_x);
+                pitchMotor.setPower(gamepad1.right_stick_x);
             }else {
-                slidesMotor.setPower(gamepad1.right_stick_x*0.4);
+                pitchMotor.setPower(gamepad1.right_stick_x*0.4);
             }
-            telemetry.addData("Slides Power", slidesMotor.getPower());
-            telemetry.addData("slides Pos", slidesMotor.getCurrentPosition());
+            telemetry.addData("Pitch Power", pitchMotor.getPower());
+            telemetry.addData("Pitch Pos", pitchMotor.getCurrentPosition());
 
             telemetry.update();
 
