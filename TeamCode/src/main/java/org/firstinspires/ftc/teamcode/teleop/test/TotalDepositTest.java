@@ -64,7 +64,7 @@ public class TotalDepositTest extends LinearOpMode {
 
         pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         pitchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        target = 100;
+        target = 200;
         while (!isStopRequested()) {
             drive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
@@ -81,12 +81,12 @@ public class TotalDepositTest extends LinearOpMode {
             if (gamepad2.triangle) {
                 target = 900;
             } else if (gamepad2.cross) {
-                target = 150;
+                target = 250;
             } else if (gamepad2.circle) {
-                target = 300;
+                target = 500;
             }
             pitchControl.setSetpoint(target);
-            double feedforward = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - 20) * ticksToDegrees)) + 0;
+            double feedforward = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - 45) * ticksToDegrees)) + 0;
             double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
             pitchMotor.setPower(feedforward + pid);
 
