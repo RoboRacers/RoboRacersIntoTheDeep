@@ -9,6 +9,7 @@ public class PIDController {
     private double integral;
     private double outputMin = -1000;
     private double outputMax = 1000;
+    private double errorTolerance = 0; // Default error range
     private ElapsedTime timer = new ElapsedTime();
 
     public PIDController(double kP, double kI, double kD) {
@@ -28,10 +29,14 @@ public class PIDController {
         outputMax = max;
     }
 
-    public void setCoeffiecents (double kP, double kI, double kD) {
+    public void setCoefficients(double kP, double kI, double kD) {
         this.kP = kP;
         this.kI = kI;
         this.kD = kD;
+    }
+
+    public void setErrorTolerance(double tolerance) {
+        this.errorTolerance = tolerance;
     }
 
     public double calculate(double current) {
@@ -41,6 +46,12 @@ public class PIDController {
 
         // Calculate error
         double error = setpoint - current;
+
+        // If the error is within the tolerance range, output zero
+        if (Math.abs(error) <= errorTolerance) {
+            reset(); // Optionally reset integral and lastError
+            return 0;
+        }
 
         // Proportional term
         double P = kP * error;

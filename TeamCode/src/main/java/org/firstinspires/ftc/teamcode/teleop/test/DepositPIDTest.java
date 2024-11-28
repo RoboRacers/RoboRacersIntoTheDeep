@@ -44,7 +44,7 @@ public class DepositPIDTest extends LinearOpMode {
 
         while (!isStopRequested()) {
 
-            pitchControl.setCoeffiecents(kP, kI, kD);
+            pitchControl.setCoefficients(kP, kI, kD);
 
             if (gamepad1.triangle) {
                 target = 300;

@@ -25,7 +25,7 @@ public class TotalDepositTest extends LinearOpMode {
     public static  double kD = 0.0003;
     public static double target = 100;
     PIDController pitchControl;
-    final double ticksToDegrees = (double) 90 /380;
+    final double ticksToDegrees = (double) 90 /334;
 
     //Slides Stuff
     public DcMotorImplEx slidesMotor;
@@ -45,6 +45,7 @@ public class TotalDepositTest extends LinearOpMode {
         slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
         pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
         pitchControl = new PIDController(kP, kI, kD);
+        pitchControl.setErrorTolerance(18);
 
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
@@ -76,7 +77,7 @@ public class TotalDepositTest extends LinearOpMode {
             drive.updatePoseEstimate();
 
 
-            pitchControl.setCoeffiecents(kP, kI, kD);
+            pitchControl.setCoefficients(kP, kI, kD);
 
             if (gamepad2.triangle) {
                 target = 900;
@@ -117,6 +118,9 @@ public class TotalDepositTest extends LinearOpMode {
 
             telemetry.addData("Slides Power", slidesMotor.getPower());
             telemetry.addData("slides Pos", slidesMotor.getCurrentPosition());
+            telemetry.addData("Target value Pitch", target);
+            telemetry.addData("Feedforward", feedforward);
+            telemetry.addData("PID Values", pid);
             telemetry.addData("Pitch Motor Position", pitchMotor.getCurrentPosition());
             telemetry.addData("Pitch Motor Power", pitchMotor.getPower());
             telemetry.addData("Pitch Motor Angle", (pitchMotor.getCurrentPosition() - 20 ) * ticksToDegrees);
