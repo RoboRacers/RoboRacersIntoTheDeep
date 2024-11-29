@@ -17,12 +17,14 @@ public class SlideskGTest extends LinearOpMode {
     public DcMotorImplEx slidesMotor;
     public DcMotorImplEx pitchMotor;
 
-    public static double kG = 0.35;
+    public static double kG = 0.15;
     public static double kP = 0;
     public static double kI = 0;
     public static double kD = 0;
+    public static double ticksPerRightAngle = 930;
 
     PIDController slidesControl;
+    public static double offset = 40;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -34,7 +36,7 @@ public class SlideskGTest extends LinearOpMode {
 
         slidesControl = new PIDController(kP, kI, kD);
 
-        final double ticksToDegrees = (double) 90 /334;
+        final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
 
         while (opModeInInit()) {
         }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.teleop.test;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -52,12 +52,12 @@ Servo dos;
                 dos.setPosition(0.75*0.95);
             }
             else{
-                uno.setPosition(gamepad1.right_stick_x);
-                dos.setPosition(gamepad1.right_stick_x*0.95);
+                uno.setPosition(gamepad1.touchpad_finger_1_x);
+                dos.setPosition(gamepad1.touchpad_finger_1_x*0.95);
 
             }
             telemetry.addData("Uno pos", uno.getPosition());
-            telemetry.addData("Dos pos", dos.getPosition());
+            telemetry.addData("Dos pos", dos.getPosition()/0.95);
             telemetry.update();
 
 

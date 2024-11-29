@@ -16,10 +16,12 @@ import org.firstinspires.ftc.teamcode.modules.PIDController;
 public class DepositkGTest extends LinearOpMode {
     public DcMotorImplEx pitchMotor;
 
-    public static double kG = 0.35;
+    public static double kG = 0.27;
     public static double kP = 0;
     public static double kI = 0;
     public static double kD = 0;
+    public static double offset = 40;
+    public static double ticksPerRightAngle = 930;
 
     PIDController pitchControl;
 
@@ -32,7 +34,7 @@ public class DepositkGTest extends LinearOpMode {
 
         pitchControl = new PIDController(kP, kI, kD);
 
-        final double ticksToDegrees = (double) 90 /334;
+        final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
 
         while (opModeInInit()) {
         }
@@ -46,7 +48,7 @@ public class DepositkGTest extends LinearOpMode {
 
             pitchControl.setSetpoint(target);
 
-            double feedforward = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition()-45) * ticksToDegrees)) + 0;
+            double feedforward = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition()-offset) * ticksToDegrees)) + 0;
 
             telemetry.addData("Feedforward", feedforward);
 
