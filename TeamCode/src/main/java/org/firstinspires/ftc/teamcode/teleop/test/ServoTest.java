@@ -19,6 +19,8 @@ public class ServoTest extends LinearOpMode {
         }
         while (!isStopRequested()) {
             servo.setPosition(gamepad1.touchpad_finger_1_x);
+            telemetry.addData("pos", servo.getPosition());
+            telemetry.update();
         }
     }
 }

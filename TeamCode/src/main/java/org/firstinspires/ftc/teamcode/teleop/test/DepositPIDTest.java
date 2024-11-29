@@ -16,8 +16,10 @@ import org.firstinspires.ftc.teamcode.modules.PIDController;
 @TeleOp(name = "Pitch PID Test", group = "Test")
 public class DepositPIDTest extends LinearOpMode {
     public DcMotorImplEx pitchMotor;
+    public DcMotorImplEx slidesMotor;
 
     public static double kG = 0.27;
+    public static double kG2 = 0.1;
     public static double kP = 0.005;
     public static  double kI = 0;
     public static  double kD = 0.00045;
@@ -27,6 +29,7 @@ public class DepositPIDTest extends LinearOpMode {
     public static double error = 0;
 
     public static double ticksPerRightAngle = 930;
+    public static double ticksPerMaxExtend = -1936;
 
     PIDController pitchControl;
 
@@ -34,6 +37,7 @@ public class DepositPIDTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
+        slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = dashboard.getTelemetry();
 
@@ -41,6 +45,7 @@ public class DepositPIDTest extends LinearOpMode {
         pitchControl = new PIDController(kP, kI, kD);
 
         final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
+        final double ticksToInches = (double) 26 /ticksPerMaxExtend;
 
         while (opModeInInit()) {
 
@@ -48,6 +53,8 @@ public class DepositPIDTest extends LinearOpMode {
 
         pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         pitchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (!isStopRequested()) {
 
@@ -64,16 +71,18 @@ public class DepositPIDTest extends LinearOpMode {
             pitchControl.setSetpoint(target);
 
             double feedforward = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+            double feedforward2 = kG2 * Math.sin(Math.toRadians((slidesMotor.getCurrentPosition()) * ticksToInches)) + 0;
 
             double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
 
-            pitchMotor.setPower(feedforward + pid);
+            pitchMotor.setPower(feedforward + pid + feedforward2);
 
             // Compute error as the difference between current position and target
             double currentPosition = pitchMotor.getCurrentPosition();
             error = target - currentPosition;
             
             telemetry.addData("Feedforward", feedforward);
+            telemetry.addData("Gamepad", (gamepad1.left_stick_x*0.3));
             telemetry.addData("Target", target);
             telemetry.addData("Error", error);
             telemetry.addData("Pitch Motor Position", pitchMotor.getCurrentPosition());

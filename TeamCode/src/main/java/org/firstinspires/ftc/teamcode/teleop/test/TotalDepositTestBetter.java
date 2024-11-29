@@ -28,17 +28,21 @@ public class TotalDepositTestBetter extends LinearOpMode {
 
             Servo claw;
 
-    public static double kG = 0.27;
+    public static double kG = 0.027;
+    public static double kG2 = 0.1;
     public static double kP = 0.005;
     public static  double kI = 0;
     public static  double kD = 0.00045;
-    public static double target = 100;
-
-    public static double offset = 40;
-    public static double error = 0;
-
+    public static double kP2 = 0.006;
+    public static double kI2 = 0;
+    public static double kD2 = 0.0005;
     public static double ticksPerRightAngle = 930;
+    public static double ticksPerMaxExtend = 1936;
+    public static double target = 0;
+    public static double target2 = 300;
+    public static double offset = 40;
 
+    PIDController slidesControl;
     PIDController pitchControl;
     //CRServo rotate;
 
@@ -52,15 +56,17 @@ public class TotalDepositTestBetter extends LinearOpMode {
         slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
         pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
 
-        slidesMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
+//        slidesMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
 
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = dashboard.getTelemetry();
 
 
         pitchControl = new PIDController(kP, kI, kD);
+        slidesControl = new PIDController(kP2, kI2, kD2);
 
         final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
+        final double ticksToInches = (double) 26 /ticksPerMaxExtend;
 
 //        pitchControl.setErrorTolerance(18);
 
@@ -75,19 +81,24 @@ public class TotalDepositTestBetter extends LinearOpMode {
         // rotate = hardwareMap.get(CRServo.class, "rotateClaw");
         pitchMotor.setMode(DcMotorImplEx.RunMode.STOP_AND_RESET_ENCODER);
         pitchMotor.setMode(DcMotorImplEx.RunMode.RUN_WITHOUT_ENCODER);
-        slidesMotor.setZeroPowerBehavior(DcMotorImplEx.ZeroPowerBehavior.BRAKE);
+        slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeInInit()) {
             flipPos = 1;
+            pitchControl.setCoefficients(kP, kI, kD);
             uno.setPosition(flipPos);
             dos.setPosition(flipPos * 0.95);
-            target = 250;
-            pitchControl.setSetpoint(target);
+            target2 = 250;
 
-            double feedforward = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+
+            pitchControl.setSetpoint(target2);
+
+
+            double feedforward2 = kG2 * Math.sin(Math.toRadians((slidesMotor.getCurrentPosition()) * ticksToInches)) + 0;
+            double feedforward3 = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
             double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
-
-            pitchMotor.setPower(feedforward + pid);
+            pitchMotor.setPower(feedforward3 + pid + feedforward2);
 
 
         }
@@ -103,45 +114,51 @@ public class TotalDepositTestBetter extends LinearOpMode {
                     -gamepad1.right_stick_x
             ));
             drive.updatePoseEstimate();
-
+            pitchControl.setCoefficients(kP, kI, kD);
+            slidesControl.setCoefficients(kP2, kI2, kD2);
 
             if (gamepad1.triangle) { //y
-                target = 990; //90deg + little more
+                target2 = 1010; //90deg + little more
+                target=1650;
+                flipPos = 0.675;
             } else if (gamepad1.cross) { // a
-                target = 250;
+                target2 = 300;
+                target= 400;
+                flipPos = 0.525;
             } else if (gamepad1.circle) { // b
-                target = 130;
+                target2 = 130;
             }else if (gamepad1.square) { // x
-                target = 500;
+                target2 = 500;
             }
-            pitchControl.setSetpoint(target);
-            double feedforward = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
 
+//            if(gamepad2.right_trigger>0.1){
+//                slidesMotor.setPower(-0.6);//extend
+//            } else if (gamepad2.left_trigger>0.1) {
+//                slidesMotor.setPower(0.8); //retract
+//            }else{
+//                slidesMotor.setPower(0);
+//            }
 
+            if (gamepad2.square){
+                target = 350;
+            }else if (gamepad2.cross){
+                target = 1650;
+            }
 
+            pitchControl.setSetpoint(target2);
 
-            // Add code to check the ratio of encoder ticks to inches for the slides
-            // and add extra power in ratio to the slide position to the pitch
-            // if ratio is like 1:2 of inches to ticks on slides
-            // then do like pitchMotor.setPower(feedforward + pid + slidePos) and slidePos is a calculation to see how much extra power is needed to account for slide extension (starts at 0 power)
-
-            
-
-
-
-
-
+            slidesControl.setSetpoint(target);
+            double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+            double feedforward2 = kG2 * Math.sin(Math.toRadians((slidesMotor.getCurrentPosition()) * ticksToInches)) + 0;
+            double feedforward3 = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
             double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
+            double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
 
-            pitchMotor.setPower(feedforward + pid);
 
-            if(gamepad2.right_trigger>0.1){
-                slidesMotor.setPower(0.85);//extend
-            } else if (gamepad2.left_trigger>0.1) {
-                slidesMotor.setPower(-0.6); //retract
-            }else{
-                slidesMotor.setPower(0);
-            }
+            pitchMotor.setPower(feedforward3 + pid + feedforward2);
+            slidesMotor.setPower(-(pid2 + feedforward));
+
+
 
             //ALWAYS MULTIPLY THE RIGHT FLIP OR DOS BY 0.95 TO MAKE IT SYNC WITH THE LEFT DEPOSIT OR UNO
             if(gamepad2.dpad_up){
@@ -160,9 +177,9 @@ public class TotalDepositTestBetter extends LinearOpMode {
             dos.setPosition(flipPos * 0.95);
 
             if (gamepad2.right_bumper){
-                claw.setPosition(1); //close
+                claw.setPosition(0.785); //close
             }else if(gamepad2.left_bumper){
-                claw.setPosition(0.37); //open
+                claw.setPosition(0.5); //open
             }
 
             if(gamepad2.triangle){

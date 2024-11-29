@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop.test;
+package org.firstinspires.ftc.teamcode.teleop;
 
 
 
@@ -7,14 +7,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.modules.PIDController;
+import org.firstinspires.ftc.teamcode.robot.Subsystem;
 
 @Config
-@TeleOp(name = "Slides PID Test", group = "Test")
-public class SlidesPIDTest extends LinearOpMode {
+//@TeleOp(name = "Slides PID Test", group = "Test")
+public class DepositSlidesSubsystem implements Subsystem {
     public DcMotorImplEx slidesMotor;
     public DcMotorImplEx pitchMotor;
 
@@ -37,10 +37,10 @@ public class SlidesPIDTest extends LinearOpMode {
     public static double offset = 40;
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void update() {
 
-        slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
-        pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
+//        slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
+//        pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
 //        slidesMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
 
 
@@ -52,15 +52,14 @@ public class SlidesPIDTest extends LinearOpMode {
         final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
         final double ticksToInches = (double) 26 /ticksPerMaxExtend;
 
-        while (opModeInInit()) {
-        }
+
 
         pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         pitchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        while (!isStopRequested()) {
+
             pitchControl.setCoefficients(kP, kI, kD);
             slidesControl.setCoefficients(kP2, kI2, kD2);
 
@@ -75,17 +74,17 @@ public class SlidesPIDTest extends LinearOpMode {
             double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
             double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
 
-            telemetry.addData("Feedforward", feedforward);
+//            telemetry.addData("Feedforward", feedforward);
 
             pitchMotor.setPower(feedforward3 + pid + feedforward2);
-            slidesMotor.setPower(-(pid2 + feedforward +(gamepad1.left_stick_x *0.5)));
-            telemetry.addData("slide power", slidesMotor.getPower());
-            telemetry.addData("Pitch Motor Position", slidesMotor.getCurrentPosition());
-            telemetry.addData("Pitch Motor Power", slidesMotor.getPower());
-            telemetry.addData("Pitch Current", slidesMotor.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Pitch Motor Angle", (slidesMotor.getCurrentPosition() - 45 ) * ticksToDegrees);
-            telemetry.update();
+//            slidesMotor.setPower(-(pid2 + feedforward +(gamepad1.left_stick_x *0.5)));
+//            telemetry.addData("slide power", slidesMotor.getPower());
+//            telemetry.addData("Pitch Motor Position", slidesMotor.getCurrentPosition());
+//            telemetry.addData("Pitch Motor Power", slidesMotor.getPower());
+//            telemetry.addData("Pitch Current", slidesMotor.getCurrent(CurrentUnit.MILLIAMPS));
+//            telemetry.addData("Pitch Motor Angle", (slidesMotor.getCurrentPosition() - 45 ) * ticksToDegrees);
+//            telemetry.update();
 
-        }
+
     }
 }
