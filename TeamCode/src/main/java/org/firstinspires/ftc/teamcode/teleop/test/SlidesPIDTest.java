@@ -18,8 +18,8 @@ public class SlidesPIDTest extends LinearOpMode {
     public DcMotorImplEx slidesMotor;
     public DcMotorImplEx pitchMotor;
 
-    public static double kG = 0.027;
-    public static double kG2 = 0.1;
+    public static double kG = 0.027; // pitch i think
+    public static double kG2 = 0.1; // slides i think
     public static double kP = 0.005;
     public static  double kI = 0;
     public static  double kD = 0.00045;

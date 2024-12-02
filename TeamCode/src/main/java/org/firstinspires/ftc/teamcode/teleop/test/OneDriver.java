@@ -6,18 +6,15 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorImpl;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.modules.PIDController;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
-@TeleOp(name = "LM2", group = "Test")
-public class TotalDepositTestBetter extends LinearOpMode {
+@TeleOp(name = "LM2 One Driver", group = "Test")
+public class OneDriver extends LinearOpMode {
     //Pitch Stuff
     public DcMotorImplEx pitchMotor;
     public DcMotorImplEx slidesMotor;
@@ -29,7 +26,7 @@ public class TotalDepositTestBetter extends LinearOpMode {
             Servo claw;
 
     public static double kG = 0.027;
-    public static double kG2 = 0.1;
+    public static double kG2 = 0.0025;
     public static double kP = 0.005;
     public static  double kI = 0;
     public static  double kD = 0.00045;//pitch constant
@@ -85,10 +82,10 @@ public class TotalDepositTestBetter extends LinearOpMode {
         slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeInInit()) {
-            flipPos = 0.98;
+            flipPos = 0.78;
             pitchControl.setCoefficients(kP, kI, kD);
             uno.setPosition(flipPos);
-            dos.setPosition(flipPos * 0.95);
+            dos.setPosition(flipPos * 0.94);
             target2 = 250;
 
 
@@ -120,13 +117,13 @@ public class TotalDepositTestBetter extends LinearOpMode {
             if (gamepad1.triangle) { //y
                 target2 = 1010; //90deg + little more
                 target=1650;
-                flipPos = 0.675;
+                flipPos = 0.525;
             } else if (gamepad1.cross) { // a
                 target2 = 300;
                 target= 400;
-                flipPos = 0.415;
+                flipPos = 0.355;
             } else if (gamepad1.circle) { // b
-                flipPos = 0.12;
+                flipPos = 0.111;
                 target2 = 130;
             }else if (gamepad1.square) { // x
                 target2 = 500;
@@ -139,12 +136,6 @@ public class TotalDepositTestBetter extends LinearOpMode {
 //            }else{
 //                slidesMotor.setPower(0);
 //            }
-
-            if (gamepad2.square){
-                target = 350;
-            }else if (gamepad2.cross){
-                target = 1650;
-            }
 
             pitchControl.setSetpoint(target2);
 
@@ -159,39 +150,28 @@ public class TotalDepositTestBetter extends LinearOpMode {
             pitchMotor.setPower(feedforward3 + pid + feedforward2);
             slidesMotor.setPower(-(pid2 + feedforward));
 
-
-
             //ALWAYS MULTIPLY THE RIGHT FLIP OR DOS BY 0.95 TO MAKE IT SYNC WITH THE LEFT DEPOSIT OR UNO
-            if(gamepad2.dpad_up){
-                flipPos = 0.8;  //flip to score
-            }else if(gamepad2.dpad_down){
-                flipPos = 0.25;//flip to pick
-            } else if (gamepad2.dpad_right) {
-                flipPos=0.525;
-            } else if (gamepad2.dpad_left) {
-                flipPos = 0.69;
-
-            }
 
 
             uno.setPosition(flipPos);
-            dos.setPosition(flipPos * 0.95);
+            dos.setPosition(flipPos * 0.94);
 
-            if (gamepad2.right_bumper){
-                claw.setPosition(0.785); //close
-            }else if(gamepad2.left_bumper){
-                claw.setPosition(0.5); //open
+
+            if (gamepad1.dpad_up){
+                rotateClaw.setPosition(0.055);
+            } else if (gamepad1.dpad_down) {
+                rotateClaw.setPosition(0.625);
+            } else if (gamepad1.dpad_left) {
+                rotateClaw.setPosition(0.35);
+            } else if (gamepad1.dpad_right) {
+                rotateClaw.setPosition(0.9625);
             }
 
-            if(gamepad2.triangle){
-                rotateClaw.setPosition(0.5);
-            }else if(gamepad2.circle){
-                rotateClaw.setPosition(0.75);
-            }else {
-                rotateClaw.setPosition(0.25);
+            if (gamepad1.right_bumper){
+                claw.setPosition(0.70); //close
+            }else if(gamepad1.left_bumper){
+                claw.setPosition(0.425); //open
             }
-
-
 
 
             telemetry.addData("Slides Power", slidesMotor.getPower());

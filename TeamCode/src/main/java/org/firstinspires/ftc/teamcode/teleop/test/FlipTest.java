@@ -53,7 +53,7 @@ Servo dos;
             }
             else{
                 uno.setPosition(gamepad1.touchpad_finger_1_x);
-                dos.setPosition(gamepad1.touchpad_finger_1_x*0.95);
+                dos.setPosition(gamepad1.touchpad_finger_1_x*0.94);
 
             }
             telemetry.addData("Uno pos", uno.getPosition());
