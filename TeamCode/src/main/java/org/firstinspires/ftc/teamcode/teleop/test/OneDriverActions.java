@@ -45,24 +45,7 @@ public class OneDriverActions implements Subsystem {
             slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
-
-
-        public Action highBasket(){
-
-            slidesControl.setCoefficients(kP2, kI2, kD2);
-            slidesControl = new PIDController(kP2, kI2, kD2);
-            final double ticksToInches = (double) 26 /ticksPerMaxExtend;
-            final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
-            slidesControl.setSetpoint(target);
-            return new Action() {
-
-
-            }
-                double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
-                double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
-                    slidesMotor.setPower(-(pid2 + feedforward));
-
-        }
+        
         public class flipUp implements Action{
             private boolean initialized = false;
 
@@ -117,14 +100,14 @@ public class OneDriverActions implements Subsystem {
             }
 
             double pos = slidesMotor.getCurrentPosition();
-            return pos==flipPos;
+            return pos>1620 && pos<1680;
         }
 
     }
     public Action extendSlide() {
         return new slidesUp();
     }
-    
+
     @Override
     public void update() {
 
