@@ -45,7 +45,7 @@ public class OneDriverActions implements Subsystem {
             slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
-        
+
         public class flipUp implements Action{
             private boolean initialized = false;
 
@@ -106,6 +106,58 @@ public class OneDriverActions implements Subsystem {
     }
     public Action extendSlide() {
         return new slidesUp();
+    }
+
+    public class slidesDown implements Action{
+        private boolean initialized = false;
+
+        public boolean run(@NonNull TelemetryPacket packet) {
+            if (!initialized) {
+                target = 400;
+                slidesControl.setCoefficients(kP2, kI2, kD2);
+                slidesControl = new PIDController(kP2, kI2, kD2);
+                final double ticksToInches = (double) 26 /ticksPerMaxExtend;
+                final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
+                slidesControl.setSetpoint(target);
+                double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
+                slidesMotor.setPower(-(pid2 + feedforward));
+                initialized = true;
+            }
+
+            double pos = slidesMotor.getCurrentPosition();
+            return pos>380 && pos<430;
+        }
+
+    }
+    public Action retractSlides() {
+        return new slidesUp();
+    }
+    public class manualSlides implements Action{
+        private boolean initialized = false;
+
+        public boolean run(@NonNull TelemetryPacket packet) {
+            if (!initialized) {
+                target = 400;
+                slidesControl.setCoefficients(kP2, kI2, kD2);
+                slidesControl = new PIDController(kP2, kI2, kD2);
+                final double ticksToInches = (double) 26 /ticksPerMaxExtend;
+                final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
+                slidesControl.setSetpoint(target);
+                double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
+                slidesMotor.setPower(-(pid2 + feedforward));
+                initialized = true;
+            }
+
+            double pos = slidesMotor.getCurrentPosition();
+            return pos>380 && pos<430;
+        }
+
+    }
+    public Action slidesManual(double amount) {
+            double target = amount;
+        return new manualSlides();
     }
 
     @Override

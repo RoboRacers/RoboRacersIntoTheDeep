@@ -23,7 +23,7 @@ public class OneDriver extends LinearOpMode {
 
     Servo rotateClaw;
 
-            Servo claw;
+    Servo claw;
 
     public static double kG = 0.027;
     public static double kG2 = 0.001;
@@ -82,7 +82,7 @@ public class OneDriver extends LinearOpMode {
         slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeInInit()) {
-            flipPos = 0.78;
+            flipPos = 0.9;
             pitchControl.setCoefficients(kP, kI, kD);
             uno.setPosition(flipPos);
             dos.setPosition(flipPos * 0.94);
@@ -116,25 +116,30 @@ public class OneDriver extends LinearOpMode {
 
             if (gamepad1.triangle) { //y
                 target2 = 1010; //90deg + little more
+//                sleep(1000);
+//                wait(1000);
                 target=1650;
                 flipPos = 0.525;
             } else if (gamepad1.cross) { // a
                 target2 = 300;
+//                sleep(1000);
+//                wait(1000);
                 target= 400;
                 flipPos = 0.355; // Down so that we can go into middle thing
             } else if (gamepad1.circle) { // b
                 flipPos = 0.111;
-                target2 = 150;  // Pick up with claw down
+//                wait(1000);
+                target2 = 250;  // Pick up with claw down
             }else if (gamepad1.square) { // x
                 target2 = 500;   // no function
             }
 
-            if(gamepad2.right_trigger>0.1){
-                target+= 100;//extend
-            } else if (gamepad2.left_trigger>0.1) {
-                target-= 100; //retract
+            if(gamepad1.right_trigger>0.1){
+                target+= 70;//extend
+            } else if (gamepad1.left_trigger>0.1) {
+                target-= 70; //retract
             }else{
-                slidesMotor.setPower(0);
+                target = target;
             }
 
             pitchControl.setSetpoint(target2);
