@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop.test;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.teamcode.modules.PIDController;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
 @TeleOp(name = "LM2 One Driver", group = "Test")
-public class OneDriver extends LinearOpMode {
+public class OneDriverActions extends LinearOpMode {
     //Pitch Stuff
     public DcMotorImplEx pitchMotor;
     public DcMotorImplEx slidesMotor;
@@ -47,6 +48,10 @@ public class OneDriver extends LinearOpMode {
 
 
     MecanumDrive drive;
+    public class pitch{
+        
+    }
+
 
     @Override
     public void runOpMode() throws InterruptedException {
