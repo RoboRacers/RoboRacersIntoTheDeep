@@ -29,6 +29,10 @@ public class PIDController {
         outputMax = max;
     }
 
+    public double getSetpoint(){
+        return setpoint;
+    }
+
     public void setCoefficients(double kP, double kI, double kD) {
         this.kP = kP;
         this.kI = kI;
