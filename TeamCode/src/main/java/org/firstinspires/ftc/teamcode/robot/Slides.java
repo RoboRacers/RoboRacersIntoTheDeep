@@ -34,7 +34,7 @@ public class Slides implements Subsystem {
 
     public final int pitchLowPosition = 400;
     public final int pitchMidPosition = 600;
-    public final int pitchHighPosition = 800;
+    public final int pitchHighPosition = 1000;
     public final int pitchPositionTolerance = 20;
 
     public enum PitchPosition {
@@ -78,6 +78,11 @@ public class Slides implements Subsystem {
         pitchMotor.setMode(DcMotorImplEx.RunMode.RUN_WITHOUT_ENCODER);
         slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        flipLeft = hardwareMap.get(Servo.class, "flipLeft");
+        flipRight = hardwareMap.get(Servo.class, "flipRight");
+        rotateClaw = hardwareMap.get(Servo.class, "rotateClaw");
+        claw = hardwareMap.get(Servo.class, "claw");
 
         slidesControl = new PIDController(slidesKP, slidesKI, slidesKD);
         pitchControl = new PIDController(kP, kI, kD);

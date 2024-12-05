@@ -26,7 +26,7 @@ public class OneDriver extends LinearOpMode {
     Servo claw;
 
     public static double kG = 0.027;
-    public static double kG2 = 0.001;
+    public static double kG2 = 0.0007;
     public static double kP = 0.005;
     public static  double kI = 0;
     public static  double kD = 0.00045;//pitch constant
@@ -92,7 +92,7 @@ public class OneDriver extends LinearOpMode {
             pitchControl.setSetpoint(target2);
 
 
-            double feedforward2 = kG2 * Math.sin(Math.toRadians((slidesMotor.getCurrentPosition()) * ticksToInches)) + 0;
+            double feedforward2 = kG2 * ((slidesMotor.getCurrentPosition()) * ticksToInches) + 0;
             double feedforward3 = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
             double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
             pitchMotor.setPower(feedforward3 + pid + feedforward2);
@@ -129,7 +129,7 @@ public class OneDriver extends LinearOpMode {
             } else if (gamepad1.circle) { // b
                 flipPos = 0.111;
 //                wait(1000);
-                target2 = 250;  // Pick up with claw down
+                target2 = 320;  // Pick up with claw down
             }else if (gamepad1.square) { // x
                 target2 = 500;   // no function
             }
