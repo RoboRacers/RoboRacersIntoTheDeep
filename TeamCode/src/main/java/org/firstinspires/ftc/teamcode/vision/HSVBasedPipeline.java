@@ -19,8 +19,8 @@ class HSVBasedPipeline extends OpenCvPipeline {
     private double targetAngle = 0;
     private int detectedObjectsCount = 0;
 
-    private final Scalar lowerYellow = new Scalar(20, 101, 95);
-    private final Scalar upperYellow = new Scalar(55, 255, 255);
+    private final Scalar lowerYellow = new Scalar(20, 100, 100);
+    private final Scalar upperYellow = new Scalar(30, 255, 255);
 
     private final Scalar lowerBlue = new Scalar(100, 150, 50);
     private final Scalar upperBlue = new Scalar(130, 255, 255);

@@ -22,13 +22,13 @@ public class HSVBased extends LinearOpMode {
     OpenCvCamera camera;
     HSVBasedPipeline pipeline;
 
-    CRServo rotateClaw;
-    Servo claw;
+//    CRServo rotateClaw;
+//    Servo claw;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        claw = hardwareMap.get(Servo.class, "claw");
-        rotateClaw = hardwareMap.get(CRServo.class, "rotateClaw");
+//        claw = hardwareMap.get(Servo.class, "claw");
+//        rotateClaw = hardwareMap.get(CRServo.class, "rotateClaw");
 
         // Initialize the camera
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -63,8 +63,8 @@ public class HSVBased extends LinearOpMode {
             // Display telemetry
             telemetry.addData("Target Angle (Radians)", targetAngle);
 //            telemetry.addData("Detected Objects", detectedObjects);
-            telemetry.addData("Claw Position", claw.getPosition());
-            telemetry.addData("Rotate Claw Direction", rotateClaw.getDirection());
+//            telemetry.addData("Claw Position", claw.getPosition());
+//            telemetry.addData("Rotate Claw Direction", rotateClaw.getDirection());
             telemetry.addData("Detected Objects", pipeline.getDetectedObjectsCount());
             telemetry.update();
 
