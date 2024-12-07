@@ -75,22 +75,12 @@ ElapsedTime elapsedTime;
 
 
             if (gamepad1.triangle) { //y
+                assembly.anglePitch(1010);
 
-                Actions.runBlocking(
-                        new SequentialAction(
-                                (p)->{
-                                    assembly.anglePitch(1010);
+                Thread.sleep(1500);
+                assembly.flipMid();
+                assembly.slidesManual(1650);
 
-
-                                    return assembly.pitchMotor.isBusy();
-                                },
-                                new SleepAction(1.5),
-                        (p)->{
-                                    assembly.slidesManual(1650);
-                            return assembly.slidesMotor.isBusy();
-                        }
-                        )
-                );
 //                target2 = 1010; //90deg + little more
 ////                sleep(1000);
 ////                wait(1000);
@@ -103,80 +93,55 @@ ElapsedTime elapsedTime;
 ////                wait(1000);
 //                target= 400;
 //                flipPos = 0.355; // Down so that we can go into middle thing
-                Actions.runBlocking(
-                        new SequentialAction(
-                                (p)->{
-                                    assembly.anglePitch(300);
-                                    return assembly.pitchMotor.isBusy();
-                                },
-                                new SleepAction(1),
-                                (p)->{
-                                    assembly.slidesManual(400);
-                                    assembly.flipMid();
-                                    return assembly.slidesMotor.isBusy();
-                                }
-                        )
-                );
+                assembly.anglePitch(300);
+                Thread.sleep(1500);
+                assembly.flipMid();
+                assembly.slidesManual(400);
+
             } else if (gamepad1.circle) { // b
 //                flipPos = 0.111;
 ////                wait(1000);
 //                target = 450;
 //                target2 = 270;  // Pick up with claw down
-                Actions.runBlocking(
-                        new SequentialAction(
-                                (p)->{
-                                    assembly.anglePitch(270);
 
+                assembly.anglePitch(270);
+                Thread.sleep(1500);
+                assembly.slidesManual(450);
+                assembly.flipDown();
 
-                                    return assembly.pitchMotor.isBusy();
-                                },
-                                new SleepAction(1),
-                                (p)->{
-                                    assembly.slidesManual(450);
-                                    assembly.flipDown();
-                                    return assembly.slidesMotor.isBusy();
-                                }
-                        )
-                );
             }else if (gamepad1.square) { // x
 //                target2 = 500;   // no function
-                Actions.runBlocking(
-                        new SequentialAction(
-                                (p)->{
-                                    assembly.anglePitch(500);
 
+                assembly.anglePitch(500);
 
-                                    return assembly.pitchMotor.isBusy();
-                                }
-                        )
-                );
             }
 
-//            if(gamepad1.right_trigger>0.1){
-//                target+= 70;//extend
-//            } else if (gamepad1.left_trigger>0.1) {
-//                target-= 70; //retract
-//            }else{
-//                target = target;
-//
+            if(gamepad1.right_trigger>0.1){
+               assembly.extendSlide(Assembly.SlidesPosition.MANUALUP);//extend
+            } else if (gamepad1.left_trigger>0.1) {
+                assembly.extendSlide(Assembly.SlidesPosition.MANUALDOWN); //retract
+            }
+
 //            //ALWAYS MULTIPLY THE RIGHT FLIP OR DOS BY 0.95 TO MAKE IT SYNC WITH THE LEFT DEPOSIT OR UNO
 //
 //
-//            if (gamepad1.dpad_up){
-//                rotateClaw.setPosition(0.05);
-//            } else if (gamepad1.dpad_down) {
+            if (gamepad1.dpad_up){
+                assembly.rotateClaw(0.1);
+            } else if (gamepad1.dpad_down) {
+                assembly.rotateClaw(0.5);
 //                rotateClaw.setPosition(0.6);
-//            } else if (gamepad1.dpad_left) {
+            } else if (gamepad1.dpad_left) {
+                assembly.rotateClaw(0.3);
 //                rotateClaw.setPosition(0.35);
-//            } else if (gamepad1.dpad_right) {
-//                rotateClaw.setPosition(0.96);
-//            }
+            } else if (gamepad1.dpad_right) {
+                assembly.rotateClaw(0.9);
+            }
 
-//            if (gamepad1.right_bumper){
-//                claw.setPosition(0.45); //close
-//            }else if(gamepad1.left_bumper){
-//                claw.setPosition(0.175); //open
-//            }
+            if (gamepad1.right_bumper){
+                assembly.clawClose();//close
+            }else if(gamepad1.left_bumper){
+                assembly.clawOpen(); //open
+            }
 
             assembly.update();
 

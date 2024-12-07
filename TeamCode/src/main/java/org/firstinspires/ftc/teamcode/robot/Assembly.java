@@ -66,7 +66,9 @@ public class Assembly implements Subsystem {
     public enum SlidesPosition {
         DOWN,
         MID,
-        HIGH
+        HIGH,
+        MANUALUP,
+        MANUALDOWN
     }
 
     public Assembly(HardwareMap hardwareMap) {
@@ -107,6 +109,7 @@ public class Assembly implements Subsystem {
             return false;
         };
     }
+
 
     public Action flipMid() {
         return telemetryPacket -> {
@@ -162,6 +165,12 @@ public class Assembly implements Subsystem {
                     break;
                 case HIGH:
                     slidesTarget = slidesHighPosition;
+                    break;
+                case MANUALUP:
+                    slidesTarget+=75;
+                    break;
+                case MANUALDOWN:
+                    slidesTarget-=75;
                     break;
             }
             slidesControl.setSetpoint(slidesTarget);
