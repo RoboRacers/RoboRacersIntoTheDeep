@@ -62,8 +62,12 @@ public class LM2subsystems extends LinearOpMode {
         resetRuntime();
 
         while (opModeInInit()) {
-            assembly.flipUp();
-            assembly.anglePitch(300);
+            runningActions.add(
+                    new SequentialAction(
+                            assembly.anglePitch(300),
+                            assembly.flipUp()
+                    )
+            );
             assembly.update();
         }
 
@@ -80,7 +84,7 @@ public class LM2subsystems extends LinearOpMode {
                 runningActions.add(
                         new SequentialAction(
                                 assembly.anglePitch(1010),
-                                new SleepAction(1500),
+                                new SleepAction(1.5),
                                 assembly.flipMid()
                         )
                 );
@@ -88,7 +92,7 @@ public class LM2subsystems extends LinearOpMode {
                 runningActions.add(
                         new SequentialAction(
                                 assembly.anglePitch(300),
-                                new SleepAction(1500),
+                                new SleepAction(1.5),
                                 assembly.flipMid()
                         )
                 );
@@ -120,73 +124,89 @@ public class LM2subsystems extends LinearOpMode {
 
 
             if (gamepad1.triangle) { //y
+                runningActions.add(
+                        new SequentialAction(
+                                assembly.anglePitch(1010),
+                                new SleepAction(1.5),
+                                assembly.flipMid(),
+                                assembly.extendSlide(1650)
+                        )
+                );
 
-                assembly.anglePitch(1010).run(new TelemetryPacket());
-
-                Thread.sleep(1500);
-                assembly.flipMid();
-                assembly.slidesManual(1650);
-
-//                target2 = 1010; //90deg + little more
-////                sleep(1000);
-////                wait(1000);
-//                target=1650;
-//                flipPos = 0.525;
-//
             } else if (gamepad1.cross) { // a
-//                target2 = 300;
-////                sleep(1000);
-////                wait(1000);
-//                target= 400;
-//                flipPos = 0.355; // Down so that we can go into middle thing
-                assembly.anglePitch(300);
-                Thread.sleep(1500);
-                assembly.flipMid();
-                assembly.slidesManual(400);
+                runningActions.add(new SequentialAction(
+                        assembly.anglePitch(300),
+                        new SleepAction(1.5),
+                        assembly.flipMid(),
+                        assembly.extendSlide(400)
+                ));
 
             } else if (gamepad1.circle) { // b
-//                flipPos = 0.111;
-////                wait(1000);
-//                target = 450;
-//                target2 = 270;  // Pick up with claw down
+                runningActions.add(new SequentialAction(
+                        assembly.flipDown(),
+                        new SleepAction(1.5),
+                        assembly.anglePitch(270)
+//                        assembly.extendSlide(400)
+                ));
 
-                assembly.anglePitch(270);
-                Thread.sleep(1500);
-                assembly.slidesManual(450);
-                assembly.flipDown();
 
             }else if (gamepad1.square) { // x
-//                target2 = 500;   // no function
+                runningActions.add(new SequentialAction(
+                        assembly.anglePitch(Assembly.PitchPosition.HIGH),
+                        new SleepAction(1),
+                        assembly.extendSlide(100),
+                        assembly.flipUp()
+                ));
 
-                assembly.anglePitch(500).run(new TelemetryPacket());
+//                assembly.anglePitch(500).run(new TelemetryPacket());
 
             }
 
             if(gamepad1.right_trigger>0.1){
-               assembly.extendSlide(Assembly.SlidesPosition.MANUALUP);//extend
+               runningActions.add(
+                       new SequentialAction(
+                assembly.extendSlide(Assembly.SlidesPosition.MANUALUP)
+                       )//extend
+                );
             } else if (gamepad1.left_trigger>0.1) {
-                assembly.extendSlide(Assembly.SlidesPosition.MANUALDOWN); //retract
+                runningActions.add(
+                        new SequentialAction(
+                                assembly.extendSlide(Assembly.SlidesPosition.MANUALDOWN)
+                        )//retract
+                );
             }
 
 //            //ALWAYS MULTIPLY THE RIGHT FLIP OR DOS BY 0.95 TO MAKE IT SYNC WITH THE LEFT DEPOSIT OR UNO
 //
 //
             if (gamepad1.dpad_up){
-                assembly.rotateClaw(0.1);
+                runningActions.add(
+                        new SequentialAction(
+                assembly.rotateClaw(0.1)));
             } else if (gamepad1.dpad_down) {
-                assembly.rotateClaw(0.5);
+                runningActions.add(
+                        new SequentialAction(
+                assembly.rotateClaw(0.5)));
 //                rotateClaw.setPosition(0.6);
             } else if (gamepad1.dpad_left) {
-                assembly.rotateClaw(0.3);
+                runningActions.add(
+                        new SequentialAction(
+                assembly.rotateClaw(0.3)));
 //                rotateClaw.setPosition(0.35);
             } else if (gamepad1.dpad_right) {
-                assembly.rotateClaw(0.9);
+                runningActions.add(
+                        new SequentialAction(
+                assembly.rotateClaw(0.9)));
             }
 
             if (gamepad1.right_bumper){
-                assembly.clawClose();//close
+                runningActions.add(
+                        new SequentialAction(
+                assembly.clawClose()));//close
             }else if(gamepad1.left_bumper){
-                assembly.clawOpen(); //open
+                runningActions.add(
+                        new SequentialAction(
+                assembly.clawOpen())); //open
             }
 
             assembly.update();
