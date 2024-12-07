@@ -129,7 +129,8 @@ public class OneDriver extends LinearOpMode {
             } else if (gamepad1.circle) { // b
                 flipPos = 0.111;
 //                wait(1000);
-                target2 = 320;  // Pick up with claw down
+                target = 450;
+                target2 = 270;  // Pick up with claw down
             }else if (gamepad1.square) { // x
                 target2 = 500;   // no function
             }
@@ -173,9 +174,9 @@ public class OneDriver extends LinearOpMode {
             }
 
             if (gamepad1.right_bumper){
-                claw.setPosition(0.70); //close
+                claw.setPosition(0.45); //close
             }else if(gamepad1.left_bumper){
-                claw.setPosition(0.425); //open
+                claw.setPosition(0.175); //open
             }
 
 

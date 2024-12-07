@@ -15,8 +15,8 @@ public class Assembly implements Subsystem {
     Servo flipRight;
 
     Servo claw;
-    final double clawOpen = 0.175;
-    final double clawClose = 0.450;
+    final double clawOpen = 0.05;
+    final double clawClose = 0.37;
 
     Servo rotateClaw;
 
@@ -60,7 +60,7 @@ public class Assembly implements Subsystem {
 
     public final int slidesLowPosition = 400;
     public final int slidesMidPosition = 800;
-    public final int slidesHighPosition = 1650;
+    public final int slidesHighPosition = 1700;
     public final int slidesPositionTolerance = 20;
 
     public enum SlidesPosition {
@@ -92,7 +92,7 @@ public class Assembly implements Subsystem {
 
     public Action flipUp() {
         return telemetryPacket -> {
-            flipPos = 0.8;
+            flipPos = 0.75;
             flipLeft.setPosition(flipPos);
             flipRight.setPosition(flipPos * 0.94);
             return false;
@@ -101,7 +101,16 @@ public class Assembly implements Subsystem {
 
     public Action flipDown() {
         return telemetryPacket -> {
-            flipPos = 0.25;
+            flipPos = 0.115;
+            flipLeft.setPosition(flipPos);
+            flipRight.setPosition(flipPos*0.94);
+            return false;
+        };
+    }
+
+    public Action flipMid() {
+        return telemetryPacket -> {
+            flipPos = 0.575;
             flipLeft.setPosition(flipPos);
             flipRight.setPosition(flipPos*0.94);
             return false;
