@@ -1,41 +1,26 @@
 package org.firstinspires.ftc.teamcode.vision;
 
-import org.firstinspires.ftc.teamcode.vision.HSVBasedPipeline;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.opencv.core.*;
-import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@TeleOp(name = "HSV Vision OpMode", group = "Vision")
-public class HSVBased extends LinearOpMode {
+@TeleOp(name = "Enhanced HSV and Angle Detection OpMode", group = "Vision")
+public class EnhancedHSVAndAngleDetection extends LinearOpMode {
     OpenCvCamera camera;
-    HSVBasedPipeline pipeline;
-
-    CRServo rotateClaw;
-    Servo claw;
+    CombinedHSVAndAnglePipeline pipeline;
 
     @Override
-    public void runOpMode() throws InterruptedException {
-        claw = hardwareMap.get(Servo.class, "claw");
-        rotateClaw = hardwareMap.get(CRServo.class, "rotateClaw");
-
+    public void runOpMode() {
         // Initialize the camera
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
         // Initialize the pipeline
-        pipeline = new HSVBasedPipeline();
+        pipeline = new CombinedHSVAndAnglePipeline();
         camera.setPipeline(pipeline);
 
         // Open the camera
@@ -52,7 +37,6 @@ public class HSVBased extends LinearOpMode {
             }
         });
 
-        // Wait for the start button to be pressed
         waitForStart();
 
         while (opModeIsActive()) {
@@ -63,17 +47,11 @@ public class HSVBased extends LinearOpMode {
             // Display telemetry
             telemetry.addData("Target Angle (Radians)", targetAngle);
             telemetry.addData("Detected Objects", detectedObjects);
-            telemetry.addData("Claw Position", claw.getPosition());
-            telemetry.addData("Rotate Claw Direction", rotateClaw.getDirection());
-            telemetry.addData("Detected Objects", pipeline.getDetectedObjectsCount());
-            telemetry.addData("angle", pipeline.getTargetAngle());
             telemetry.update();
 
-            // Reduce CPU usage
-            sleep(100);
+            sleep(100); // Reduce CPU usage
         }
 
-        // Stop the camera when the OpMode ends
         camera.stopStreaming();
     }
 }
