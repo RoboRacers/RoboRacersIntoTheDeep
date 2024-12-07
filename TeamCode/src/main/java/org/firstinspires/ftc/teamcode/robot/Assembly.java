@@ -34,7 +34,7 @@ public class Assembly implements Subsystem {
 
     public final int pitchLowPosition = 300;
     public final int pitchMidPosition = 600;
-    public final int pitchHighPosition = 1000;
+    public final int pitchHighPosition = 1100;
     public final int pitchPositionTolerance = 20;
 
     public enum PitchPosition {

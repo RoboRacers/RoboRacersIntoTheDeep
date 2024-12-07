@@ -50,33 +50,40 @@ public class FourSampleAuto extends LinearOpMode {
 
 //                        new SleepAction(2)
                 ))
-                .splineTo(new Vector2d(7, 36), Math.toRadians(-45))
+                .splineTo(new Vector2d(11, 35), Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
                         new SleepAction(2),
                         assembly.extendSlide(Assembly.SlidesPosition.HIGH),
                         new SleepAction(1),
                         assembly.flipMid(),
-                        new SleepAction(1),
+                        new SleepAction(1.5),
                         assembly.clawOpen(),
-                        new SleepAction(2000)
-                ))
-                .splineTo(new Vector2d(9, 40), Math.toRadians(-45))
-                        .stopAndAdd(new SequentialAction(
-                                new SleepAction(4),
-                                assembly.flipDown(),
-                                new SleepAction(1),
-//                                assembly.flipDown(),
-                                assembly.extendSlide(Assembly.SlidesPosition.DOWN),
-                                new SleepAction(2),
-                                assembly.anglePitch(Assembly.PitchPosition.DOWN)
-                        ))
-
-                .strafeToLinearHeading(new Vector2d(23,31),0)
-                .stopAndAdd(new SequentialAction(
+                        new SleepAction(1),
                         assembly.flipDown(),
                         new SleepAction(1),
-                        assembly.clawClose()
+                        assembly.extendSlide(450),
+                        new SleepAction(2),
+                        assembly.anglePitch(Assembly.PitchPosition.DOWN),
+                        new SleepAction(3)
+                ))
+                .splineTo(new Vector2d(25, 33), Math.toRadians(0))
+                .stopAndAdd(new SequentialAction(
+                        assembly.anglePitch(125),
+                        new SleepAction(1),
+                        assembly.clawClose(),
+                        new SleepAction(1)
+                ))
+                .strafeToLinearHeading(new Vector2d(11, 35), Math.toRadians(-45))
+                .stopAndAdd(new SequentialAction(
+                        assembly.anglePitch(Assembly.PitchPosition.HIGH),
+                        new SleepAction(1),
+                        assembly.extendSlide(Assembly.SlidesPosition.HIGH),
+                        new SleepAction(1),
+                        assembly.flipMid(),
+                        new SleepAction(1.5),
+                        assembly.clawOpen(),
+                        new SleepAction(1000)
                 ))
                 .strafeToLinearHeading(new Vector2d(10, 40), 325)
                 .stopAndAdd(new SequentialAction(
