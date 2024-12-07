@@ -32,7 +32,7 @@ public class Slides implements Subsystem {
     public static  double kD = 0.00045;//pitch constant
     PIDController pitchControl;
 
-    public final int pitchLowPosition = 400;
+    public final int pitchLowPosition = 300;
     public final int pitchMidPosition = 600;
     public final int pitchHighPosition = 1000;
     public final int pitchPositionTolerance = 20;

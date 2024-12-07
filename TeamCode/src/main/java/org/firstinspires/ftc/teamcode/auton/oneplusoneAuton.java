@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.auton;
 
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -38,8 +39,9 @@ public class oneplusoneAuton extends LinearOpMode {
         }
 
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-//        assembly = new Slides(hardwareMap);
+        assembly = new Slides(hardwareMap);
         runtime.reset();
+        waitForStart();
 
         Action traj1 = drive.actionBuilder(new Pose2d(0,0,0))
                 .strafeToLinearHeading(new Vector2d(10, 40), 325)
@@ -57,37 +59,49 @@ public class oneplusoneAuton extends LinearOpMode {
 //                .strafeToLinearHeading(new Vector2d(10, 40), 325)
 //                .build();
 
-        Actions.runBlocking(new SequentialAction(
-//                assembly.clawClose(),
-//                assembly.extendSlide(Slides.SlidesPosition.DOWN),
-//                assembly.anglePitch(Slides.PitchPosition.DOWN),
-                traj1,
-//                assembly.anglePitch(Slides.PitchPosition.HIGH),
-//                new SleepAction(1000),
-//                assembly.extendSlide(Slides.SlidesPosition.HIGH),
-//                new SleepAction(500),
-//                assembly.flipUp(),
-//                new SleepAction(1000),
-//                assembly.clawOpen(),
-//                new SleepAction(1000),
-//                assembly.flipDown(),
-//                assembly.extendSlide(Slides.SlidesPosition.DOWN),
-//                new SleepAction(1000),
-//                assembly.anglePitch(Slides.PitchPosition.DOWN),
-                traj2,
-//                assembly.flipDown(),
-//                new SleepAction(1000),
-//                assembly.clawClose(),
-                traj3
-//                assembly.anglePitch(Slides.PitchPosition.HIGH),
-//                new SleepAction(1000),
-//                assembly.extendSlide(Slides.SlidesPosition.HIGH),
-//                new SleepAction(1000),
-//                assembly.flipUp(),
-//                new SleepAction(1000),
-//                assembly.clawOpen(),
-//                new SleepAction(1000)
-        ));
 
+
+
+        Actions.runBlocking(new SequentialAction(
+                assembly.clawClose(),
+                assembly.extendSlide(Slides.SlidesPosition.DOWN),
+                assembly.anglePitch(Slides.PitchPosition.DOWN),
+                traj1,
+                assembly.anglePitch(Slides.PitchPosition.HIGH),
+                new SleepAction(1000),
+                assembly.extendSlide(Slides.SlidesPosition.HIGH),
+                new SleepAction(500),
+                assembly.flipUp(),
+                new SleepAction(1000),
+                assembly.clawOpen(),
+                new SleepAction(1000),
+                assembly.flipDown(),
+                assembly.extendSlide(Slides.SlidesPosition.DOWN),
+                new SleepAction(1000),
+                assembly.anglePitch(Slides.PitchPosition.DOWN),
+                traj2,
+                assembly.flipDown(),
+                new SleepAction(1000),
+                assembly.clawClose(),
+                traj3,
+                assembly.anglePitch(Slides.PitchPosition.HIGH),
+                new SleepAction(1000),
+                assembly.extendSlide(Slides.SlidesPosition.HIGH),
+                new SleepAction(1000),
+                assembly.flipUp(),
+                new SleepAction(1000),
+                assembly.clawOpen(),
+                new SleepAction(1000)
+        ));
+        while (opModeIsActive()) {
+
+
+
+            telemetry.update();
+
+            TelemetryPacket packet = new TelemetryPacket();
+            packet.fieldOverlay().setStroke("#3F51B5");
+            //  Drawing.drawRobot(packet.fieldOverlay(), drive.pose);
+        }
     }
 }
