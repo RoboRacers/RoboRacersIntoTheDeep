@@ -52,7 +52,7 @@ public class SpecimenAuton extends LinearOpMode {
 
 //                        new SleepAction(2)
                 ))
-                .splineToLinearHeading(new Pose2d(38,0,Math.toRadians(180)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(38,10,Math.toRadians(180)),Math.toRadians(180))
 
 //           above or this one     .splineToLinearHeading(new Pose2d(11,34,Math.toRadians(0)),Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
@@ -61,27 +61,24 @@ public class SpecimenAuton extends LinearOpMode {
                         new SleepAction(1),
                         assembly.extendSlide(Assembly.SlidesPosition.MID),
                         new SleepAction(1),
-                        assembly.flipMid(),
+                        assembly.flipUp(),
                         new SleepAction(0.5),
-                        assembly.clawOpen(),
-                        new SleepAction(0.5),
-                        assembly.flipDown(),
-                        assembly.extendSlide(450),
-                        new SleepAction(1),
-                        assembly.anglePitch(Assembly.PitchPosition.DOWN)
+                        assembly.extendSlide(Assembly.SlidesPosition.DOWN),
+                        new SleepAction(0.25),
+                        assembly.clawOpen()
                 ))
                 // To pick up 1st sample(right side) on floor
-                .strafeToLinearHeading(new Vector2d(25, 32), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(10, -32), Math.toRadians(0))
                 .stopAndAdd(new SequentialAction(
-                        assembly.anglePitch(135),
+                        assembly.extendSlide(100),
                         new SleepAction(1),
-                        assembly.clawClose(),
-                        new SleepAction(0.5),
-                        assembly.anglePitch(Assembly.PitchPosition.DOWN)
+                        assembly.anglePitch(1150)
                 ))
+                .strafeToLinearHeading(new Vector2d(3, -32), Math.toRadians(0))
                 // To drop 1st sample from floor into high basket
-                .strafeToLinearHeading(new Vector2d(7, 36), Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
+                        assembly.clawClose(),
+                        new SleepAction(1000),
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
                         new SleepAction(1),
                         assembly.extendSlide(Assembly.SlidesPosition.HIGH),
