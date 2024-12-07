@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
@@ -19,14 +21,20 @@ import org.firstinspires.ftc.teamcode.modules.PIDController;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.Assembly;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @TeleOp(name = "LM2 Subsystems", group = "Test")
 public class LM2subsystems extends LinearOpMode {
     //Pitch Stuff
 
     Assembly assembly;
 
-ElapsedTime elapsedTime;
+    ElapsedTime elapsedTime;
     MecanumDrive drive;
+
+    private FtcDashboard dash = FtcDashboard.getInstance();
+    private List<Action> runningActions = new ArrayList<>();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -64,6 +72,28 @@ ElapsedTime elapsedTime;
         resetRuntime();
 
         while (!isStopRequested()) {
+            TelemetryPacket packet = new TelemetryPacket();
+
+            // updated based on gamepads
+
+            if (gamepad1.triangle) { //y
+                runningActions.add(
+                        new SequentialAction(
+                                assembly.anglePitch(1010),
+                                new SleepAction(1500),
+                                assembly.flipMid()
+                        )
+                );
+            } else if (gamepad1.cross) { // a
+                runningActions.add(
+                        new SequentialAction(
+                                assembly.anglePitch(300),
+                                new SleepAction(1500),
+                                assembly.flipMid()
+                        )
+                );
+            }
+
             drive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
                             -gamepad1.left_stick_y,
@@ -73,9 +103,25 @@ ElapsedTime elapsedTime;
             ));
             drive.updatePoseEstimate();
 
+            // update running actions
+            List<Action> newActions = new ArrayList<>();
+            for (Action action : runningActions) {
+                action.preview(packet.fieldOverlay());
+                if (action.run(packet)) {
+                    newActions.add(action);
+                }
+            }
+            runningActions = newActions;
+            //
+
+            dash.sendTelemetryPacket(packet);
+
+
+
 
             if (gamepad1.triangle) { //y
-                assembly.anglePitch(1010);
+
+                assembly.anglePitch(1010).run(new TelemetryPacket());
 
                 Thread.sleep(1500);
                 assembly.flipMid();
@@ -112,7 +158,7 @@ ElapsedTime elapsedTime;
             }else if (gamepad1.square) { // x
 //                target2 = 500;   // no function
 
-                assembly.anglePitch(500);
+                assembly.anglePitch(500).run(new TelemetryPacket());
 
             }
 
