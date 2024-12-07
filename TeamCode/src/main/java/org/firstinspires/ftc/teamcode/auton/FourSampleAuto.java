@@ -50,7 +50,9 @@ public class FourSampleAuto extends LinearOpMode {
 
 //                        new SleepAction(2)
                 ))
-                .splineTo(new Vector2d(11, 35), Math.toRadians(-45))
+                .splineToLinearHeading(new Pose2d(11,34,Math.toRadians(-45)),Math.toRadians(-45))
+
+//           above or this one     .splineToLinearHeading(new Pose2d(11,34,Math.toRadians(0)),Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
                         new SleepAction(2),

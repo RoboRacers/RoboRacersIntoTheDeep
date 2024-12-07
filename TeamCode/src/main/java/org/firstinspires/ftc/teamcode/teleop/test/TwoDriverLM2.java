@@ -6,18 +6,15 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorImpl;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.modules.PIDController;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
-@TeleOp(name = "LM2", group = "Test")
-public class TotalDepositTestBetter extends LinearOpMode {
+@TeleOp(name = "2 Drivers LM2", group = "Test")
+public class TwoDriverLM2 extends LinearOpMode {
     //Pitch Stuff
     public DcMotorImplEx pitchMotor;
     public DcMotorImplEx slidesMotor;
