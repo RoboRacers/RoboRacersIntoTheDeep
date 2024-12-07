@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.modules.PIDController;
 
 //@TeleOp(name = "LM2 One Driver", group = "Test")
-public class Slides implements Subsystem {
+public class Assembly implements Subsystem {
 
     Servo flipLeft;
     Servo flipRight;
@@ -69,7 +69,7 @@ public class Slides implements Subsystem {
         HIGH
     }
 
-    public Slides(HardwareMap hardwareMap) {
+    public Assembly(HardwareMap hardwareMap) {
         slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
         pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
         flipLeft = hardwareMap.get(Servo.class, "flipLeft");
@@ -207,6 +207,17 @@ public class Slides implements Subsystem {
 
     @Override
     public void update() {
+        // Pitch Code
+        pitchControl.setSetpoint(pitchTarget);
+        double feedforward2 = kG2 * (slidesMotor.getCurrentPosition() * ticksToInches) + 0;
+        double feedforward3 = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+        double pidPitch = pitchControl.calculate(pitchMotor.getCurrentPosition());
+        pitchMotor.setPower(feedforward3 + pidPitch + feedforward2);
+        // Slides Code
+        slidesControl.setSetpoint(slidesTarget);
+        double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+        double pidSlides = slidesControl.calculate(slidesMotor.getCurrentPosition());
+        slidesMotor.setPower(-(pidSlides + feedforward));
     }
 
     public void slidesManual(double value) {
