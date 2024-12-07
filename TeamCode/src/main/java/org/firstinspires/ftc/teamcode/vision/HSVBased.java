@@ -27,7 +27,6 @@ public class HSVBased extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-
         claw = hardwareMap.get(Servo.class, "claw");
         rotateClaw = hardwareMap.get(CRServo.class, "rotateClaw");
 
@@ -43,7 +42,6 @@ public class HSVBased extends LinearOpMode {
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                // Optionally start streaming the camera feed to the viewport
                 camera.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
             }
 
@@ -58,27 +56,19 @@ public class HSVBased extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            // Allow the user to change the target color with gamepad buttons
-            if (gamepad1.triangle) {
-                pipeline.setTargetColor("Blue");
-            } else if (gamepad1.cross) {
-                pipeline.setTargetColor("Red");
-            } else if (gamepad1.square) {
-                pipeline.setTargetColor("Yellow");
-            }
-
-            // Get target angle from the pipeline
+            // Get target angle and detected objects count
             double targetAngle = pipeline.getTargetAngle();
+            int detectedObjects = pipeline.getDetectedObjectsCount();
 
             // Display telemetry
-            telemetry.addData("Target Color", pipeline.getTargetColor());
-            telemetry.addData("Target Angle", targetAngle);
+            telemetry.addData("Target Angle (Radians)", targetAngle);
+//            telemetry.addData("Detected Objects", detectedObjects);
+            telemetry.addData("Claw Position", claw.getPosition());
+            telemetry.addData("Rotate Claw Direction", rotateClaw.getDirection());
             telemetry.addData("Detected Objects", pipeline.getDetectedObjectsCount());
-            telemetry.addData("Claw Value", claw.getPosition());
-            telemetry.addData("Rotate Value", rotateClaw.getDirection());
             telemetry.update();
 
-            // Sleep to reduce CPU usage
+            // Reduce CPU usage
             sleep(100);
         }
 
