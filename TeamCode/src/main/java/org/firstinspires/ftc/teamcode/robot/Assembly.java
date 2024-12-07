@@ -34,7 +34,7 @@ public class Assembly implements Subsystem {
 
     public final int pitchLowPosition = 300;
     public final int pitchMidPosition = 600;
-    public final int pitchHighPosition = 1090;
+    public final int pitchHighPosition = 1050;
     public final int pitchPositionTolerance = 20;
 
     public enum PitchPosition {
@@ -59,8 +59,8 @@ public class Assembly implements Subsystem {
     final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
 
     public final int slidesLowPosition = 400;
-    public final int slidesMidPosition = 800;
-    public final int slidesHighPosition = 1700;
+    public final int slidesMidPosition = 1500;
+    public final int slidesHighPosition = 1750;
     public final int slidesPositionTolerance = 20;
 
     public enum SlidesPosition {
@@ -101,7 +101,7 @@ public class Assembly implements Subsystem {
 
     public Action flipDown() {
         return telemetryPacket -> {
-            flipPos = 0.115;
+            flipPos = 0.130;
             flipLeft.setPosition(flipPos);
             flipRight.setPosition(flipPos*0.94);
             return false;
