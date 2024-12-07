@@ -98,18 +98,40 @@ class HSVBasedPipeline extends OpenCvPipeline {
 
         // Process the largest valid contour (if any)
         if (largestContour != null) {
-            Rect boundingBox = Imgproc.boundingRect(largestContour);
-            Point center = new Point(
-                    boundingBox.x + boundingBox.width / 2.0,
-                    boundingBox.y + boundingBox.height / 2.0
-            );
+            // Get the rotated rectangle using minAreaRect
+            RotatedRect rotatedRect = Imgproc.minAreaRect(new MatOfPoint2f(largestContour.toArray()));
 
+            // Get the 4 vertices of the rotated rectangle
+            Point[] points = new Point[4];
+            rotatedRect.points(points);
+
+            // Draw the rotated rectangle
+            for (int i = 0; i < 4; i++) {
+                Imgproc.line(input, points[i], points[(i + 1) % 4], new Scalar(0, 255, 0), 2);
+            }
+
+            // Calculate the center of the rotated bounding box
+            Point center = rotatedRect.center;
+
+            // Draw the center point
+            Imgproc.circle(input, center, 5, new Scalar(255, 0, 0), -1);
+
+            // Extract the angle of the rotated rectangle
+            double angle = rotatedRect.angle;
+
+            // Ensure the angle is within the range of -90 to 0 degrees (standard for rotated rectangles)
+            if (angle < -45) {
+                angle += 90;
+            }
+
+            // Draw the angle on the image
+            String angleText = String.format("Angle: %.2f", angle);
+            Imgproc.putText(input, angleText, new Point(center.x - 50, center.y - 20),
+                    Imgproc.FONT_HERSHEY_SIMPLEX, 0.8, new Scalar(0, 255, 0), 2);
+
+            // Calculate target angle (relative to the center of the frame)
             double frameCenterX = input.width() / 2.0;
             targetAngle = Math.atan2(center.x - frameCenterX, input.height());
-
-            // Draw the bounding box and center point
-            Imgproc.rectangle(input, boundingBox, new Scalar(0, 255, 0), 2);
-            Imgproc.circle(input, center, 5, new Scalar(255, 0, 0), -1);
         }
 
         // Return the processed frame for display

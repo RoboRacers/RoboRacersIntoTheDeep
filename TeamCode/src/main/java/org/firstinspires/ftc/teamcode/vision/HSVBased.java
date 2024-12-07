@@ -66,6 +66,7 @@ public class HSVBased extends LinearOpMode {
 //            telemetry.addData("Claw Position", claw.getPosition());
 //            telemetry.addData("Rotate Claw Direction", rotateClaw.getDirection());
             telemetry.addData("Detected Objects", pipeline.getDetectedObjectsCount());
+            telemetry.addData("angle", pipeline.getTargetAngle());
             telemetry.update();
 
             // Reduce CPU usage
