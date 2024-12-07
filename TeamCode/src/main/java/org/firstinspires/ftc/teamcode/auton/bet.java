@@ -22,8 +22,8 @@ import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.Slides;
 
 
-@Autonomous(name = "1+1 Auton", group = "Test")
-public class oneplusoneAuton extends LinearOpMode {
+@Autonomous(name = "1+1 bet", group = "Test")
+public class bet extends LinearOpMode {
 
     MecanumDrive drive;
     Slides assembly;
@@ -34,11 +34,11 @@ public class oneplusoneAuton extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         while (!isStopRequested()){
-        telemetry.addData("runnung", "running");
+
         }
 
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-//        assembly = new Slides(hardwareMap);
+        assembly = new Slides(hardwareMap);
         runtime.reset();
 
         Action traj1 = drive.actionBuilder(new Pose2d(0,0,0))
@@ -53,40 +53,24 @@ public class oneplusoneAuton extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(10, 40), 325)
                 .build();
 
-//        Action traj4 = drive.actionBuilder(new Pose2d(23, 31, 0))
-//                .strafeToLinearHeading(new Vector2d(10, 40), 325)
-//                .build();
-
+        Action traj4 = drive.actionBuilder(new Pose2d(23, 31, 0))
+                .strafeToLinearHeading(new Vector2d(10, 40), 325)
+                .build();
         Actions.runBlocking(new SequentialAction(
-//                assembly.clawClose(),
-//                assembly.extendSlide(Slides.SlidesPosition.DOWN),
-//                assembly.anglePitch(Slides.PitchPosition.DOWN),
+                assembly.clawClose(),
                 traj1,
-//                assembly.anglePitch(Slides.PitchPosition.HIGH),
-//                new SleepAction(1000),
-//                assembly.extendSlide(Slides.SlidesPosition.HIGH),
-//                new SleepAction(500),
-//                assembly.flipUp(),
-//                new SleepAction(1000),
-//                assembly.clawOpen(),
-//                new SleepAction(1000),
-//                assembly.flipDown(),
-//                assembly.extendSlide(Slides.SlidesPosition.DOWN),
-//                new SleepAction(1000),
-//                assembly.anglePitch(Slides.PitchPosition.DOWN),
+                assembly.anglePitch(Slides.PitchPosition.HIGH),
+                new SleepAction(1000),
+                assembly.extendSlide(Slides.SlidesPosition.HIGH),
+                new SleepAction(1000),
+                assembly.flipUp(),
+                new SleepAction(1000),
+                assembly.clawOpen(),
+                new SleepAction(1000),
                 traj2,
-//                assembly.flipDown(),
-//                new SleepAction(1000),
-//                assembly.clawClose(),
+
                 traj3
-//                assembly.anglePitch(Slides.PitchPosition.HIGH),
-//                new SleepAction(1000),
-//                assembly.extendSlide(Slides.SlidesPosition.HIGH),
-//                new SleepAction(1000),
-//                assembly.flipUp(),
-//                new SleepAction(1000),
-//                assembly.clawOpen(),
-//                new SleepAction(1000)
+
         ));
 
     }

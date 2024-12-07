@@ -15,8 +15,8 @@ public class Slides implements Subsystem {
     Servo flipRight;
 
     Servo claw;
-    final double clawOpen = 0.425;
-    final double clawClose = 0.70;
+    final double clawOpen = 0.175;
+    final double clawClose = 0.450;
 
     Servo rotateClaw;
 
