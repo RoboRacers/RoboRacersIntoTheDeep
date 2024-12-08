@@ -27,7 +27,6 @@ import java.util.List;
 
 @TeleOp(name = "LM2 Subsystems", group = "Test")
 public class LM2subsystems extends LinearOpMode {
-    //Pitch Stuff
 
     Assembly assembly;
 
@@ -53,47 +52,30 @@ public class LM2subsystems extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-
-
         assembly = new Assembly(hardwareMap);
-//        slidesMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
-
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = dashboard.getTelemetry();
-
-
-
-
-
-        elapsedTime = new ElapsedTime();
-
-//        pitchControl.setErrorTolerance(18);
-
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
+        Actions.runBlocking(new ParallelAction(
+                new SequentialAction(
+                        assembly.anglePitch(300),
+                        assembly.flipUp()
+                ),
+                telemetryPacket -> {
+                    assembly.update();
+                    return opModeInInit();
+                }
+        ));
 
+        waitForStart();
 
-        resetRuntime();
-
-        while (opModeInInit()) {
-            runningActions.add(
-                    new SequentialAction(
-                            assembly.anglePitch(300),
-                            assembly.flipUp()
-                    )
-            );
-            assembly.update();
-        }
-
-
-
-        resetRuntime();
+        Gamepad prevGamepad1 = new Gamepad();  // to keep track of previous gamepad state
 
         while (!isStopRequested()) {
             TelemetryPacket packet = new TelemetryPacket();
 
             // updated based on gamepads
-
             if (gamepad1.triangle) { //y
                 runningActions.add(
                         new SequentialAction(
@@ -123,8 +105,6 @@ public class LM2subsystems extends LinearOpMode {
 
 //                        assembly.extendSlide(400)
                 ));
-
-
             }else if (gamepad1.square) { // x
                 runningActions.add(new SequentialAction(
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
@@ -189,6 +169,14 @@ public class LM2subsystems extends LinearOpMode {
 
 
 
+            if(gamepad1.right_trigger>0.1 && prevGamepad1.right_trigger <= 0.1){
+                // This only runs ONE loop of the action, so that we don't end up incrementing the slides position multiple times
+                assembly.extendSlide(Assembly.SlidesPosition.MANUALUP).run(packet);
+            } else if (gamepad1.left_trigger>0.1 && prevGamepad1.left_trigger <= 0.1){
+                // same for this one
+                assembly.extendSlide(Assembly.SlidesPosition.MANUALDOWN).run(packet);
+            }
+
             if (gamepad1.dpad_up){
                 runningActions.add(
                         new SequentialAction(
@@ -237,20 +225,11 @@ public class LM2subsystems extends LinearOpMode {
                 }
             }
             runningActions = newActions;
-            //
             dash.sendTelemetryPacket(packet);
 
-//                assembly.anglePitch(500).run(new TelemetryPacket());
-
-
-
-
-//            //ALWAYS MULTIPLY THE RIGHT FLIP OR DOS BY 0.95 TO MAKE IT SYNC WITH THE LEFT DEPOSIT OR UNO
-//
-
+            prevGamepad1 = gamepad1;
 
             assembly.update();
-
 //            telemetry.addData("Slides Power", assembly.getPower());
 //            telemetry.addData("slides Pos", assembly.getCurrentPosition());
 //            telemetry.addData("Target value Pitch", target);
