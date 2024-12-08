@@ -43,7 +43,6 @@ public class FourSampleAuto extends LinearOpMode {
         Action traj = drive.actionBuilder(new Pose2d(0,0,0))
                 // Init Position
                 .stopAndAdd(new SequentialAction(
-                        assembly.rotateClaw(0.91),
                         assembly.clawClose(),
                         assembly.flipDown(),
                         assembly.anglePitch(Assembly.PitchPosition.DOWN),

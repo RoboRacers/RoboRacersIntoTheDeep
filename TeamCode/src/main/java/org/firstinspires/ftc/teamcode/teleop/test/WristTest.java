@@ -13,7 +13,9 @@ public class WristTest extends LinearOpMode {
         rotateClaw = hardwareMap.get(Servo.class, "rotateClaw");
 
         while (!isStopRequested()){
-            rotateClaw.setPosition(0);
+            rotateClaw.setPosition(gamepad1.left_stick_y);
+            telemetry.addData("Pos Rotate Claw", rotateClaw.getPosition());
+            telemetry.update();
         }
     }
 }
