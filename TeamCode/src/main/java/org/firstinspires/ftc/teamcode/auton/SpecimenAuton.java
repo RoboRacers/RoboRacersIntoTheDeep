@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.robot.Assembly;
 //import org.firstinspires.ftc.teamcode.teleop.Rolling;
 
 
-@Autonomous(name = "Bet", group = "16481-IntoTheDeep")
+@Autonomous(name = "BetLess", group = "16481-IntoTheDeep")
 public class SpecimenAuton extends LinearOpMode {
 
    Assembly assembly;
@@ -48,21 +48,21 @@ public class SpecimenAuton extends LinearOpMode {
                         assembly.flipMid(),
                         assembly.anglePitch(Assembly.PitchPosition.DOWN),
 //                        new SleepAction(2),
-                        assembly.extendSlide(Assembly.SlidesPosition.DOWN)
-
+                        assembly.extendSlide(Assembly.SlidesPosition.DOWN),
+                        new SleepAction(1),
+                        assembly.anglePitch(Assembly.PitchPosition.HIGH)
 //                        new SleepAction(2)
                 ))
-                .splineToLinearHeading(new Pose2d(38,10,Math.toRadians(180)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(28,10,Math.toRadians(180)),Math.toRadians(180))
 
 //           above or this one     .splineToLinearHeading(new Pose2d(11,34,Math.toRadians(0)),Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
                         // To score Preload in first basket
-                        assembly.anglePitch(Assembly.PitchPosition.HIGH),
                         new SleepAction(1),
                         assembly.extendSlide(Assembly.SlidesPosition.MID),
                         new SleepAction(1),
                         assembly.flipUp(),
-                        new SleepAction(0.5),
+                        new SleepAction(3),
                         assembly.extendSlide(Assembly.SlidesPosition.DOWN),
                         new SleepAction(0.25),
                         assembly.clawOpen()
