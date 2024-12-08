@@ -124,9 +124,7 @@ public static double kG2 = 0.003;
             elapsedTime.startTime();
 
             if (gamepad1.triangle) { //y
-
                 target2Last = target2;
-
                 target2 = 1010; //90deg + little more
 //                sleep(1000);
 //                wait(1000);
@@ -134,6 +132,18 @@ public static double kG2 = 0.003;
                 timer.reset();
                 while (timer.time(TimeUnit.MILLISECONDS)<1050)
                 {
+                    pitchControl.setSetpoint(target2);
+                    double feedforward2 = kG2 * (slidesMotor.getCurrentPosition() * ticksToInches) + 0;
+                    double feedforward3 = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                    double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
+
+                    if (target2 > target2Last){
+                        feedforward2 = Math.abs(feedforward2);
+                    }else if(target2<target2Last){
+                        feedforward2 = -1*Math.abs(feedforward2);
+                    }
+
+                    pitchMotor.setPower(feedforward3 + pid + feedforward2);
                     telemetry.addData("wating", timer.time());
                     telemetry.update();
                 }
