@@ -57,16 +57,15 @@ public class LM2subsystems extends LinearOpMode {
         telemetry = dashboard.getTelemetry();
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
-        Actions.runBlocking(new ParallelAction(
-                new SequentialAction(
-                        assembly.anglePitch(300),
-                        assembly.flipUp()
-                ),
-                telemetryPacket -> {
-                    assembly.update();
-                    return opModeInInit();
-                }
-        ));
+        while (opModeInInit()) {
+            runningActions.add(
+                    new SequentialAction(
+                            assembly.anglePitch(300),
+                            assembly.flipUp()
+                    )
+            );
+            assembly.update();
+        }
 
         waitForStart();
 
