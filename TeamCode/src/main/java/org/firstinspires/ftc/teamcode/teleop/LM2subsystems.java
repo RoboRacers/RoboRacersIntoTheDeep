@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -31,7 +32,20 @@ public class LM2subsystems extends LinearOpMode {
     Assembly assembly;
 
     ElapsedTime elapsedTime;
+
+    Gamepad currentGamepad1 = new Gamepad();
+    Gamepad currentGamepad2 = new Gamepad();
+
+    Gamepad previousGamepad1 = new Gamepad();
+    Gamepad previousGamepad2 = new Gamepad();
     MecanumDrive drive;
+
+
+    public boolean intakeToggle = false;  // Motor starts off
+    public boolean intakeToggle2 = false;  // Motor starts off
+    public double triggerThreshold = 0.2;
+
+
 
     private FtcDashboard dash = FtcDashboard.getInstance();
     private List<Action> runningActions = new ArrayList<>();
@@ -85,6 +99,8 @@ public class LM2subsystems extends LinearOpMode {
                         new SequentialAction(
                                 assembly.anglePitch(1010),
                                 new SleepAction(0.5),
+                                assembly.extendSlide(Assembly.SlidesPosition.HIGH),
+                            new SleepAction(0.5),
                                 assembly.flipMid()
                         )
                 );
@@ -92,6 +108,8 @@ public class LM2subsystems extends LinearOpMode {
                 runningActions.add(
                         new SequentialAction(
                                 assembly.anglePitch(300),
+                                new SleepAction(0.5),
+                                assembly.extendSlide(Assembly.SlidesPosition.DOWN),
                                 new SleepAction(0.5),
                                 assembly.flipMid()
                         )
@@ -102,6 +120,7 @@ public class LM2subsystems extends LinearOpMode {
                         assembly.flipDown(),
                         new SleepAction(0.5),
                         assembly.anglePitch(270)
+
 //                        assembly.extendSlide(400)
                 ));
 
@@ -110,23 +129,66 @@ public class LM2subsystems extends LinearOpMode {
                 runningActions.add(new SequentialAction(
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
                         new SleepAction(0.5),
-                        assembly.extendSlide(100),
+                        assembly.extendSlide(Assembly.SlidesPosition.DOWN),
+                        new SleepAction(0.5),
                         assembly.flipUp()
                 ));
             }
-            if(gamepad1.right_trigger>0.1){
+
+
+
+
+
+// Threshold for trigger detection (e.g., 0.5 is the usual threshold for triggers)
+
+// Rising edge detection for the left trigger (detect when it's pressed)
+            if (currentGamepad1.left_trigger > triggerThreshold && previousGamepad1.left_trigger <= triggerThreshold) {
+                // Rising edge detected, toggle the intake motor
+                intakeToggle = !intakeToggle;
+            }
+
+// Rising edge detection for the right trigger (detect when it's pressed)
+            if (currentGamepad1.right_trigger > triggerThreshold && previousGamepad1.right_trigger <= triggerThreshold) {
+                // Rising edge detected, toggle the intake motor
+                intakeToggle2 = !intakeToggle2;
+            }
+
+// Else condition to handle when trigger is released
+// Check for falling edge (trigger released) to reset intakeToggle, if desired
+            else if (currentGamepad1.left_trigger <= triggerThreshold && previousGamepad1.left_trigger > triggerThreshold) {
+                // Falling edge detected for the left trigger (trigger released)
+                // Optionally change intakeToggle based on the release, for example:
+                intakeToggle = false; // Resetting intakeToggle when the trigger is released
+            }
+
+            else if (currentGamepad1.right_trigger <= triggerThreshold && previousGamepad1.right_trigger > triggerThreshold) {
+                // Falling edge detected for the right trigger (trigger released)
+                // Optionally change intakeToggle based on the release, for example:
+                intakeToggle2 = false; // Resetting intakeToggle when the trigger is released
+            }
+
+// Using the toggle variable to control the robot's intake motor.
+            if (intakeToggle) {
                 runningActions.add(
                         new SequentialAction(
                                 assembly.extendSlide(Assembly.SlidesPosition.MANUALUP)
                         )//extend
-                );
-            } else if (gamepad1.left_trigger>0.1) {
+                );            }
+            else if (intakeToggle2) {
                 runningActions.add(
                         new SequentialAction(
                                 assembly.extendSlide(Assembly.SlidesPosition.MANUALDOWN)
                         )//retract
                 );
             }
+
+// Update previous gamepad values for next cycle (to detect rising or falling edges correctly)
+            previousGamepad1.left_trigger = currentGamepad1.left_trigger;
+            previousGamepad1.right_trigger = currentGamepad1.right_trigger;
+
+
+
+
             if (gamepad1.dpad_up){
                 runningActions.add(
                         new SequentialAction(
