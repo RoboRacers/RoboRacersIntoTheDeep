@@ -53,7 +53,7 @@ public class SpecimenAuton extends LinearOpMode {
                         assembly.anglePitch(Assembly.PitchPosition.HIGH)
 //                        new SleepAction(2)
                 ))
-                .splineToLinearHeading(new Pose2d(28,10,Math.toRadians(180)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(22,10,Math.toRadians(180)),Math.toRadians(180))
 
 //           above or this one     .splineToLinearHeading(new Pose2d(11,34,Math.toRadians(0)),Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(

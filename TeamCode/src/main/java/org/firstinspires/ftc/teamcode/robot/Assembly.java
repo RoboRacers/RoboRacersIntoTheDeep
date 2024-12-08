@@ -110,6 +110,15 @@ public class Assembly implements Subsystem {
         };
     }
 
+    public Action flipCus(double pos){
+        return telemetryPacket -> {
+            flipPos = pos;
+            flipLeft.setPosition(flipPos);
+            flipRight.setPosition(flipPos*0.94);
+            return false;
+        };
+    }
+
     public Action flipLowMid() {
         return telemetryPacket -> {
             flipPos = 0.330;
