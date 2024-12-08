@@ -33,6 +33,8 @@ public class CombinedHSVAndAnglePipeline extends OpenCvPipeline {
     // Minimum contour area for filtering
     private static final double MIN_CONTOUR_AREA = 500.0;
 
+    public double angle;
+
     @Override
     public Mat processFrame(Mat input) {
         // Convert the input frame to HSV
@@ -101,7 +103,7 @@ public class CombinedHSVAndAnglePipeline extends OpenCvPipeline {
             Imgproc.circle(input, center, 5, new Scalar(255, 0, 0), -1);
 
             // Calculate the angle of the rectangle
-            double angle = rotatedRect.angle;
+             angle = rotatedRect.angle;
             if (rotatedRect.size.width < rotatedRect.size.height) {
                 angle += 90;
             }
@@ -120,7 +122,7 @@ public class CombinedHSVAndAnglePipeline extends OpenCvPipeline {
     }
 
     public double getTargetAngle() {
-        return targetAngle;
+        return angle;
     }
 
     public int getDetectedObjectsCount() {
