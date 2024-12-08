@@ -71,23 +71,28 @@ public class FourSampleAuto extends LinearOpMode {
                         assembly.anglePitch(Assembly.PitchPosition.DOWN)
                 ))
                 // To pick up 1st sample(right side) on floor
-                .strafeToLinearHeading(new Vector2d(25, 32), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(12, 31), Math.toRadians(0))
                 .stopAndAdd(new SequentialAction(
-                        assembly.anglePitch(135),
+                        assembly.anglePitch(250),
+                        assembly.extendSlide(Assembly.SlidesPosition.MID),
+                        assembly.flipDown(),
+                        new SleepAction(1),
+                        assembly.anglePitch(120),
                         new SleepAction(1),
                         assembly.clawClose(),
                         new SleepAction(0.5),
-                        assembly.anglePitch(Assembly.PitchPosition.DOWN)
+                        assembly.anglePitch(280)
                 ))
                 // To drop 1st sample from floor into high basket
                 .strafeToLinearHeading(new Vector2d(7, 36), Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
+                        assembly.extendSlide(Assembly.SlidesPosition.DOWN),
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
-                        new SleepAction(1),
+                        new SleepAction(0.5),
                         assembly.extendSlide(Assembly.SlidesPosition.HIGH),
                         new SleepAction(1),
                         assembly.flipMid(),
-                        new SleepAction(1),
+                        new SleepAction(0.5),
                         assembly.clawOpen(),
                         new SleepAction(0.5),
                         assembly.flipDown(),
@@ -96,44 +101,44 @@ public class FourSampleAuto extends LinearOpMode {
                         assembly.anglePitch(Assembly.PitchPosition.DOWN)
                 ))
                 // To pickup 2nd sample(middle) from the floor
-                .strafeToLinearHeading(new Vector2d(13, 41), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(12, 41), Math.toRadians(0))
                 .stopAndAdd(new SequentialAction(
-                        assembly.anglePitch(450),
+                        assembly.anglePitch(250),
                         assembly.extendSlide(Assembly.SlidesPosition.MID),
-                        new SleepAction(0.5),
                         assembly.flipDown(),
+                        new SleepAction(0.5),
+                        assembly.anglePitch(120),
                         new SleepAction(1),
-                        assembly.anglePitch(200),
+                        assembly.clawClose(),
                         new SleepAction(1),
-                        assembly.clawClose()
+                        assembly.anglePitch(280)
                 ))
                 // To drop 2nd sample into high basket
                 .strafeToLinearHeading(new Vector2d(7, 36), Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
+                        assembly.extendSlide(Assembly.SlidesPosition.DOWN),
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
                         new SleepAction(1),
                         assembly.extendSlide(Assembly.SlidesPosition.HIGH),
                         new SleepAction(1),
                         assembly.flipMid(),
-                        new SleepAction(1),
+                        new SleepAction(0.5),
                         assembly.clawOpen(),
-                        new SleepAction(1000),
+                        new SleepAction(0.5),
                         assembly.flipDown(),
                         new SleepAction(1),
                         assembly.extendSlide(450),
-                        new SleepAction(2),
+                        new SleepAction(0.5),
                         assembly.anglePitch(Assembly.PitchPosition.DOWN),
-                        new SleepAction(3)
+                        new SleepAction(0.5)
 
                 ))
                 // To pickup 3rd sample(middle) from the floor
-                .strafeToLinearHeading(new Vector2d(25, 55), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(36.5, 35), Math.toRadians(90))
                 .stopAndAdd(new SequentialAction(
                         assembly.extendSlide(475),
                         assembly.anglePitch(135),
-                        new SleepAction(1),
-                        assembly.rotateClaw(0.9),
-                        new SleepAction(2),
+                        new SleepAction(1000),
                         assembly.clawClose(),
                         new SleepAction(1),
                         assembly.anglePitch(160)
