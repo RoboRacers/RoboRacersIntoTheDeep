@@ -9,7 +9,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @TeleOp(name = "Enhanced HSV and Angle Detection OpMode", group = "Vision")
-public class EnhancedHSVAndAngleDetection extends LinearOpMode {
+public class EnhancedHSVandAngleOpmode extends LinearOpMode {
     OpenCvCamera camera;
     CombinedHSVandAnglePipeline pipeline;
     Servo claw;

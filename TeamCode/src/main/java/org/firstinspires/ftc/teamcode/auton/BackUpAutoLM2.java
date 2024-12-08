@@ -21,10 +21,10 @@ import org.firstinspires.ftc.teamcode.robot.Assembly;
 //import org.firstinspires.ftc.teamcode.teleop.Rolling;
 
 
-@Autonomous(name = "Bet", group = "16481-IntoTheDeep")
-public class FourSampleAuto extends LinearOpMode {
+@Autonomous(name = "Bet Safely", group = "16481-IntoTheDeep")
+public class BackUpAutoLM2 extends LinearOpMode {
 
-   Assembly assembly;
+    Assembly assembly;
 
 
     MecanumDrive drive;
@@ -128,43 +128,16 @@ public class FourSampleAuto extends LinearOpMode {
                         new SleepAction(0.5),
                         assembly.flipDown(),
                         assembly.extendSlide(550),
-                        assembly.anglePitch(Assembly.PitchPosition.DOWN)
+                        assembly.anglePitch(Assembly.PitchPosition.DOWN),
+                        //reset all
+                        new SleepAction(3),
+                        assembly.extendSlide(0),
+                        new SleepAction(2),
+                        assembly.anglePitch(0)
                 ))
-                // To pickup 3rd sample(left) from the floor
-                .strafeToLinearHeading(new Vector2d(35.5, 35), Math.toRadians(90))
-                .stopAndAdd(new SequentialAction(
-                        //assembly.extendSlide(475),
-                        assembly.flipCus(0.2),
-                        assembly.rotateClaw(0.91),
-                        assembly.anglePitch(110),
-                        assembly.clawOpen(),
-                        new SleepAction(0.5),
-                        assembly.clawClose(),
-                        new SleepAction(1),
-                        assembly.anglePitch(Assembly.PitchPosition.DOWN)
-                ))
-                // To drop 3rd sample into high basket
-                .strafeToLinearHeading(new Vector2d(8, 35), Math.toRadians(-45))
-                .stopAndAdd(new SequentialAction(
-                        assembly.anglePitch(Assembly.PitchPosition.HIGH),
-                        new SleepAction(0.5),
-                        assembly.extendSlide(Assembly.SlidesPosition.HIGH),
-                        new SleepAction(1),
-                        assembly.flipMid(),
-                        assembly.rotateClaw(0.48),
-                        new SleepAction(1),
-                        assembly.clawOpen(),
-                        new SleepAction(1)
-//                        assembly.flipDown(),
-//                        new SleepAction(1),
-//                        assembly.extendSlide(450),
-//                        new SleepAction(2),
-//                        assembly.anglePitch(Assembly.PitchPosition.DOWN),
-//                        new SleepAction(3)
-
-                ))
-
                 .build();
+
+
         while (opModeInInit()){
             assembly.clawClose();
             assembly.flipMid();

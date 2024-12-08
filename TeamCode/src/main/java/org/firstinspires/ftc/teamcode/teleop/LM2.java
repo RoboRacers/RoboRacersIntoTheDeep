@@ -77,13 +77,13 @@ public class LM2 extends LinearOpMode {
 
 
         // rotate = hardwareMap.get(CRServo.class, "rotateClaw");
-//        pitchMotor.setMode(DcMotorImplEx.RunMode.STOP_AND_RESET_ENCODER);
-//        pitchMotor.setMode(DcMotorImplEx.RunMode.RUN_WITHOUT_ENCODER);
-//        slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        pitchMotor.setMode(DcMotorImplEx.RunMode.STOP_AND_RESET_ENCODER);
+        pitchMotor.setMode(DcMotorImplEx.RunMode.RUN_WITHOUT_ENCODER);
+        slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         while (opModeInInit()) {
-            flipPos = 0.8;
+            flipPos = 0.92;
             pitchControl.setCoefficients(kP, kI, kD);
             uno.setPosition(flipPos);
             dos.setPosition(flipPos * 0.94);
@@ -121,52 +121,54 @@ public class LM2 extends LinearOpMode {
 //                wait(1000);
 //                target=1650;
                 flipPos = 0.575;
-            } else if (gamepad1.cross) { // a
+            } else if (gamepad1.cross && target <740) { // a
                 target2 = 300;
 //                sleep(1000);
 //                wait(1000);
 //                target= 400;
                 flipPos = 0.33; // Down so that we can go into middle thing
-            } else if (gamepad1.circle) { // b
+            } else if (gamepad1.circle && target <640) { // b
                 flipPos = 0.13;
 //                wait(1000);
 //                target = 450;
-                target2 = 270;  // Pick up with claw down
+                target2 = 200;  // Pick up with claw down
             }else if (gamepad1.square) { // x
-                target2 = 1100;   // no function
+                target2 = 1100;   // no function]
+//                target=130;
             }
 
             if(gamepad1.dpad_up){
-                flipPos+=0.05;
+                flipPos+=0.025;
             }
             else if(gamepad1.dpad_down){
-                flipPos-=0.05;
-            }
-            else {
-                flipPos=flipPos;
+                flipPos-=0.025;
             }
 
             if(gamepad1.right_trigger>0.1){
-                target2+= 75;
+                target2+= 25;
             }
             else if(gamepad1.left_trigger>0.1){
-                target2-=75;
-            }
-            else {
-                target2=target2;
+                target2-=25;
             }
 
 
+
+//            if (gamepad2.triangle){
+//                target=1650;
+//            } else if (gamepad2.cross) {
+//                target= 400;
+//            }
             if (gamepad2.triangle){
-                target=1650;
-            } else if (gamepad2.cross) {
-                target= 400;
-            }if(gamepad2.right_trigger>0.1){
+                target = 1500;
+            }
+            else if (gamepad2.cross){
+                target = 300;
+            }
+
+            if(gamepad2.right_trigger>0.1){
                 target+= 75;//extend
             } else if (gamepad2.left_trigger>0.1) {
                 target-= 75; //retract
-            }else{
-                target = target;
             }
 
             pitchControl.setSetpoint(target2);
@@ -182,7 +184,7 @@ public class LM2 extends LinearOpMode {
             pitchMotor.setPower(feedforward3 + pid + feedforward2);
             slidesMotor.setPower(-(pid2 + feedforward));
 
-            //ALWAYS MULTIPLY THE RIGHT FLIP OR DOS BY 0.95 TO MAKE IT SYNC WITH THE LEFT DEPOSIT OR UNO
+            //ALWAYS MULTIPLY THE R   IGHT FLIP OR DOS BY 0.95 TO MAKE IT SYNC WITH THE LEFT DEPOSIT OR UNO
 
 
             uno.setPosition(flipPos);
@@ -193,21 +195,21 @@ public class LM2 extends LinearOpMode {
             //top triangel slide low cross
             //manual triggers
 
-            if (gamepad2.dpad_right){
-                rotatePos  +=0.05;
-            } else if (gamepad2.dpad_left) {
-                rotatePos-=0.05;
-            } else {
-                rotatePos=rotatePos;
+
+            if (gamepad2.square) {
+                rotatePos-=0.075;
+            } else if (gamepad2.circle) {
+                rotatePos  +=0.075;
             }
 
+
             if (gamepad2.right_bumper){
-                claw.setPosition(0.45); //close
+                claw.setPosition(0.42); //close
             }else if(gamepad2.left_bumper){
                 claw.setPosition(0.175); //open
             }
 
-            rotateClaw.setPosition(rotatePos);
+            rotateClaw.setPosition(rotatePos*0.95);
 
 
             telemetry.addData("Slides Power", slidesMotor.getPower());
