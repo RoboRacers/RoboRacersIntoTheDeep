@@ -96,8 +96,10 @@ public class LM2subsystems extends LinearOpMode {
 
 
             if(gamepad1.right_trigger>0.1 && prevGamepad1.right_trigger <= 0.1){
+                // This only runs ONE loop of the action, so that we don't end up incrementing the slides position multiple times
                 assembly.extendSlide(Assembly.SlidesPosition.MANUALUP).run(packet);
             } else if (gamepad1.left_trigger>0.1 && prevGamepad1.left_trigger <= 0.1){
+                // same for this one
                 assembly.extendSlide(Assembly.SlidesPosition.MANUALDOWN).run(packet);
             }
 
