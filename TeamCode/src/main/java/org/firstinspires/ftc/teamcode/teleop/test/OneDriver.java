@@ -124,13 +124,25 @@ public static double kG2 = 0.003;
             elapsedTime.startTime();
 
             if (gamepad1.triangle) { //y
+                ElapsedTime timer = new ElapsedTime();
                 target2Last = target2;
+
+                target = 400;
+
+                //retract slides setting pitch 90 extending slides to basket
+                timer.reset();
+                while (timer.time(TimeUnit.MILLISECONDS)<550)
+                {
+                    double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                    double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
+                    slidesMotor.setPower(-(pid2 + feedforward));
+                }
                 target2 = 1010; //90deg + little more
 //                sleep(1000);
 //                wait(1000);
-                ElapsedTime timer = new ElapsedTime();
+
                 timer.reset();
-                while (timer.time(TimeUnit.MILLISECONDS)<1050)
+                while (timer.time(TimeUnit.MILLISECONDS)<750)
                 {
                     pitchControl.setSetpoint(target2);
                     double feedforward2 = kG2 * (slidesMotor.getCurrentPosition() * ticksToInches) + 0;
@@ -148,25 +160,151 @@ public static double kG2 = 0.003;
                     telemetry.update();
                 }
                     target = 1700;
-
+                timer.reset();
+                while (timer.time(TimeUnit.MILLISECONDS)<550)
+                {
+                    double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                    double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
+                    slidesMotor.setPower(-(pid2 + feedforward));
+                }
                     flipPos = 0.575;
             } else if (gamepad1.cross) { // a
+                ElapsedTime timer = new ElapsedTime();
+                target2Last = target2;
+                target = 500;
+                timer.reset();
+                while (timer.time(TimeUnit.MILLISECONDS)<400)
+                {
+                    double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                    double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
+                    slidesMotor.setPower(-(pid2 + feedforward));
+                }
+
                 target2 = 270;
-                target2Last = target2;
-//                sleep(1000);
-//                wait(1000);
+                timer.reset();
+                while (timer.time(TimeUnit.MILLISECONDS)<550)
+                {
+                    pitchControl.setSetpoint(target2);
+                    double feedforward2 = kG2 * (slidesMotor.getCurrentPosition() * ticksToInches) + 0;
+                    double feedforward3 = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                    double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
+
+                    if (target2 > target2Last){
+                        feedforward2 = Math.abs(feedforward2);
+                    }else if(target2<target2Last){
+                        feedforward2 = -1*Math.abs(feedforward2);
+                    }
+
+                    pitchMotor.setPower(feedforward3 + pid + feedforward2);
+                    telemetry.addData("wating", timer.time());
+                    telemetry.update();
+                }
                 target= 1100;
+                timer.reset();
+                while (timer.time(TimeUnit.MILLISECONDS)<550)
+                {
+                    double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                    double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
+                    slidesMotor.setPower(-(pid2 + feedforward));
+                }
                 flipPos = 0.14; // Down so that we can go into middle thing
-            } else if (gamepad1.circle) { // b
-                flipPos = 0.14;
-                target2Last = target2;
-//                wait(1000);
-                target = 450;
-                target2 = 250;  // Pick up with claw down
-            }else if (gamepad1.square) { // x
-                target2Last = target2;
-                target2 = 500;   // no function
             }
+//            else if (gamepad1.circle) { // b
+//                flipPos = 0.14;
+//                target2Last = target2;
+////                wait(1000);
+//                target = 450;
+//                target2 = 250;  // Pick up with claw down
+//            }
+            else if (gamepad1.circle) { // b
+                ElapsedTime timer = new ElapsedTime();
+                target2Last = target2;
+                target = 450;
+                //retract slides setting pitch 90 extending slides to basket
+                timer.reset();
+                while (timer.time(TimeUnit.MILLISECONDS)<550)
+                {
+                    double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                    double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
+                    slidesMotor.setPower(-(pid2 + feedforward));
+                }
+                //                wait(1000);
+                target2 = 250;  // Pick up with claw down
+                timer.reset();
+                while (timer.time(TimeUnit.MILLISECONDS)<750)
+                {
+                    pitchControl.setSetpoint(target2);
+                    double feedforward2 = kG2 * (slidesMotor.getCurrentPosition() * ticksToInches) + 0;
+                    double feedforward3 = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                    double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
+
+                    if (target2 > target2Last){
+                        feedforward2 = Math.abs(feedforward2);
+                    }else if(target2<target2Last){
+                        feedforward2 = -1*Math.abs(feedforward2);
+                    }
+
+                    pitchMotor.setPower(feedforward3 + pid + feedforward2);
+                    telemetry.addData("wating", timer.time());
+                    telemetry.update();
+                }
+                target = 450;
+                timer.reset();
+                while (timer.time(TimeUnit.MILLISECONDS)<10)
+                {
+                    double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                    double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
+                    slidesMotor.setPower(-(pid2 + feedforward));
+                }
+                flipPos = 0.14;
+            }
+            else if (gamepad1.square) { // x
+                ElapsedTime timer = new ElapsedTime();
+                target2Last = target2;
+                target = 400;
+                //retract slides setting pitch 90 extending slides to basket
+                timer.reset();
+                while (timer.time(TimeUnit.MILLISECONDS)<550)
+                {
+                    double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                    double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
+                    slidesMotor.setPower(-(pid2 + feedforward));
+                }
+                //                wait(1000);
+                target2 = 1150;
+                timer.reset();
+                while (timer.time(TimeUnit.MILLISECONDS)<750)
+                {
+                    pitchControl.setSetpoint(target2);
+                    double feedforward2 = kG2 * (slidesMotor.getCurrentPosition() * ticksToInches) + 0;
+                    double feedforward3 = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                    double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
+
+                    if (target2 > target2Last){
+                        feedforward2 = Math.abs(feedforward2);
+                    }else if(target2<target2Last){
+                        feedforward2 = -1*Math.abs(feedforward2);
+                    }
+
+                    pitchMotor.setPower(feedforward3 + pid + feedforward2);
+                    telemetry.addData("wating", timer.time());
+                    telemetry.update();
+                }
+                target = 50;
+                timer.reset();
+                while (timer.time(TimeUnit.MILLISECONDS)<10)
+                {
+                    double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
+                    double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
+                    slidesMotor.setPower(-(pid2 + feedforward));
+                }
+                flipPos = 0.75;
+            }
+
+//            else if (gamepad1.square) { // x
+//                target2Last = target2;
+//                target2 = 500;   // no function
+//            }
 
             if(gamepad1.dpad_down){
                 target2= 110;//extend
