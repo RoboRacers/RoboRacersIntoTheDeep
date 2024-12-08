@@ -71,17 +71,13 @@ public class BackUpAutoLM2 extends LinearOpMode {
                         assembly.anglePitch(Assembly.PitchPosition.DOWN)
                 ))
                 // To pick up 1st sample(right side) on floor
-                .strafeToLinearHeading(new Vector2d(11.5, 30), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(25, 33), Math.toRadians(0))
                 .stopAndAdd(new SequentialAction(
-                        assembly.anglePitch(220),
-                        assembly.extendSlide(Assembly.SlidesPosition.MID),
-                        assembly.flipDown(),
                         new SleepAction(1),
-                        assembly.anglePitch(120),
+                        assembly.anglePitch(125),
                         new SleepAction(1),
                         assembly.clawClose(),
-                        new SleepAction(1),
-                        assembly.anglePitch(280)
+                        new SleepAction(1)
                 ))
                 // To drop 1st sample from floor into high basket
                 .strafeToLinearHeading(new Vector2d(7, 35), Math.toRadians(-45))
@@ -115,7 +111,7 @@ public class BackUpAutoLM2 extends LinearOpMode {
                         assembly.anglePitch(280)
                 ))
                 // To drop 2nd sample into high basket
-                .strafeToLinearHeading(new Vector2d(8, 35), Math.toRadians(-45))
+                .strafeToLinearHeading(new Vector2d(7, 36), Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
                         assembly.extendSlide(Assembly.SlidesPosition.DOWN),
                         new SleepAction(0.5),
@@ -130,6 +126,8 @@ public class BackUpAutoLM2 extends LinearOpMode {
                         assembly.extendSlide(550),
                         assembly.anglePitch(Assembly.PitchPosition.DOWN),
                         //reset all
+                        new SleepAction(1),
+                        assembly.flipMid(),
                         new SleepAction(3),
                         assembly.extendSlide(0),
                         new SleepAction(2),
@@ -139,12 +137,11 @@ public class BackUpAutoLM2 extends LinearOpMode {
 
 
         while (opModeInInit()){
-            assembly.clawClose();
-            assembly.flipMid();
-            assembly.anglePitch(Assembly.PitchPosition.DOWN);
-//                    new SleepAction(2);
-            assembly.extendSlide(Assembly.SlidesPosition.DOWN);
-//                    new SleepAction(2);
+            new SequentialAction(
+                    assembly.anglePitch(Assembly.PitchPosition.DOWN),
+                    assembly.flipUp(),
+                    assembly.clawClose()
+            );
         }
 
 
