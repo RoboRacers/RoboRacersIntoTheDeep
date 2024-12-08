@@ -65,7 +65,7 @@ public class LM2subsystems extends LinearOpMode {
                 runningActions.add(
                         new SequentialAction(
                                 assembly.anglePitch(1010),
-                                new SleepAction(1.5),
+                                new SleepAction(0.5),
                                 assembly.flipMid()
                         )
                 );
@@ -73,7 +73,7 @@ public class LM2subsystems extends LinearOpMode {
                 runningActions.add(
                         new SequentialAction(
                                 assembly.anglePitch(300),
-                                new SleepAction(1.5),
+                                new SleepAction(0.5),
                                 assembly.flipMid()
                         )
                 );
@@ -81,14 +81,14 @@ public class LM2subsystems extends LinearOpMode {
             else if (gamepad1.circle) { // b
                 runningActions.add(new SequentialAction(
                         assembly.flipDown(),
-                        new SleepAction(1.5),
+                        new SleepAction(0.5),
                         assembly.anglePitch(270)
 //                        assembly.extendSlide(400)
                 ));
             }else if (gamepad1.square) { // x
                 runningActions.add(new SequentialAction(
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
-                        new SleepAction(1),
+                        new SleepAction(0.5),
                         assembly.extendSlide(100),
                         assembly.flipUp()
                 ));
