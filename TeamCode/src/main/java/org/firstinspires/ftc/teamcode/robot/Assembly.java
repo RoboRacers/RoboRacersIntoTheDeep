@@ -68,7 +68,8 @@ public class Assembly implements Subsystem {
         MID,
         HIGH,
         MANUALUP,
-        MANUALDOWN
+        MANUALDOWN,
+        STAY
     }
 
     public Assembly(HardwareMap hardwareMap) {
@@ -190,6 +191,8 @@ public class Assembly implements Subsystem {
                 case MANUALDOWN:
                     slidesTarget-=75;
                     break;
+                case STAY:
+                    slidesTarget= slidesTarget;
             }
             slidesControl.setSetpoint(slidesTarget);
             double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
