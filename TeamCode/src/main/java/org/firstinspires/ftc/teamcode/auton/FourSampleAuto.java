@@ -71,7 +71,7 @@ public class FourSampleAuto extends LinearOpMode {
                         assembly.anglePitch(Assembly.PitchPosition.DOWN)
                 ))
                 // To pick up 1st sample(right side) on floor
-                .strafeToLinearHeading(new Vector2d(12, 30.5), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(12, 30), Math.toRadians(0))
                 .stopAndAdd(new SequentialAction(
                         assembly.anglePitch(250),
                         assembly.extendSlide(Assembly.SlidesPosition.MID),
@@ -101,7 +101,7 @@ public class FourSampleAuto extends LinearOpMode {
                         assembly.anglePitch(Assembly.PitchPosition.DOWN)
                 ))
                 // To pickup 2nd sample(middle) from the floor
-                .strafeToLinearHeading(new Vector2d(14, 40), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(12.5, 40), Math.toRadians(0))
                 .stopAndAdd(new SequentialAction(
                         assembly.anglePitch(250),
                         assembly.extendSlide(Assembly.SlidesPosition.MID),
@@ -117,8 +117,8 @@ public class FourSampleAuto extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(8, 36), Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
                         assembly.extendSlide(Assembly.SlidesPosition.DOWN),
+                        new SleepAction(0.5),
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
-                        new SleepAction(1),
                         assembly.extendSlide(Assembly.SlidesPosition.HIGH),
                         new SleepAction(1),
                         assembly.flipMid(),
@@ -126,35 +126,34 @@ public class FourSampleAuto extends LinearOpMode {
                         assembly.clawOpen(),
                         new SleepAction(0.5),
                         assembly.flipDown(),
-                        new SleepAction(1),
                         assembly.extendSlide(550),
-                        new SleepAction(0.5),
-                        assembly.anglePitch(Assembly.PitchPosition.DOWN),
-                        new SleepAction(0.5)
-
+                        assembly.anglePitch(Assembly.PitchPosition.DOWN)
                 ))
                 // To pickup 3rd sample(left) from the floor
-                .strafeToLinearHeading(new Vector2d(35.5, 30), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(35.5, 32.5), Math.toRadians(90))
                 .stopAndAdd(new SequentialAction(
                         //assembly.extendSlide(475),
-                        assembly.anglePitch(200),
+                        assembly.flipCus(0.2),
+                        assembly.anglePitch(100),
+                        assembly.clawOpen(),
+                        assembly.rotateClaw(0.91),
                         new SleepAction(0.5),
-                        assembly.flipCus(0.3),
+                        new SleepAction(0.5),
                         assembly.clawClose(),
-                        new SleepAction(1000),
+                        new SleepAction(1),
                         assembly.anglePitch(160)
                 ))
                 // To drop 3rd sample into high basket
-                .strafeToLinearHeading(new Vector2d(11, 35), Math.toRadians(-45))
+                .strafeToLinearHeading(new Vector2d(8, 36), Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
-                        new SleepAction(1),
+                        new SleepAction(0.5),
                         assembly.extendSlide(Assembly.SlidesPosition.HIGH),
                         new SleepAction(1),
                         assembly.flipMid(),
-                        new SleepAction(1.5),
+                        new SleepAction(0.5),
                         assembly.clawOpen(),
-                        new SleepAction(1),
+                        new SleepAction(10000),
                         assembly.flipDown(),
                         new SleepAction(1),
                         assembly.extendSlide(450),
