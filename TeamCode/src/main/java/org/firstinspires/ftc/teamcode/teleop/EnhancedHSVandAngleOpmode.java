@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.teleop;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -7,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-
+@Disabled
 @TeleOp(name = "Enhanced HSV and Angle Detection OpMode", group = "Vision")
 public class EnhancedHSVandAngleOpmode extends LinearOpMode {
     OpenCvCamera camera;

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop.test;
+package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -14,10 +14,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.modules.PIDController;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
-import java.util.concurrent.TimeUnit;
-
-@TeleOp(name = "LM2 Final", group = "Test")
-public class OneDriver extends LinearOpMode {
+@TeleOp(name = "LM2 Preset New ", group = "Test")
+public class OneDriverPresetRewrite extends LinearOpMode {
     //Pitch Stuff
     public DcMotorImplEx pitchMotor;
     public DcMotorImplEx slidesMotor;
@@ -83,6 +81,10 @@ public static double kG2 = 0.003;
         rotateClaw = hardwareMap.get(Servo.class, "rotateClaw");
         claw = hardwareMap.get(Servo.class, "claw");
 
+        pitchMotor.setMode(DcMotorImplEx.RunMode.STOP_AND_RESET_ENCODER);
+        pitchMotor.setMode(DcMotorImplEx.RunMode.RUN_WITHOUT_ENCODER);
+        slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // rotate = hardwareMap.get(CRServo.class, "rotateClaw");
 
@@ -95,7 +97,6 @@ public static double kG2 = 0.003;
             pitchControl.setCoefficients(kP, kI, kD);
             uno.setPosition(flipPos);
             dos.setPosition(flipPos * 0.94);
-            target=300;
 //            target2 = 300;
 
 
@@ -106,19 +107,13 @@ public static double kG2 = 0.003;
             double feedforward3 = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
             double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
             pitchMotor.setPower(feedforward3 + pid + feedforward2);
-            pitchControl.setSetpoint(target2);
-
-            slidesControl.setSetpoint(target);
-            double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
-            double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
-            slidesMotor.setPower(-(pid2 + feedforward));
-
 
 
         }
         waitForStart();
 
         while (!isStopRequested()) {
+
             drive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
                             -gamepad1.left_stick_y,
@@ -132,98 +127,43 @@ public static double kG2 = 0.003;
             elapsedTime.startTime();
 
             if (gamepad1.triangle) { //y
-                ElapsedTime timer = new ElapsedTime();
                 target2Last = target2;
 
 
-                target2 = 1050; //90deg + little more
-//                sleep(1000);
-//                wait(1000);
-
-                timer.reset();
-                while (timer.time(TimeUnit.MILLISECONDS)<500)
-                {
-                    pitchControl.setSetpoint(target2);
-                    double feedforward2 = kG2 * (slidesMotor.getCurrentPosition() * ticksToInches) + 0;
-                    double feedforward3 = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
-                    double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
-
-                    if (target2 > target2Last){
-                        feedforward2 = Math.abs(feedforward2);
-                    }else if(target2<target2Last){
-                        feedforward2 = -1*Math.abs(feedforward2);
-                    }
-
-                    pitchMotor.setPower(feedforward3 + pid + feedforward2);
-                    telemetry.addData("wating", timer.time());
-                    telemetry.update();
-                }
-                    target = 1700;
+                target2 = 1050;
+                    //target = 1700;
                     flipPos = 0.575;
             } else if (gamepad1.cross) { // a
                 ElapsedTime timer = new ElapsedTime();
                 target2Last = target2;
-                target = 500;
-                timer.reset();
-                while (timer.time(TimeUnit.MILLISECONDS)<500)
-                {
-                    double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
-                    double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
-                    slidesMotor.setPower(-(pid2 + feedforward));
-                }
-
                 target2 = 270;
-                target= 1100;
+                //target= 1100;
 
                 flipPos = 0.14; // Down so that we can go into middle thing
             }
-//            else if (gamepad1.circle) { // b
-//                flipPos = 0.14;
-//                target2Last = target2;
-////                wait(1000);
-//                target = 450;
-//                target2 = 250;  // Pick up with claw down
-//            }
             else if (gamepad1.circle) { // b
-                ElapsedTime timer = new ElapsedTime();
-                target2Last = target2;
-                target= 200;
-                timer.reset();
-                while (timer.time(TimeUnit.MILLISECONDS)<500)
-                {
-                    double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
-                    double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
-                    slidesMotor.setPower(-(pid2 + feedforward));
-                }
+
                 target2 = 250;  // Pick up with claw down
-
-
                 //retract slides setting pitch 90 extending slides to basket
                 //                wait(1000);
-
-
 
                 flipPos = 0.14;
             }
             else if (gamepad1.square) { // x
-                ElapsedTime timer = new ElapsedTime();
-                target2Last = target2;
-
                 //                wait(1000);
                 target2 = 1150;
-
-                target = 50;
 
                 flipPos = 0.75;
             }
 
-//            else if (gamepad1.square) { // x
-//                target2Last = target2;
-//                target2 = 500;   // no function
-//            }
-
             if(gamepad1.dpad_down){
-                target2= 130;//extend
+                target= 1700;//extend
+            } else if (gamepad1.dpad_left) {
+                target = 1100;
+            } else if (gamepad1.dpad_right) {
+                target = 200;
+            } else if (gamepad1.dpad_down) {
+                target = 50;
             } else if (gamepad1.right_trigger>0.1) {
                 target2-=20;
             }
@@ -234,33 +174,6 @@ public static double kG2 = 0.003;
 //                target2= 160;//extend
 //            }
 
-            if (gamepad2.right_trigger>0.1){
-                target = target - 500;
-
-            }
-            else if (gamepad2.left_trigger>0.1){
-                target2 = target2 - 500;
-            }else if (gamepad2.dpad_up){
-                target = target + 500;
-
-            }
-            else if (gamepad2.dpad_down){
-                target2 = target2 + 500;
-            }
-            else if (gamepad2.triangle) {
-                target=0;
-                target2=0;
-            }
-
-            else if (gamepad2.cross){
-                pitchMotor.setPower(0);
-                slidesMotor.setPower(0);
-                pitchMotor.setMode(DcMotorImplEx.RunMode.STOP_AND_RESET_ENCODER);
-                pitchMotor.setMode(DcMotorImplEx.RunMode.RUN_WITHOUT_ENCODER);
-                slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            }
-
             pitchControl.setSetpoint(target2);
 
             slidesControl.setSetpoint(target);
@@ -270,34 +183,41 @@ public static double kG2 = 0.003;
             double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
             double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
 
-
-            if (target2 > target2Last){
-                feedforward2 = Math.abs(feedforward2);
-            }else if(target2<target2Last){
-                feedforward2 = -1*Math.abs(feedforward2);
+            if (Math.abs(gamepad2.right_stick_y) > 0.1) {
+                pitchMotor.setPower(gamepad2.right_stick_y * 0.5);
+            } else {
+                pitchMotor.setPower(feedforward3 + pid + feedforward2);
+            }
+            if (Math.abs(gamepad2.left_stick_y) > 0.1) {
+                slidesMotor.setPower(gamepad2.left_stick_y * 0.5);
+            } else {
+                slidesMotor.setPower(-(pid2 + feedforward));
+            }
+            if (gamepad2.cross && gamepad2.right_stick_button){
+                pitchMotor.setPower(0);
+                slidesMotor.setPower(0);
+                pitchMotor.setMode(DcMotorImplEx.RunMode.STOP_AND_RESET_ENCODER);
+                pitchMotor.setMode(DcMotorImplEx.RunMode.RUN_WITHOUT_ENCODER);
+                slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
 
-            pitchMotor.setPower(feedforward3 + pid + feedforward2);
-            slidesMotor.setPower(-(pid2 + feedforward));
-
             //ALWAYS MULTIPLY THE RIGHT FLIP OR DOS BY 0.95 TO MAKE IT SYNC WITH THE LEFT DEPOSIT OR UNO
-
 
             uno.setPosition(flipPos);
             dos.setPosition(flipPos * 0.94);
 
 
-            if (gamepad1.dpad_up){
-                flipPos = 0.575;
-            } else if (gamepad1.dpad_down) {
+            if (gamepad2.dpad_up){
+                rotateClaw.setPosition(0.05);
+            } else if (gamepad2.dpad_down) {
+                rotateClaw.setPosition(0.6);
+            } else if (gamepad2.dpad_left) {
+                rotateClaw.setPosition(0.35);
+            } else if (gamepad2.dpad_right) {
+                rotateClaw.setPosition(0.96);
             }
 
-            if (gamepad1.right_bumper) {
-                target += 50;
-            }
-            else if(gamepad1.left_bumper){
-                    target    -= 50;
-                }
             if (gamepad2.right_bumper){
                 claw.setPosition(0.45); //close
             }else if(gamepad2.left_bumper){

@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.teleop.test;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 //@Disabled // Comment out this line to add to the opmode list
+@Disabled
 @TeleOp(name = "FlipTest", group = "Test")
 public class FlipTest extends LinearOpMode {
 Servo uno;

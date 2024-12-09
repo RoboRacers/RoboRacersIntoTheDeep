@@ -16,18 +16,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.Assembly;
 
-import java.util.ArrayList;
-import java.util.List;
-
 //import org.firstinspires.ftc.teamcode.teleop.Deposit;
 //import org.firstinspires.ftc.teamcode.teleop.PIDController;
 //import org.firstinspires.ftc.teamcode.teleop.Rolling;
 
 
-@Autonomous(name = "Bet", group = "16481-IntoTheDeep")
-public class FourSampleAuto extends LinearOpMode {
+@Autonomous(name = "Bet hopefully", group = "16481-IntoTheDeep")
+public class hope extends LinearOpMode {
 
-   Assembly assembly;
+    Assembly assembly;
 
 
     MecanumDrive drive;
@@ -60,42 +57,37 @@ public class FourSampleAuto extends LinearOpMode {
                 .stopAndAdd(new SequentialAction(
                         // To score Preload in first basket
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
-                        new SleepAction(0.7),
+                        new SleepAction(1),
                         assembly.extendSlide(Assembly.SlidesPosition.HIGH),
-                        new SleepAction(0.9),
-                        assembly.flipMid(),
                         new SleepAction(0.5),
+                        assembly.flipMid(),
+                        new SleepAction(0.75),
                         assembly.clawOpen(),
-                        new SleepAction(0.8),
+                        new SleepAction(0.5),
                         assembly.flipDown(),
                         assembly.anglePitch(800),
                         assembly.extendSlide(450),
-                        new SleepAction(0.7),
+                        new SleepAction(1),
                         assembly.anglePitch(Assembly.PitchPosition.DOWN)
                 ))
                 // To pick up 1st sample(right side) on floor
-                .strafeToLinearHeading(new Vector2d(13.2, 31.5), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(23.5, 34), Math.toRadians(0))
                 .stopAndAdd(new SequentialAction(
-                        assembly.anglePitch(260),
-//                        new SleepAction(1),
-                        assembly.extendSlide(Assembly.SlidesPosition.MID),
-//                        new SleepAction(0.5),
-                        assembly.flipDown(),
-                        new SleepAction(1),
-                        assembly.anglePitch(120),
-                        new SleepAction(0.5),
+                        new SleepAction(0.7),
+                        assembly.anglePitch(110),
+                        new SleepAction(0.7),
                         assembly.clawClose(),
                         new SleepAction(0.7),
-                        assembly.anglePitch(280)
-                ))
+                        assembly.anglePitch(250),
+                        assembly.extendSlide(400)
+                        ))
                 // To drop 1st sample from floor into high basket
-                .strafeToLinearHeading(new Vector2d(7, 35), Math.toRadians(-45))
+                .strafeToLinearHeading(new Vector2d(6.5, 36), Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
-                        assembly.extendSlide(Assembly.SlidesPosition.DOWN),
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
                         new SleepAction(1),
                         assembly.extendSlide(Assembly.SlidesPosition.HIGH),
-                        new SleepAction(0.8),
+                        new SleepAction(0.5),
                         assembly.flipMid(),
                         new SleepAction(0.5),
                         assembly.clawOpen(),
@@ -103,39 +95,35 @@ public class FourSampleAuto extends LinearOpMode {
                         assembly.flipDown(),
                         assembly.anglePitch(800),
                         assembly.extendSlide(450),
-                        new SleepAction(1),
-                        assembly.anglePitch(Assembly.PitchPosition.DOWN),
-                        new SleepAction(0.2)
+                        new SleepAction(0.5),
+                        assembly.anglePitch(Assembly.PitchPosition.DOWN)
                 ))
                 // To pickup 2nd sample(middle) from the floor
-                .strafeToLinearHeading(new Vector2d(12, 41.25), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(21.5, 40.5), Math.toRadians(0))
                 .stopAndAdd(new SequentialAction(
-                        assembly.anglePitch(260),
-                        assembly.extendSlide(Assembly.SlidesPosition.MID),
-                        assembly.flipDown(),
-                        new SleepAction(1),
-                        assembly.anglePitch(120),
-                        new SleepAction(0.5),
+                        new SleepAction(0.7),
+                        assembly.anglePitch(110),
+                        new SleepAction(0.7),
                         assembly.clawClose(),
-                        new SleepAction(0.5),
-                        assembly.anglePitch(280)
+                        new SleepAction(0.7),
+                        assembly.extendSlide(400)
                 ))
                 // To drop 2nd sample into high basket
-                .strafeToLinearHeading(new Vector2d(6, 36), Math.toRadians(-43))
+                .strafeToLinearHeading(new Vector2d(6, 37), Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
                         assembly.extendSlide(Assembly.SlidesPosition.DOWN),
-                        new SleepAction(1),
+                        new SleepAction(0.5),
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
+                        new SleepAction(1),
                         assembly.extendSlide(Assembly.SlidesPosition.HIGH),
-                        new SleepAction(0.8),
+                        new SleepAction(1),
                         assembly.flipMid(),
-                        new SleepAction(0.7),
+                        new SleepAction(1),
                         assembly.clawOpen(),
                         new SleepAction(0.5),
                         assembly.flipDown(),
-                        assembly.extendSlide(550),
-                        assembly.anglePitch(Assembly.PitchPosition.DOWN)
-                ))
+                        assembly.extendSlide(500)
+                        ))
                 // To pickup 3rd sample(left) from the floor
                 .strafeToLinearHeading(new Vector2d(34.5, 35), Math.toRadians(90))
                 .stopAndAdd(new SequentialAction(
@@ -171,8 +159,8 @@ public class FourSampleAuto extends LinearOpMode {
 //                        new SleepAction(3)
 
                 ))
-
                 .build();
+
 
         Actions.runBlocking(
                 new ParallelAction(
@@ -189,6 +177,7 @@ public class FourSampleAuto extends LinearOpMode {
                         }
                 )
         );
+
 
         waitForStart();
 

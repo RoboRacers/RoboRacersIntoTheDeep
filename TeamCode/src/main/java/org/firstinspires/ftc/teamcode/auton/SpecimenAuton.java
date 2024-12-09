@@ -40,7 +40,7 @@ public class SpecimenAuton extends LinearOpMode {
 
         runtime.reset();
 
-        Action traj = drive.actionBuilder(new Pose2d(0,0,0))
+        Action traj = drive.actionBuilder(new Pose2d(0,0,Math.toRadians(180)))
                 // Init Position
                 .stopAndAdd(new SequentialAction(
                         assembly.rotateClaw(0.48),
@@ -48,12 +48,12 @@ public class SpecimenAuton extends LinearOpMode {
                         assembly.flipMid(),
                         assembly.anglePitch(Assembly.PitchPosition.DOWN),
 //                        new SleepAction(2),
-                        assembly.extendSlide(Assembly.SlidesPosition.DOWN),
+                        assembly.extendSlide(350),
                         new SleepAction(1),
                         assembly.anglePitch(Assembly.PitchPosition.HIGH)
 //                        new SleepAction(2)
                 ))
-                .splineToLinearHeading(new Pose2d(22,10,Math.toRadians(180)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(10,10,Math.toRadians(180)),Math.toRadians(180))
 
 //           above or this one     .splineToLinearHeading(new Pose2d(11,34,Math.toRadians(0)),Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
@@ -61,20 +61,25 @@ public class SpecimenAuton extends LinearOpMode {
                         new SleepAction(1),
                         assembly.extendSlide(Assembly.SlidesPosition.MID),
                         new SleepAction(1),
-                        assembly.flipUp(),
-                        new SleepAction(3),
+                        assembly.flipUp()
+                ))
+                .splineToLinearHeading(new Pose2d(22,10,Math.toRadians(180)),Math.toRadians(180))
+                .stopAndAdd(new SequentialAction(
+                        new SleepAction(1),
                         assembly.extendSlide(Assembly.SlidesPosition.DOWN),
                         new SleepAction(0.25),
                         assembly.clawOpen()
                 ))
+
                 // To pick up 1st sample(right side) on floor
-                .strafeToLinearHeading(new Vector2d(10, -32), Math.toRadians(0))
+//                .splineToLinearHeading(new Vector2d(12,10,Math.toRadians(180)),Math.toRadians(180))
+//                .strafeToConstantHeading(new Vector2d(6, -32), Math.toRadians(0))
                 .stopAndAdd(new SequentialAction(
                         assembly.extendSlide(100),
                         new SleepAction(1),
                         assembly.anglePitch(1150)
                 ))
-                .strafeToLinearHeading(new Vector2d(3, -32), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(2, -32), Math.toRadians(0))
                 // To drop 1st sample from floor into high basket
                 .stopAndAdd(new SequentialAction(
                         assembly.clawClose(),
@@ -156,14 +161,21 @@ public class SpecimenAuton extends LinearOpMode {
                 ))
 
                 .build();
-        while (opModeInInit()){
-            assembly.clawClose();
-            assembly.flipMid();
-            assembly.anglePitch(Assembly.PitchPosition.DOWN);
-//                    new SleepAction(2);
-            assembly.extendSlide(Assembly.SlidesPosition.DOWN);
-//                    new SleepAction(2);
-        }
+        Actions.runBlocking(
+                new ParallelAction(
+                        new SequentialAction(
+                                assembly.anglePitch(Assembly.PitchPosition.DOWN),
+//                                assembly.extendSlide(Assembly.SlidesPosition.DOWN),
+                                assembly.clawClose(),
+                                assembly.flipCus(0.98)
+                        ),
+                        telemetryPacket -> {
+                            assembly.update();
+                            drive.updatePoseEstimate();
+                            return opModeInInit();
+                        }
+                )
+        );
 
 
         waitForStart();

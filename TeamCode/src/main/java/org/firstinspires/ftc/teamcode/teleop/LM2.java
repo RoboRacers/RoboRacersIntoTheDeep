@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,8 +13,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.modules.PIDController;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
-
-@TeleOp(name = "LM2 Final", group = "Test")
+@Disabled
+@TeleOp(name = "LM2 eh", group = "Test")
 public class LM2 extends LinearOpMode {
     //Pitch Stuff
     public DcMotorImplEx pitchMotor;

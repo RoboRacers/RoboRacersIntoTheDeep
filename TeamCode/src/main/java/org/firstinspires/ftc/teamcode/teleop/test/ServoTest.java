@@ -19,7 +19,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Disabled
 @TeleOp(name = "Servo Test", group = "Test")
 public class ServoTest extends LinearOpMode {
     Servo servo;

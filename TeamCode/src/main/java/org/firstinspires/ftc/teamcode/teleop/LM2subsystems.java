@@ -10,6 +10,7 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -24,7 +25,7 @@ import org.firstinspires.ftc.teamcode.robot.Assembly;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Disabled
 @TeleOp(name = "LM2 Subsystems", group = "Test")
 public class LM2subsystems extends LinearOpMode {
 

@@ -59,7 +59,7 @@ public class Assembly implements Subsystem {
     final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
 
     public final int slidesLowPosition = 400;
-    public final int slidesMidPosition = 1500;
+    public final int slidesMidPosition = 950;
     public final int slidesHighPosition = 1750;
     public final int slidesPositionTolerance = 20;
 

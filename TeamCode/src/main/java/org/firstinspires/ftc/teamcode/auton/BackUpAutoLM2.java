@@ -27,6 +27,9 @@ public class BackUpAutoLM2 extends LinearOpMode {
     Assembly assembly;
 
 
+public double slidesEncoder;
+    public double pitchEncoder;
+
     MecanumDrive drive;
 
 
@@ -59,89 +62,103 @@ public class BackUpAutoLM2 extends LinearOpMode {
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
                         new SleepAction(1),
                         assembly.extendSlide(Assembly.SlidesPosition.HIGH),
-                        new SleepAction(1),
+                        new SleepAction(0.5),
                         assembly.flipMid(),
                         new SleepAction(0.5),
                         assembly.clawOpen(),
                         new SleepAction(0.5),
                         assembly.flipDown(),
+                        assembly.anglePitch(800),
                         assembly.extendSlide(450),
                         new SleepAction(1),
                         assembly.anglePitch(Assembly.PitchPosition.DOWN)
                 ))
                 // To pick up 1st sample(right side) on floor
-                .strafeToLinearHeading(new Vector2d(25, 33), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(22.5, 33), Math.toRadians(0))
                 .stopAndAdd(new SequentialAction(
-                        new SleepAction(1),
-                        assembly.anglePitch(125),
-                        new SleepAction(1),
-                        assembly.clawClose(),
-                        new SleepAction(1)
-                ))
-                // To drop 1st sample from floor into high basket
-                .strafeToLinearHeading(new Vector2d(7, 35), Math.toRadians(-45))
-                .stopAndAdd(new SequentialAction(
-                        assembly.extendSlide(Assembly.SlidesPosition.DOWN),
-                        assembly.anglePitch(Assembly.PitchPosition.HIGH),
+                        new SleepAction(0.7),
+                        assembly.anglePitch(120),
                         new SleepAction(0.5),
-                        assembly.extendSlide(Assembly.SlidesPosition.HIGH),
+                        assembly.clawClose(),
+                        new SleepAction(0.7),
+                        assembly.extendSlide(400),
+                        assembly.anglePitch(350)
+                        ))
+                // To drop 1st sample from floor into high basket
+                .strafeToLinearHeading(new Vector2d(6.5, 36), Math.toRadians(-45))
+                .stopAndAdd(new SequentialAction(
+                        assembly.anglePitch(Assembly.PitchPosition.HIGH),
                         new SleepAction(1),
+                        assembly.extendSlide(Assembly.SlidesPosition.HIGH),
+                        new SleepAction(0.5),
                         assembly.flipMid(),
                         new SleepAction(0.5),
                         assembly.clawOpen(),
                         new SleepAction(0.5),
                         assembly.flipDown(),
+                        assembly.anglePitch(800),
                         assembly.extendSlide(450),
                         new SleepAction(0.5),
-                        assembly.anglePitch(Assembly.PitchPosition.DOWN),
-                        new SleepAction(0.2)
+                        assembly.anglePitch(Assembly.PitchPosition.DOWN)
                 ))
                 // To pickup 2nd sample(middle) from the floor
-                .strafeToLinearHeading(new Vector2d(12.5, 41.5), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(21.5, 40.5), Math.toRadians(0))
                 .stopAndAdd(new SequentialAction(
-                        assembly.anglePitch(220),
-                        assembly.extendSlide(Assembly.SlidesPosition.MID),
-                        assembly.flipDown(),
+                        new SleepAction(0.7),
+                        assembly.anglePitch(110),
                         new SleepAction(0.5),
-                        assembly.anglePitch(120),
-                        new SleepAction(1),
                         assembly.clawClose(),
-                        new SleepAction(1),
-                        assembly.anglePitch(280)
+                        new SleepAction(0.7),
+                        assembly.extendSlide(400),
+                        assembly.anglePitch(350)
+
                 ))
                 // To drop 2nd sample into high basket
-                .strafeToLinearHeading(new Vector2d(7, 36), Math.toRadians(-45))
+                .strafeToLinearHeading(new Vector2d(6, 37), Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
                         assembly.extendSlide(Assembly.SlidesPosition.DOWN),
                         new SleepAction(0.5),
                         assembly.anglePitch(Assembly.PitchPosition.HIGH),
-                        assembly.extendSlide(Assembly.SlidesPosition.HIGH),
                         new SleepAction(1),
-                        assembly.flipMid(),
+                        assembly.extendSlide(Assembly.SlidesPosition.HIGH),
                         new SleepAction(0.5),
+                        assembly.flipMid(),
+                        new SleepAction(1),
                         assembly.clawOpen(),
                         new SleepAction(0.5),
                         assembly.flipDown(),
-                        assembly.extendSlide(550),
-                        assembly.anglePitch(Assembly.PitchPosition.DOWN),
+                        assembly.extendSlide(500)
+                        ))
+                .strafeToLinearHeading(new Vector2d(48, 20), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(45, 6), Math.toRadians(90))
+                .stopAndAdd(
+                        new SequentialAction(
+                                assembly.anglePitch(800),
+                                assembly.extendSlide(0),
+                                new SleepAction(1),
+
+                                assembly.anglePitch(0),
                         //reset all
-                        new SleepAction(1),
-                        assembly.flipMid(),
-                        new SleepAction(3),
-                        assembly.extendSlide(0),
-                        new SleepAction(2),
-                        assembly.anglePitch(0)
+                        assembly.flipUp()
                 ))
                 .build();
 
 
-        while (opModeInInit()){
-            new SequentialAction(
-                    assembly.anglePitch(Assembly.PitchPosition.DOWN),
-                    assembly.flipUp(),
-                    assembly.clawClose()
-            );
-        }
+        Actions.runBlocking(
+                new ParallelAction(
+                        new SequentialAction(
+                                assembly.anglePitch(Assembly.PitchPosition.DOWN),
+//                                assembly.extendSlide(Assembly.SlidesPosition.DOWN),
+                                assembly.clawClose(),
+                                assembly.flipCus(0.98)
+                        ),
+                        telemetryPacket -> {
+                            assembly.update();
+                            drive.updatePoseEstimate();
+                            return opModeInInit();
+                        }
+                )
+        );
 
 
         waitForStart();
@@ -150,9 +167,12 @@ public class BackUpAutoLM2 extends LinearOpMode {
                 new ParallelAction(
                         new SequentialAction(
                                 traj
+
                         ),
                         telemetryPacket -> {
                             assembly.update();
+                            pitchEncoder = assembly.pitchMotor.getCurrentPosition();
+                            slidesEncoder = assembly.slidesMotor.getCurrentPosition();
                             // telemtry here
                             telemetry.update();
                             return opModeIsActive();
@@ -161,4 +181,5 @@ public class BackUpAutoLM2 extends LinearOpMode {
         );
 
     }
+
 }

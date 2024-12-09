@@ -2,11 +2,12 @@ package org.firstinspires.ftc.teamcode.teleop.test;
 
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 
-
+@Disabled
 @TeleOp(name = "Pitch Test", group = "Test")
 public class PitchTest extends LinearOpMode {
     public DcMotorImplEx pitchMotor;
