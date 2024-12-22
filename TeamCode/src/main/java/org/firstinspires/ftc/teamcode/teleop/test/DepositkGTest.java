@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.modules.PIDController;
 @TeleOp(name = "Pitch kG Test", group = "Test")
 public class DepositkGTest extends LinearOpMode {
     public DcMotorImplEx pitchMotor;
+    public DcMotorImplEx slidesMotor;
 
     public static double kG = 0.27;
     public static double kP = 0;
@@ -30,6 +31,7 @@ public class DepositkGTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
+        slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
 
         double target = 0;
 
