@@ -25,7 +25,7 @@ public class EnhancedHSVAndAngleDetection extends LinearOpMode {
         pipeline = new CombinedHSVAndAnglePipeline();
         camera.setPipeline(pipeline);
 
-        claw = hardwareMap.get(Servo.class, "claw");
+        claw = hardwareMap.get(Servo.class, "rotateClaw");
 
         // Open the camera
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -48,16 +48,16 @@ public class EnhancedHSVAndAngleDetection extends LinearOpMode {
             double targetAngle = pipeline.getTargetAngle();
             int detectedObjects = pipeline.getDetectedObjectsCount();
 
-            targetAngle *= (180/3.14);
+            targetAngle *= (180/3.1415);
             //NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin
-
-            double output = (((pipeline.angle - 0) * (0.9 - 0.1)) / (180 - 0)) + 0.1;
+            //0.17= min 0.96 = max
+            double output = (((pipeline.angle - 0) * (0.96 - 0.17)) / (180 - 0)) + 0.17;
 
             claw.setPosition(output);
 
 
             // Display telemetry
-            telemetry.addData("Target Angle (Radians)", targetAngle);
+            telemetry.addData("Angle", pipeline.angle);
             telemetry.addData("Detected Objects", detectedObjects);
             telemetry.update();
 
