@@ -46,7 +46,7 @@ public class SlidesPIDTest extends LinearOpMode {
         final double ticksToDegrees = (double) 90 / ticksPerRightAngle;
         final double ticksToInches = (double) 26 / ticksPerMaxExtend;
         final double inchesToMeters = 0.0254;
-        final double mass = 1.5; // kg
+        final double mass = 1; // kg
         final double g = 9.8; // m/s^2
         slidesControl = new PIDController(kP2, kI2, kD2);
         pitchControl = new PIDController(kP, kI, kD);
