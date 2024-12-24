@@ -25,9 +25,9 @@ public class SlidesPIDTest extends LinearOpMode {
     public static  double kD = 0.00045;
     public static double kP2 = 0.005;
     public static double kI2 = 0;
-    public static double kD2 = 0.0008;
-    public static double ticksPerRightAngle = 930;
-    public static double ticksPerMaxExtend = 1936;
+    public static double kD2 = 0.00071;
+    public static double ticksPerRightAngle = 1000;
+    public static double ticksPerMaxExtend = 1750;
     public static double target = 100;
     public static double target2 = 300;
 
@@ -46,7 +46,11 @@ public class SlidesPIDTest extends LinearOpMode {
         final double ticksToDegrees = (double) 90 / ticksPerRightAngle;
         final double ticksToInches = (double) 26 / ticksPerMaxExtend;
         final double inchesToMeters = 0.0254;
-        final double mass = 1; // kg
+//<<<<<<< Updated upstream
+//        final double mass = 1; // kg
+//=======
+        final double mass = 1.2; // kg
+//>>>>>>> Stashed changes
         final double g = 9.8; // m/s^2
         slidesControl = new PIDController(kP2, kI2, kD2);
         pitchControl = new PIDController(kP, kI, kD);
@@ -71,7 +75,7 @@ public class SlidesPIDTest extends LinearOpMode {
             slidesControl.setSetpoint(target);
             // Calculate feedforward for pitch
             double pitchAngleRadians = Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees);
-            double rPitch = 0.3937 + (slidesMotor.getCurrentPosition() * ticksToInches * inchesToMeters);
+            double rPitch = 0.39 * (slidesMotor.getCurrentPosition() * ticksToInches * inchesToMeters);
             double feedforwardPitch = rPitch * mass * g * Math.cos(pitchAngleRadians); // Torque due to gravity
             double pid = pitchControl.calculate(pitchMotor.getCurrentPosition());
             double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
