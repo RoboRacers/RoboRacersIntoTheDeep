@@ -8,8 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CombinedHSVAndAnglePipeline extends OpenCvPipeline {
+
+    public RotatedRect rotatedRect = new RotatedRect(new Point(0,0), new Size(0,0), 0);
+
     private double targetAngle = 0;
     private int detectedObjectsCount = 0;
+
+    public MatOfPoint largestContour;
 
     private final Scalar lowerYellow = new Scalar(20, 100, 100);
     private final Scalar upperYellow = new Scalar(30, 255, 255);
@@ -68,7 +73,7 @@ public class CombinedHSVAndAnglePipeline extends OpenCvPipeline {
         Imgproc.findContours(processedMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
         detectedObjectsCount = 0;
-        MatOfPoint largestContour = null;
+        largestContour = null;
         double largestArea = 0;
 
         for (MatOfPoint contour : contours) {
@@ -85,7 +90,7 @@ public class CombinedHSVAndAnglePipeline extends OpenCvPipeline {
         // Process the largest valid contour
         if (largestContour != null) {
             // Get the rotated rectangle
-            RotatedRect rotatedRect = Imgproc.minAreaRect(new MatOfPoint2f(largestContour.toArray()));
+            rotatedRect = Imgproc.minAreaRect(new MatOfPoint2f(largestContour.toArray()));
 
             // Get the rectangle's vertices
             Point[] points = new Point[4];
@@ -116,6 +121,7 @@ public class CombinedHSVAndAnglePipeline extends OpenCvPipeline {
             String angleText = String.format("Angle: %.2f", angle);
             Imgproc.putText(input, angleText, new Point(center.x - 50, center.y - 20),
                     Imgproc.FONT_HERSHEY_SIMPLEX, 0.8, new Scalar(0, 255, 0), 2);
+
         }
 
         return input;
@@ -128,4 +134,13 @@ public class CombinedHSVAndAnglePipeline extends OpenCvPipeline {
     public int getDetectedObjectsCount() {
         return detectedObjectsCount;
     }
+
+    public Point getLargestObjectCenter() {
+        if (largestContour != null) {
+            RotatedRect rotatedRect = Imgproc.minAreaRect(new MatOfPoint2f(largestContour.toArray()));
+            return rotatedRect.center;
+        }
+        return new Point(0, 0); // Default if no contour
+    }
+
 }

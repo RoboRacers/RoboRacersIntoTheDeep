@@ -10,7 +10,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @TeleOp(name = "Enhanced HSV and Angle Detection OpMode", group = "Vision")
-public class EnhancedHSVAndAngleDetection extends LinearOpMode {
+public class FinalClawAllignEnhancedHSVAndAngleDetection extends LinearOpMode {
     OpenCvCamera camera;
     CombinedHSVAndAnglePipeline pipeline;
     Servo claw;
@@ -59,6 +59,11 @@ public class EnhancedHSVAndAngleDetection extends LinearOpMode {
             // Display telemetry
             telemetry.addData("Angle", pipeline.angle);
             telemetry.addData("Detected Objects", detectedObjects);
+
+//            telemetry.addData("Width", pipeline.rotatedRect.size.width);
+//            telemetry.addData("Height", pipeline.rotatedRect.size.height);
+
+
             telemetry.update();
 
             sleep(100); // Reduce CPU usage
