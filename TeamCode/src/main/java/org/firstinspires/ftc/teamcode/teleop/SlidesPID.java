@@ -26,10 +26,10 @@ public class SlidesPID extends LinearOpMode {
     public static double kP2 = 0.0025;
     public static double kI2 = 0;
     public static double kD2 = 0.00072;
-    public static double ticksPerRightAngle = 1000;
+    public static double ticksPerRightAngle = 990;
     public static double ticksPerMaxExtend = 1750;
-    public static double target = 100;
-    public static double target2 = 300;
+    public static double target = 10; // in inches
+    public static double target2 = 20; // in degrees
 
 
     PIDController slidesControl;
@@ -74,9 +74,9 @@ public class SlidesPID extends LinearOpMode {
             slidesControl.setCoefficients(kP2, kI2, kD2);
 
 
-            pitchControl.setSetpoint(target2);
+            pitchControl.setSetpoint(target2/ticksToDegrees);
 
-            slidesControl.setSetpoint(target);
+            slidesControl.setSetpoint(target/ticksToInches);
 
             double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
 //            double feedforward3 = kG2 * Math.sin(Math.toRadians((slidesMotor.getCurrentPosition()) * ticksToInches)) + 0;
