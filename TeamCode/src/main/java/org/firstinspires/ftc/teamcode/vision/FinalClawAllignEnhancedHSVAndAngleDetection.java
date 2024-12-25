@@ -45,13 +45,14 @@ public class FinalClawAllignEnhancedHSVAndAngleDetection extends LinearOpMode {
 
         while (opModeIsActive()) {
             // Get target angle and detected objects count
-            double targetAngle = pipeline.getTargetAngle();
+//            double targetAngle = pipeline.getTargetAngle();
             int detectedObjects = pipeline.getDetectedObjectsCount();
 
-            targetAngle *= (180/3.1415);
+//            targetAngle *= (180/3.1415);
             //NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin
             //0.17= min 0.96 = max
             double output = (((pipeline.angle - 0) * (0.96 - 0.17)) / (180 - 0)) + 0.17;
+//            double output = (((pipeline.angle + 90) * (0.96 - 0.17)) / (180 - 0)) + 0.17;
 
             claw.setPosition(output);
 

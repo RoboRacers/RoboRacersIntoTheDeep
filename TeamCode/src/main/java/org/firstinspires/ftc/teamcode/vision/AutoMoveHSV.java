@@ -58,9 +58,10 @@ public class AutoMoveHSV extends LinearOpMode {
                 telemetry.update();
             }
         });
+//        telemetry.addData("object angle: ",pipeline.angle);
+//        telemetry.update();
 
-
-//        waitForStart();
+        waitForStart();
 
         double xCenter = pipeline.rotatedRect.center.x;
         double yCenter = pipeline.rotatedRect.center.y;
@@ -84,11 +85,11 @@ public class AutoMoveHSV extends LinearOpMode {
         telemetry.addData("X Error in Inches", xErrorInches);
         telemetry.addData("Y Error in Inches", yErrorInches);
 
+
         Action trajectory = drive.actionBuilder(new Pose2d(0, 0,0))
-                .splineToLinearHeading(new Pose2d(xErrorInches,yErrorInches, Math.toRadians(0)),Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-(yErrorInches*3), -(xErrorInches*2), Math.toRadians(0)),Math.toRadians(0))
                 .waitSeconds(1)
                 .build();
-        waitForStart();
         Actions.runBlocking(new ParallelAction(
                 new SequentialAction(
                         trajectory
