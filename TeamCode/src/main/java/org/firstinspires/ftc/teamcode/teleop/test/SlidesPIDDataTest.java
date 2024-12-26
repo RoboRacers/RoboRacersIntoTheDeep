@@ -61,6 +61,13 @@ public class SlidesPIDDataTest extends LinearOpMode {
         final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
         final double ticksToInches = (double) 26 /ticksPerMaxExtend;
 
+        log.addData("Pitch Motor Current Position");
+        log.addData("Pitch Motor Target Position");
+        log.addData("Pitch Motor Power");
+        log.addData("Pitch Motor Current");
+        log.addData("Pitch Motor Angle");
+        log.update();
+
         while (opModeInInit()) {
         }
 
@@ -96,18 +103,19 @@ public class SlidesPIDDataTest extends LinearOpMode {
             pitchMotor.setPower(pid + feedforward2);
             slidesMotor.setPower(-(pid2 + feedforward));
             telemetry.addData("slide power", slidesMotor.getPower());
-            telemetry.addData("Pitch Motor Position", slidesMotor.getCurrentPosition());
-            telemetry.addData("Pitch Motor Power", slidesMotor.getPower());
-            telemetry.addData("Pitch Current", slidesMotor.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Pitch Motor Angle", (slidesMotor.getCurrentPosition() - 45 ) * ticksToDegrees);
+            telemetry.addData("Pitch Motor Position", pitchMotor.getCurrentPosition());
+            telemetry.addData("Pitch Motor Power", pitchMotor.getPower());
+            telemetry.addData("Pitch Current", pitchMotor.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Pitch Motor Angle", (pitchMotor.getCurrentPosition() - 45 ) * ticksToDegrees);
             telemetry.update();
 
-            log.addData(slidesMotor.getPower());
-            log.addData(slidesMotor.getCurrentPosition());
-            log.addData(slidesMotor.getCurrent(CurrentUnit.MILLIAMPS));
-            log.addData((slidesMotor.getCurrentPosition() - 45 ) * ticksToDegrees);
+            log.addData(pitchMotor.getCurrentPosition());
+            log.addData(target2);
+            log.addData(pitchMotor.getPower());
+            log.addData(pitchMotor.getCurrent(CurrentUnit.MILLIAMPS));
+            log.addData((pitchMotor.getCurrentPosition() - 45 ) * ticksToDegrees);
             log.update();
-            
+
 //            // Apply feedforward to motors
 //            pitchMotor.setPower(feedforwardPitch + pid);
 //            slidesMotor.setPower(-(feedforwardExtend + pid2));
