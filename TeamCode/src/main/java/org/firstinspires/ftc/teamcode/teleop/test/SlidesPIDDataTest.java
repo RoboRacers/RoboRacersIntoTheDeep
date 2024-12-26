@@ -45,6 +45,7 @@ public class SlidesPIDDataTest extends LinearOpMode {
 //        slidesMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
 
         LoggingUtil log = new LoggingUtil("slidesPIDDataTest", true);
+        log.update();
 
         slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
         pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
@@ -71,7 +72,7 @@ public class SlidesPIDDataTest extends LinearOpMode {
         while (opModeInInit()) {
         }
 
-// Initialize motors
+        // Initialize motors
         pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         pitchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
