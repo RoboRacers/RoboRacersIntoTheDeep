@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.modules.LoggingUtil;
 import org.firstinspires.ftc.teamcode.modules.PIDController;
 
 @Config
-@TeleOp(name = "A + Slides PID", group = "Test")
+@TeleOp(name = "Slides PID Data Test", group = "Test")
 public class SlidesPIDDataTest extends LinearOpMode {
     public DcMotorImplEx slidesMotor;
     public DcMotorImplEx pitchMotor;
