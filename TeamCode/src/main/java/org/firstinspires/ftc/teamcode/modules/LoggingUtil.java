@@ -17,7 +17,7 @@ public class LoggingUtil {
     private long startTime;
     private boolean disabled = false;
 
-    LoggingUtil(String filename, boolean logTime) {
+    public LoggingUtil(String filename, boolean logTime) {
         if (logTime) startTime = System.nanoTime();
         this.logTime = logTime;
         String directoryPath = Environment.getExternalStorageDirectory().getPath()+"/"+BASE_FOLDER_NAME;
