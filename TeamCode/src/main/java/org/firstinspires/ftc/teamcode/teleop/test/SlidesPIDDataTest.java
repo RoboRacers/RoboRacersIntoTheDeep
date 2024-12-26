@@ -12,8 +12,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.modules.LoggingUtil;
 import org.firstinspires.ftc.teamcode.modules.PIDController;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 @Config
-@TeleOp(name = "A + Slides PID", group = "Test")
+@TeleOp(name = "Slides PID Data Test", group = "Test")
 public class SlidesPIDDataTest extends LinearOpMode {
     public DcMotorImplEx slidesMotor;
     public DcMotorImplEx pitchMotor;
@@ -43,8 +48,13 @@ public class SlidesPIDDataTest extends LinearOpMode {
 //        slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
 //        pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
 //        slidesMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
+        Date now = new Date();
 
-        LoggingUtil log = new LoggingUtil("slidesPIDDataTest", true);
+        // Format the date and time
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+        String formattedDateTime = formatter.format(now);
+
+        LoggingUtil log = new LoggingUtil("PitchData-" + formattedDateTime, true);
         log.update();
 
         slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
