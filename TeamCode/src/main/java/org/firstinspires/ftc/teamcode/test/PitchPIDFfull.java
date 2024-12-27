@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "Arm Control with PIDF Dashboard", group = "Arm")
+@TeleOp(name = "Full Arm Control with PIDF Dashboard", group = "Arm")
 @Config // Enables configuration via FTC Dashboard
-public class PitchPIDF extends LinearOpMode {
+public class PitchPIDFfull extends LinearOpMode {
 
     private DcMotor armMotor;
     private AnalogInput potentiometer;
@@ -25,20 +25,6 @@ public class PitchPIDF extends LinearOpMode {
     public static double kI = 0.001;
     public static double kD = 0.001;
     public static double kF = 0.4;
-
-    public static double kPup = 0.018;
-    public static double kIup = 0.001;
-    public static double kDup = 0.000225;
-    public static double kFup = 0.3;
-
-    public static double kPdown = 0.0058;
-    public static double kIdown = 0.0001;
-    public static double kDdown = 0.00001;
-//public static double kDdown = 0.000005;
-    public static double kFdown = 0.1;
-
-    public static double kIerror = 0.0018;
-
     public static double targetAngle = 0.0; // Target angle in degrees
 
     private double integralSum = 0;
@@ -75,21 +61,21 @@ public class PitchPIDF extends LinearOpMode {
             double feedForward = kF * Math.cos(Math.toRadians(currentAngle));
 
             if (targetAngle>lastTarget){
-                kP = kPup;
-                kD = kDup;
-                kI = kIup;
-                kF = kFup;
+                kP = 0.044;
+                kD = 0.0015;
+                kI = 0.00125;
+                kF = 0.4;
             }else if (targetAngle<lastTarget){
-                kP = kPdown;
-                kD = kDdown;
-                kI = kIdown;
-                kF= kFdown;
+                kP = 0.0056;
+                kD = 0.00001;
+                kI = 0.0001;
+                kF= 0.1;
             }
 
-            if(Math.abs(error) < 10 && Math.abs(error)>1){
+            if(Math.abs(error) < 5){
 //                kP = 0.054;
 //                kD = 0.0015;
-                kI = kIerror;
+                kI = 0.00175;
             }
 
 
@@ -126,6 +112,10 @@ public class PitchPIDF extends LinearOpMode {
 
     private double mapPotentiometerToAngle(double potentiometerValue) {
 
+//        return ((oldval - oldmin)/ (oldmax-oldmin)) * (newmax - newmin) +newmin
+
+//        return 0 + ((90 - 0) / (0.64 - 0.0005)) * (potentiometerValue - 0);
         return ((potentiometerValue - 0.47800000000000004)/ (1.1360000000000001-0.47800000000000004)) * (90 - 0) -0;
+
     }
 }

@@ -22,7 +22,6 @@
 package org.firstinspires.ftc.teamcode.teleop.test;
 
 import com.qualcomm.hardware.digitalchickenlabs.OctoQuad;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -56,7 +55,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * See the sensor's product page: https://www.tindie.com/products/35114/
  */
 @TeleOp(name = "OctoQuad Basic", group="OctoQuad")
-public class bigbetty extends LinearOpMode {
+public class Octopod extends LinearOpMode {
 
     // Identify which encoder OctoQuad inputs are connected to each odometry pod.
     private final int ODO_LEFT  = 0; // Facing forward direction on left side of robot (Axial motion)

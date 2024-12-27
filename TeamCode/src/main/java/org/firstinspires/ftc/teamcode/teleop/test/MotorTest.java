@@ -5,24 +5,26 @@ package org.firstinspires.ftc.teamcode.teleop.test;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 
 @Disabled
-@TeleOp(name = "Pitch Test", group = "Test")
-public class PitchTest extends LinearOpMode {
-    public DcMotorImplEx pitchMotor;
+
+@TeleOp(name = "Slides Test", group = "Test")
+public class MotorTest extends LinearOpMode {
+    public DcMotorImplEx slidesMotor;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
-
-
+        slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
+slidesMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
         while (opModeInInit()) {
             // 175
             // 420
         }
-
+        slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        pitchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -48,12 +50,12 @@ public class PitchTest extends LinearOpMode {
 //            telemetry.addData("Pitch Motor Power", pitchMotor.getPower());
 //            telemetry.addData("Pitch Current", pitchMotor.getCurrent(CurrentUnit.MILLIAMPS));
             if(gamepad1.a){
-                pitchMotor.setPower(gamepad1.right_stick_x);
+                slidesMotor.setPower(gamepad1.right_stick_x);
             }else {
-                pitchMotor.setPower(gamepad1.right_stick_x*0.4);
+                slidesMotor.setPower(gamepad1.right_stick_x*0.4);
             }
-            telemetry.addData("Pitch Power", pitchMotor.getPower());
-            telemetry.addData("Pitch Pos", pitchMotor.getCurrentPosition());
+            telemetry.addData("Slides Power", slidesMotor.getPower());
+            telemetry.addData("slides Pos", slidesMotor.getCurrentPosition());
 
             telemetry.update();
 
