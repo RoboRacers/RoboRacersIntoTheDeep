@@ -26,14 +26,14 @@ public class PitchPIDF extends LinearOpMode {
     public static double kD = 0.001;
     public static double kF = 0.4;
 
-    public static double kPup = 0.018;
-    public static double kIup = 0.001;
-    public static double kDup = 0.000225;
-    public static double kFup = 0.3;
+    public static double kPup = 0.026;
+    public static double kIup = 0.000;
+    public static double kDup = 0.003;
+    public static double kFup = 0.22;
 
-    public static double kPdown = 0.0058;
-    public static double kIdown = 0.0001;
-    public static double kDdown = 0.00001;
+    public static double kPdown = 0.009;
+    public static double kIdown = 0.00;
+    public static double kDdown = 0.00;
 //public static double kDdown = 0.000005;
     public static double kFdown = 0.1;
 
@@ -68,12 +68,6 @@ public class PitchPIDF extends LinearOpMode {
             // Calculate error (using angles)
             double error = targetAngle - currentAngle;
 
-            integralSum += error * timer.seconds();
-
-            double derivative = (error - lastError) / timer.seconds();
-
-            double feedForward = kF * Math.cos(Math.toRadians(currentAngle));
-
             if (targetAngle>lastTarget){
                 kP = kPup;
                 kD = kDup;
@@ -91,6 +85,15 @@ public class PitchPIDF extends LinearOpMode {
 //                kD = 0.0015;
                 kI = kIerror;
             }
+
+            integralSum += error * timer.seconds();
+
+
+            double derivative = (error - lastError) / timer.seconds();
+
+            double feedForward = kF * Math.cos(Math.toRadians(currentAngle));
+
+
 
 
             motorPower = (kP * error) + (kI * integralSum) + (kD * derivative) + feedForward;
