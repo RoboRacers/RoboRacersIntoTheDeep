@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.test;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -9,20 +11,27 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "PIDF SLIDES", group = "Arm")
-public class SlidesPID extends LinearOpMode {
-    private DcMotor slidesMotor;
-    private AnalogInput potentiometer;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+@TeleOp(name = "simple slid PIDF", group = "Arm")
+@Config // Enables configuration via FTC Dashboard
+public class SlidesPIDF extends LinearOpMode {
+
+    private DcMotor armMotor;
+    private Rev2mDistanceSensor distanceSensor;
+    private AnalogInput pot;
+
+    public WeightedMovingAverage wma = new WeightedMovingAverage(0.7);
     private FtcDashboard dashboard;
 
     double motorPower;
     double maxPower;
 
     // Configuration variables (tunable via dashboard)
-    public static double kP = 0.0;
-    public static double kI = 0.00;
-    public static double kD = 0.00;
-    public static double kF = 0.0;
+    public static double kP = 0.042;
+    public static double kI = 0.001;
+    public static double kD = 0.002;
+    public static double kF = 0.39;
     public static double targetAngle = 0.0; // Target angle in degrees
 
     private double integralSum = 0;
@@ -33,14 +42,12 @@ public class SlidesPID extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        slidesMotor = hardwareMap.get(DcMotor.class, "pitchMotor");
-        potentiometer = hardwareMap.get(AnalogInput.class, "pot");
+        armMotor = hardwareMap.get(DcMotor.class, "slidesMotor");
+        distanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distance");
 
-
-        slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        slidesMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        slidesMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        pot = hardwareMap.get(AnalogInput.class,"pot");
         // Initialize FTC Dashboard
         dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
@@ -49,17 +56,17 @@ public class SlidesPID extends LinearOpMode {
         timer.reset();
 
         while (opModeIsActive()) {
-            double currentVoltage = potentiometer.getVoltage();
-            double currentAngle = mapPotentiometerToAngle(currentVoltage);
+            double curPosRaw = distanceSensor.getDistance(DistanceUnit.CM);
+            double actualCurPos = rawToGoodWithFilter(curPosRaw);
 
             // Calculate error (using angles)
-            double error = targetAngle - currentAngle;
+            double error = targetAngle - actualCurPos;
 
             integralSum += error * timer.seconds();
 
             double derivative = (error - lastError) / timer.seconds();
 
-            double feedForward = kF * Math.sin(Math.toRadians(currentAngle));
+            double feedForward = kF * Math.sin(Math.toRadians(mapPotentiometerToAngle(pot.getVoltage())));
 
             motorPower = (kP * error) + (kI * integralSum) + (kD * derivative) + feedForward;
 
@@ -69,15 +76,16 @@ public class SlidesPID extends LinearOpMode {
                 maxPower = motorPower;
             }
 
-            slidesMotor.setPower(motorPower);
+            armMotor.setPower(motorPower);
 
             lastError = error;
             lastTarget = targetAngle;
             timer.reset();
 
             // Telemetry to dashboard
-            telemetry.addData("Target Angle", targetAngle);
-            telemetry.addData("Current Angle", currentAngle);
+            telemetry.addData("Target Pos", targetAngle);
+            telemetry.addData("Current Pos Actual", actualCurPos);
+            telemetry.addData("Current Pos Raw", curPosRaw);
             telemetry.addData("Error", error);
             telemetry.addData("Motor Power", motorPower);
             telemetry.addData("kP", kP);
@@ -85,11 +93,33 @@ public class SlidesPID extends LinearOpMode {
             telemetry.addData("kD", kD);
             telemetry.addData("kF", kF);
             telemetry.addData("Max Power Used", maxPower);
-            telemetry.addData("Pot Voltage", potentiometer.getVoltage());
             telemetry.update();
             telemetry.update();// Important: Update the dashboard
             dashboard.getTelemetry();
         }
+    }
+
+    private double rawToGoodWithFilter(double pos) {
+        double actualPos;
+
+        if(pos>6) {
+//        if(pos < 45){
+//            double movingAvg;
+//            movingAvg = wma.getAvg(pos);
+//            return Math.round(movingAvg);
+//        }else if (pos > 45){
+//            return pos;
+//        }else{
+//            return pos;
+//        }
+
+            actualPos = 0.0000330052 * (Math.pow(pos, 4)) -0.00356719 * (Math.pow(pos, 3)) + 0.137523 * (Math.pow(pos, 2))  -1.15156*pos + 9.04499;
+        }
+        else{
+            actualPos = pos;
+
+        }
+        return Math.round(actualPos);
     }
 
     private double mapPotentiometerToAngle(double potentiometerValue) {

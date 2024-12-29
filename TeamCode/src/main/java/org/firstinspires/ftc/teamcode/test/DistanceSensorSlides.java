@@ -53,6 +53,10 @@ public class DistanceSensorSlides extends LinearOpMode {
 
     private DistanceSensor sensorDistance;
 
+    public WeightedMovingAverage moving = new WeightedMovingAverage(0.7);
+
+    public KalmanFilter kalman = new KalmanFilter(2, 0.2, 0);
+
     @Override
     public void runOpMode() {
         // you can use this as a regular DistanceSensor.
@@ -68,6 +72,18 @@ public class DistanceSensorSlides extends LinearOpMode {
         waitForStart();
         while(opModeIsActive()) {
             // generic DistanceSensor methods.
+
+            double mov;
+
+            kalman.predict();
+            kalman.update(sensorDistance.getDistance(DistanceUnit.CM));
+            double output = kalman.getEstimate();
+
+            mov = moving.getAvg(sensorDistance.getDistance(DistanceUnit.CM));
+            telemetry.addData("roundKALMAN", Math.round(output));
+            telemetry.addData("roundWEIGHTED", Math.round(mov));
+            telemetry.addData("KALMAN FILTER", output);
+            telemetry.addData("WEIGHTED MOVING AVG", mov);
             telemetry.addData("deviceName", sensorDistance.getDeviceName() );
 //            telemetry.addData("range", String.format("%.01f mm", sensorDistance.getDistance(DistanceUnit.MM)));
             telemetry.addData("range", String.format("%.01f cm", sensorDistance.getDistance(DistanceUnit.CM)));
