@@ -72,6 +72,7 @@ public class SlidesPIDDataTest extends LinearOpMode {
         final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
         final double ticksToInches = (double) 26 /ticksPerMaxExtend;
 
+        log.addData("Time (Seconds)");
         log.addData("Pitch Motor Current Position");
         log.addData("Pitch Motor Target Position");
         log.addData("Pitch Motor Power");
