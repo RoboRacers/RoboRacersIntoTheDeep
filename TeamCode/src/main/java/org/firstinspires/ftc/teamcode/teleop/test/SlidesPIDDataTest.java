@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.modules.LoggingUtil;
@@ -22,6 +23,7 @@ import java.util.Date;
 public class SlidesPIDDataTest extends LinearOpMode {
     public DcMotorImplEx slidesMotor;
     public DcMotorImplEx pitchMotor;
+
 
     public static double kG = 0.027; // pitch i think
     public static double kG2 = 0.01; // slides i think
@@ -45,6 +47,8 @@ public class SlidesPIDDataTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+
+
 //        slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
 //        pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
 //        slidesMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
@@ -59,6 +63,7 @@ public class SlidesPIDDataTest extends LinearOpMode {
 
         slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
         pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
+        pitchMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
 
 // Constants for conversion
 //        final double ticksToDegrees = (double) 90 / ticksPerRightAngle;
@@ -81,6 +86,10 @@ public class SlidesPIDDataTest extends LinearOpMode {
         log.update();
 
         while (opModeInInit()) {
+
+            telemetry.addData("Slides pos", pitchMotor.getCurrentPosition());
+            telemetry.update();
+
         }
 
         // Initialize motors
@@ -100,7 +109,7 @@ public class SlidesPIDDataTest extends LinearOpMode {
 
             double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
 //            double feedforward3 = kG2 * Math.sin(Math.toRadians((slidesMotor.getCurrentPosition()) * ticksToInches)) + 0;
-            double feedforward2 = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + (kG2*(slidesMotor.getCurrentPosition()*ticksToInches));
+            double feedforward2 = kG * Math.cos(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees));
 //            // Calculate feedforward for pitch
 //            double pitchAngleRadians = Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees);
 //            double rPitch = 0.3937 + (slidesMotor.getCurrentPosition() * ticksToInches * inchesToMeters);
@@ -112,7 +121,7 @@ public class SlidesPIDDataTest extends LinearOpMode {
             // Calculate feedforward for extension (assuming constant force to counteract gravity)
             double feedforwardExtend = kG2; // You can adjust kG2 based on extension force required
 
-            pitchMotor.setPower(pid + feedforward2);
+            pitchMotor.setPower(-(pid + feedforward2));
             slidesMotor.setPower(-(pid2 + feedforward));
             telemetry.addData("slide power", slidesMotor.getPower());
             telemetry.addData("Pitch Motor Position", pitchMotor.getCurrentPosition());
