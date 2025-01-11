@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.robot.Assembly;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "Teleop LM3", group = "Test")
+@TeleOp(name = "Teleop LM3", group = "0000-Final")
 public class TeleopLM3 extends LinearOpMode {
 
     ElapsedTime elapsedTime;
@@ -27,10 +27,6 @@ public class TeleopLM3 extends LinearOpMode {
 
     MecanumDrive drive;
     Assembly assembly;
-
-    public boolean intakeToggle = false;  // Motor starts off
-    public boolean intakeToggle2 = false;  // Motor starts off
-    public double triggerThreshold = 0.2;
 
     private FtcDashboard dash = FtcDashboard.getInstance();
     private List<Action> runningActions = new ArrayList<>();
@@ -54,16 +50,41 @@ public class TeleopLM3 extends LinearOpMode {
 
             TelemetryPacket packet = new TelemetryPacket();
 
+            // Pitch presets
             if (gamepad1.dpad_up) {
                 assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
             } else if (gamepad1.dpad_down) {
                 assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
             }
 
+            // Slide Presets
             if (gamepad1.triangle) {
                 assembly.setSlideTarget(Assembly.SLIDES_HIGH_POSITION);
             } else if (gamepad1.cross) {
                 assembly.setSlideTarget(Assembly.SLIDES_LOW_POSITION);
+            }
+
+            // Flip
+            if (gamepad1.square) {
+                assembly.flipDown();
+            } else if (gamepad1.circle) {
+                assembly.flipUp();
+            }
+
+            // Rotate
+            if (gamepad1.dpad_right && !previousGamepad1.dpad_right) {
+                assembly.rotateClaw.setPosition(
+                        assembly.rotateClaw.getPosition() + 0.1
+                );
+            } else if (gamepad1.dpad_left && !previousGamepad1.dpad_left) {
+                assembly.rotateClaw.setPosition(
+                        assembly.rotateClaw.getPosition() - 0.1
+                );
+            }
+
+            // Claw
+            if (gamepad1.right_bumper && !previousGamepad1.right_bumper) {
+                assembly.toggleClaw();
             }
 
             drive.setDrivePowers(new PoseVelocity2d(
@@ -90,14 +111,16 @@ public class TeleopLM3 extends LinearOpMode {
             previousGamepad2 = gamepad2;
 
             assembly.update();
+
+            // Pitch
             telemetry.addData("Pitch Motor Position", assembly.pitchMotor.getCurrentPosition());
             telemetry.addData("Pitch Motor Power", assembly.pitchMotor.getPower());
             telemetry.addData("Pitch Motor Angle", assembly.getPitchAngle());
-            telemetry.addData("Pitch Target", assembly.pitchTarget);
-            // Pitch
-            telemetry.addData("Pitch Motor Position", assembly.slidesMotor.getCurrentPosition());
-            telemetry.addData("Pitch Motor Power", assembly.slidesMotor.getPower());
-            telemetry.addData("Pitch Target", Assembly.slideTarget);
+            telemetry.addData("Pitch Target", Assembly.pitchTarget);
+            // Slides
+            telemetry.addData("Slides Motor Position", assembly.slidesMotor.getCurrentPosition());
+            telemetry.addData("Slides Motor Power", assembly.slidesMotor.getPower());
+            telemetry.addData("Slides Target", Assembly.slideTarget);
             telemetry.update();
 
         }

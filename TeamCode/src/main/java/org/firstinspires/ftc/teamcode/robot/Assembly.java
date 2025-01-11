@@ -20,8 +20,9 @@ public class Assembly implements Subsystem {
     Servo flipLeft;
     Servo flipRight;
     public double flipPos = 0;
-    Servo rotateClaw;
+    public Servo rotateClaw;
     Servo claw;
+    private boolean CLAW_STATE;
     final double CLAW_OPEN = 0.43;
     final double CLAW_CLOSE = 0.72;
     /*
@@ -50,6 +51,7 @@ public class Assembly implements Subsystem {
     public static final double PITCH_MID_POSITION = 30;
     public static final double PITCH_HIGH_POSITION = 120;
     public static final double PITCH_POSITION_TOLERANCE = 1;
+
     public enum PitchPosition {
         LOW(10),
         MID(30),
@@ -103,6 +105,7 @@ public class Assembly implements Subsystem {
         flipRight = hardwareMap.get(Servo.class, "flipRight");
         rotateClaw = hardwareMap.get(Servo.class, "rotateClaw");
         claw = hardwareMap.get(Servo.class, "claw");
+        claw.setPosition(CLAW_CLOSE);
 
         distanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distance");
         pot = hardwareMap.get(AnalogInput.class,"pot");
@@ -183,6 +186,7 @@ public class Assembly implements Subsystem {
     public Action clawOpen() {
         return telemetryPacket -> {
             claw.setPosition(CLAW_OPEN);
+            CLAW_STATE = true;
             return false;
         };
     }
@@ -190,8 +194,18 @@ public class Assembly implements Subsystem {
     public Action clawClose() {
         return telemetryPacket -> {
             claw.setPosition(CLAW_CLOSE);
+            CLAW_STATE = false;
             return false;
         };
+    }
+
+    public void toggleClaw() {
+        if (CLAW_STATE) {
+            claw.setPosition(CLAW_CLOSE);
+        } else {
+            claw.setPosition(CLAW_OPEN);
+        }
+        CLAW_STATE = !CLAW_STATE;
     }
 
     public Action rotateClaw(double pos) {
