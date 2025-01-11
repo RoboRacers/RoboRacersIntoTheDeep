@@ -5,10 +5,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
-import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -58,9 +55,15 @@ public class TeleopLM3 extends LinearOpMode {
             TelemetryPacket packet = new TelemetryPacket();
 
             if (gamepad1.dpad_up) {
-                assembly.setPitchTarget(assembly.PITCH_HIGH_POSITION);
+                assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
             } else if (gamepad1.dpad_down) {
-                assembly.setPitchTarget(assembly.PITCH_LOW_POSITION);
+                assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
+            }
+
+            if (gamepad1.triangle) {
+                assembly.setSlideTarget(Assembly.SLIDES_HIGH_POSITION);
+            } else if (gamepad1.cross) {
+                assembly.setSlideTarget(Assembly.SLIDES_LOW_POSITION);
             }
 
             drive.setDrivePowers(new PoseVelocity2d(
@@ -89,8 +92,12 @@ public class TeleopLM3 extends LinearOpMode {
             assembly.update();
             telemetry.addData("Pitch Motor Position", assembly.pitchMotor.getCurrentPosition());
             telemetry.addData("Pitch Motor Power", assembly.pitchMotor.getPower());
-            telemetry.addData("Pitch Motor Angle", assembly.currentAngle);
+            telemetry.addData("Pitch Motor Angle", assembly.getPitchAngle());
             telemetry.addData("Pitch Target", assembly.pitchTarget);
+            // Pitch
+            telemetry.addData("Pitch Motor Position", assembly.slidesMotor.getCurrentPosition());
+            telemetry.addData("Pitch Motor Power", assembly.slidesMotor.getPower());
+            telemetry.addData("Pitch Target", Assembly.slideTarget);
             telemetry.update();
 
         }

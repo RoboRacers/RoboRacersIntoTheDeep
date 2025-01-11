@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.robot;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -10,69 +11,82 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.modules.PIDController;
 
-//@TeleOp(name = "LM2 One Driver", group = "Test")
+@Config
 public class Assembly implements Subsystem {
 
+    /*
+     * Servos
+     */
     Servo flipLeft;
     Servo flipRight;
-
-    private Rev2mDistanceSensor distanceSensor;
-    public AnalogInput pot;
-
+    public double flipPos = 0;
+    Servo rotateClaw;
     Servo claw;
     final double CLAW_OPEN = 0.43;
     final double CLAW_CLOSE = 0.72;
-
-    Servo rotateClaw;
-
-    public double flipPos = 0;
-
-    // Pitch Stuff
-    public double pitchTarget = 0;
+    /*
+     * Sensors
+     */
+    private Rev2mDistanceSensor distanceSensor;
+    public AnalogInput pot;
+    /*
+     * Pitch variables
+     */
     public DcMotorImplEx pitchMotor;
-    public static double kFPitch = 0.22;
-    public static double kPPitch = 0.026;
-    public static double kIPitch = 0;
-    public static double kDPitch = 0.003;//pitch constant
-    public double lastTargetPitch = 0.0;
-    public double lastErrorPitch = 0.0;
-    public double currentAngle = 0;
+    // PID Constants
     PIDController pitchPID;
-    public final double PITCH_LOW_POSITION = 10;
-    public final double PITCH_MID_POSITION = 30;
-    public final double PITCH_HIGH_POSITION = 110;
-    public final double PITCH_POSITION_TOLERANCE = 1;
-    public enum PitchPosition {
-        DOWN,
-        MID,
-        HIGH
-    }
+    public static double pitchKp = 0.026;
+    public static double pitchKi = 0;
+    public static double pitchKd = 0.003;//pitch constant
+    public static double pitchKf = 0.22;
+    public static double pitchTarget = 0;
+    private double pitchAngle = 0;
+    public double lastPitchTarget = 0.0;
+    public double lastPitchError = 0.0;
 
-    // Slides Stuff
+    public double getPitchAngle() {return pitchAngle;}
+    // Preset positions
+    public static final double PITCH_LOW_POSITION = 10;
+    public static final double PITCH_MID_POSITION = 30;
+    public static final double PITCH_HIGH_POSITION = 120;
+    public static final double PITCH_POSITION_TOLERANCE = 1;
+    public enum PitchPosition {
+        LOW(10),
+        MID(30),
+        HIGH(110);
+
+        public final double position;
+
+        PitchPosition(double position) {
+            this.position = position;
+        }
+    }
+    /*
+     * Slides variables
+     */
     public DcMotorImplEx slidesMotor;
-    public double slidesKP = 0.005;
-    public double slidesKI = 0; // slides constant
-    public double slidesKD = 0.0008;
-    public  double offset = 40;
-    PIDController slidesControl;
-    public  double slidesTarget = 0; //slides
-    public  double ticksPerMaxExtend = 1936;
-    public  double ticksPerRightAngle = 930;
+    // PID Constants
+    PIDController slidesPID;
+    public static double slidesKp = 0.005;
+    public static double slidesKi = 0; // slides constant
+    public static double slidesKd = 0.0008;
+    public static double offset = 40;
+    public static int slideTarget = 0;
+    public static double slidePosition = 0;
+    // Tick tuning values
+    public double ticksPerMaxExtend = 1936;
+    public double ticksPerRightAngle = 930;
     final double ticksToInches = (double) 26 /ticksPerMaxExtend;
     final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
-
-    public final int slidesLowPosition = 400;
-    public final int slidesMidPosition = 950;
-    public final int slidesHighPosition = 1750;
-    public final int slidesPositionTolerance = 20;
-
+    // Preset positions
+    public static final int SLIDES_LOW_POSITION = 400;
+    public static final int SLIDES_MID_POSITION = 950;
+    public static final int SLIDES_HIGH_POSITION = 1750;
+    public static final int SLIDES_POSITION_TOLERANCE = 20;
     public enum SlidesPosition {
-        DOWN,
+        LOW,
         MID,
-        HIGH,
-        MANUALUP,
-        MANUALDOWN,
-        STAY
+        HIGH
     }
 
     public Assembly(HardwareMap hardwareMap) {
@@ -93,8 +107,9 @@ public class Assembly implements Subsystem {
         distanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distance");
         pot = hardwareMap.get(AnalogInput.class,"pot");
 
-        slidesControl = new PIDController(slidesKP, slidesKI, slidesKD);
-        pitchPID = new PIDController(kPPitch, kIPitch, kDPitch);
+        slidesPID = new PIDController(slidesKp, slidesKi, slidesKd);
+        slidesPID.setOutputLimits(-1,1);
+        pitchPID = new PIDController(pitchKp, pitchKi, pitchKd);
         pitchPID.setOutputLimits(-1, 1);
     }
 
@@ -103,7 +118,7 @@ public class Assembly implements Subsystem {
      * @param pos
      * @return
      */
-    private double rawToGoodWithFilterSlides(double pos) {
+    private double distanceSensorToTicks(double pos) {
         double actualPos;
         if(pos>6) {actualPos = 0.0000330052 * (Math.pow(pos, 4)) -0.00356719 * (Math.pow(pos, 3)) + 0.137523 * (Math.pow(pos, 2))  -1.15156*pos + 9.04499;}
         else{actualPos = pos;}
@@ -231,7 +246,11 @@ public class Assembly implements Subsystem {
 //    }
 
     public void setPitchTarget (double pitchTarget) {
-        this.pitchTarget = pitchTarget;
+        Assembly.pitchTarget = pitchTarget;
+    }
+
+    public void setSlideTarget (int slideTarget) {
+        Assembly.slideTarget = slideTarget;
     }
 
     /**
@@ -240,37 +259,39 @@ public class Assembly implements Subsystem {
      * @return current error
      */
     private void pitchPIDUpdate(double targetAngle) {
-        currentAngle = mapPotentiometerToAngle(pot.getVoltage());
+        pitchAngle = mapPotentiometerToAngle(pot.getVoltage());
         pitchPID.setSetpoint(targetAngle);
 
-        double error = targetAngle - currentAngle;
+        double error = targetAngle - pitchAngle;
+        pitchPID.setCoefficients(pitchKp, pitchKi, pitchKd);
 
-        if (targetAngle>lastTargetPitch){
-            kPPitch = 0.026;
-            kDPitch = 0.003;
-            kIPitch = 0.000;
-            kFPitch = 0.22;
+        if (targetAngle> lastPitchTarget){
+//            kPPitch = 0.026;
+//            kDPitch = 0.003;
+//            kIPitch = 0.000;
+//            kFPitch = 0.22;
+
+//            kPPitch = 0.015;
+//            kDPitch = 0.000;
+//            kIPitch = 0.000;
+//            kFPitch = 0;
             //
-            pitchPID.setCoefficients(kPPitch, kIPitch, kDPitch);
-        } else if (targetAngle<lastTargetPitch){
-            kPPitch = 0.009;
-            kDPitch = 0.0;
-            kIPitch = 0.0;
-            kFPitch= 0.1;
-            //
-            pitchPID.setCoefficients(kPPitch, kIPitch, kDPitch);
-        }
 
-        if(Math.abs(error) < 10 && Math.abs(error)>1){
-            kIPitch = 0.0018;
-            pitchPID.setCoefficients(kPPitch, kIPitch, kDPitch);
         }
+//        else if (targetAngle< lastPitchTarget){
+//            kPPitch = 0.009;
+//            kDPitch = 0.0;
+//            kIPitch = 0.0;
+//            kFPitch= 0.1;
+//            //
+//            pitchPID.setCoefficients(kPPitch, kIPitch, kDPitch);
+//        }
 
-        double feedforward = kFPitch * Math.cos(Math.toRadians(currentAngle));
-        double motorPower = pitchPID.calculate(currentAngle) + feedforward;
+        double feedforward = pitchKf * Math.cos(Math.toRadians(pitchAngle));
+        double motorPower = pitchPID.calculate(pitchAngle) + feedforward;
         pitchMotor.setPower(-motorPower);
 
-        lastTargetPitch = targetAngle;
+        lastPitchTarget = targetAngle;
     }
 
     /**
@@ -280,40 +301,24 @@ public class Assembly implements Subsystem {
      */
     public Action anglePitch(double targetAngle) {
         return (p) -> {
-            pitchTarget = targetAngle;
-            double currentAngle = mapPotentiometerToAngle(pot.getVoltage());
-            pitchPID.setSetpoint(pitchTarget);
+            pitchPIDUpdate(targetAngle);
+            return Math.abs(pitchTarget - pitchAngle) > PITCH_POSITION_TOLERANCE;
+        };
+    }
 
-            double error = pitchTarget - currentAngle;
+    public void slidesPIDUpdate(int slideTarget) {
+        slidePosition = slidesMotor.getCurrentPosition();
+        slidesPID.setSetpoint(slideTarget);
+        double motorPower = slidesPID.calculate(slidesMotor.getCurrentPosition());
+        slidesMotor.setPower(-motorPower);
+    }
 
-            if (targetAngle>lastTargetPitch){
-                kPPitch = 0.026;
-                kDPitch = 0.003;
-                kIPitch = 0.000;
-                kFPitch = 0.22;
-                //
-                pitchPID.setCoefficients(kPPitch, kIPitch, kDPitch);
-            } else if (targetAngle<lastTargetPitch){
-                kPPitch = 0.009;
-                kDPitch = 0.0;
-                kIPitch = 0.0;
-                kFPitch= 0.1;
-                //
-                pitchPID.setCoefficients(kPPitch, kIPitch, kDPitch);
-            }
-
-            if(Math.abs(error) < 10 && Math.abs(error)>1){
-                kIPitch = 0.0018;
-                pitchPID.setCoefficients(kPPitch, kIPitch, kDPitch);
-            }
-
-            double feedforward = kFPitch * Math.cos(Math.toRadians(currentAngle));
-            double motorPower = pitchPID.calculate(currentAngle) + feedforward;
-            pitchMotor.setPower(-motorPower);
-
-            lastTargetPitch = targetAngle;
-
-            return Math.abs(error) < PITCH_POSITION_TOLERANCE;
+    public Action extendSlide(int slideTarget) {
+        return telemetryPacket -> {
+            Assembly.slideTarget = slideTarget;
+            slidePosition = slidesMotor.getCurrentPosition();
+            slidesPIDUpdate(Assembly.slideTarget);
+            return Math.abs(slideTarget - slidePosition) > SLIDES_POSITION_TOLERANCE;
         };
     }
 
@@ -321,8 +326,9 @@ public class Assembly implements Subsystem {
     public void update() {
         // Pitch PID Update
         pitchPIDUpdate(pitchTarget);
-        currentAngle = mapPotentiometerToAngle(pot.getVoltage());
+        pitchAngle = mapPotentiometerToAngle(pot.getVoltage());
         // Slides Code
+        slidesPIDUpdate(slideTarget);
 
     }
 
