@@ -76,7 +76,7 @@ public class TeleopLM3Prasham extends LinearOpMode {
             }
 
             // Rotate
-            /*
+
             if (gamepad1.dpad_right && !previousGamepad1.dpad_right) {
                 assembly.rotateClaw.setPosition(
                         assembly.rotateClaw.getPosition() + 0.1
@@ -87,7 +87,6 @@ public class TeleopLM3Prasham extends LinearOpMode {
                 );
             }
 
-             */
 
             // Claw
             /*

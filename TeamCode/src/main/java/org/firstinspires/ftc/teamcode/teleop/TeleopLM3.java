@@ -66,9 +66,9 @@ public class TeleopLM3 extends LinearOpMode {
 
             // Flip
             if (gamepad1.square) {
-                assembly.flipDown();
+                assembly.flipDown().run(new TelemetryPacket());
             } else if (gamepad1.circle) {
-                assembly.flipUp();
+                assembly.flipUp().run(new TelemetryPacket());
             }
 
             // Rotate
