@@ -17,11 +17,11 @@ public class Assembly implements Subsystem {
     /*
      * Servos
      */
-    Servo flipLeft;
-    Servo flipRight;
+    public Servo flipLeft;
+    public Servo flipRight;
     public double flipPos = 0;
     public Servo rotateClaw;
-    Servo claw;
+    public Servo claw;
     private boolean CLAW_STATE;
     final double CLAW_OPEN = 0.43;
     final double CLAW_CLOSE = 0.72;

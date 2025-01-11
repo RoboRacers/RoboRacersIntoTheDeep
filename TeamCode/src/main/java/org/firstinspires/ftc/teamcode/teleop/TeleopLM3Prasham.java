@@ -1,0 +1,129 @@
+package org.firstinspires.ftc.teamcode.teleop;
+
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Vector2d;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.robot.Assembly;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@TeleOp(name = "Teleop LM3 Prasham", group = "0000-Final")
+public class TeleopLM3Prasham extends LinearOpMode {
+
+    Gamepad previousGamepad1 = new Gamepad();
+    Gamepad previousGamepad2 = new Gamepad();
+
+    MecanumDrive drive;
+    Assembly assembly;
+
+    private FtcDashboard dash = FtcDashboard.getInstance();
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+
+        assembly = new Assembly(hardwareMap);
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+
+        while (opModeInInit()) {
+            assembly.setPitchTarget(assembly.PITCH_LOW_POSITION);
+            assembly.update();
+        }
+
+        waitForStart();
+
+        while (!isStopRequested()) {
+
+            TelemetryPacket packet = new TelemetryPacket();
+
+            // Pitch presets
+            if (gamepad1.dpad_up) {
+                assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
+            } else if (gamepad1.dpad_down) {
+                assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
+            }
+
+            // Slide Presets
+            if (gamepad1.triangle) {
+                assembly.setSlideTarget(Assembly.SLIDES_HIGH_POSITION);
+            } else if (gamepad1.cross) {
+                assembly.setSlideTarget(Assembly.SLIDES_LOW_POSITION);
+            }
+
+            if (gamepad1.right_bumper){
+                assembly.claw.setPosition(0.43);
+            }else if(gamepad1.left_bumper){
+                assembly.claw.setPosition(0.72);
+            }
+
+            // Flip
+            if (gamepad1.square) {
+                assembly.flipRight.setPosition(0.130 * 0.94);
+                assembly.flipLeft.setPosition(0.130);
+            } else if (gamepad1.circle) {
+                assembly.flipRight.setPosition(0.94 * 0.94);
+                assembly.flipLeft.setPosition(0.94);
+            }
+
+            // Rotate
+            /*
+            if (gamepad1.dpad_right && !previousGamepad1.dpad_right) {
+                assembly.rotateClaw.setPosition(
+                        assembly.rotateClaw.getPosition() + 0.1
+                );
+            } else if (gamepad1.dpad_left && !previousGamepad1.dpad_left) {
+                assembly.rotateClaw.setPosition(
+                        assembly.rotateClaw.getPosition() - 0.1
+                );
+            }
+
+             */
+
+            // Claw
+            /*
+            if (gamepad1.right_bumper && !previousGamepad1.right_bumper) {
+                assembly.toggleClaw();
+            }
+
+             */
+
+            drive.setDrivePowers(new PoseVelocity2d(
+                    new Vector2d(
+                            -gamepad1.left_stick_y,
+                            -gamepad1.left_stick_x
+                    ),
+                    -gamepad1.right_stick_x
+            ));
+            drive.updatePoseEstimate();
+
+
+            dash.sendTelemetryPacket(packet);
+            previousGamepad1 = gamepad1;
+            previousGamepad2 = gamepad2;
+
+            assembly.update();
+
+            // Pitch
+            telemetry.addData("Pitch Motor Position", assembly.pitchMotor.getCurrentPosition());
+            telemetry.addData("Pitch Motor Power", assembly.pitchMotor.getPower());
+            telemetry.addData("Pitch Motor Angle", assembly.getPitchAngle());
+            telemetry.addData("Pitch Target", Assembly.pitchTarget);
+            // Slides
+            telemetry.addData("Slides Motor Position", assembly.slidesMotor.getCurrentPosition());
+            telemetry.addData("Slides Motor Power", assembly.slidesMotor.getPower());
+            telemetry.addData("Slides Target", Assembly.slideTarget);
+            telemetry.update();
+
+        }
+    }
+}
