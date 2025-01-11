@@ -49,7 +49,7 @@ public class Assembly implements Subsystem {
     // Preset positions
     public static final double PITCH_LOW_POSITION = 10;
     public static final double PITCH_MID_POSITION = 30;
-    public static final double PITCH_HIGH_POSITION = 120;
+    public static final double PITCH_HIGH_POSITION = 90;
     public static final double PITCH_POSITION_TOLERANCE = 1;
 
     public enum PitchPosition {
@@ -83,7 +83,7 @@ public class Assembly implements Subsystem {
     // Preset positions
     public static final int SLIDES_LOW_POSITION = 400;
     public static final int SLIDES_MID_POSITION = 950;
-    public static final int SLIDES_HIGH_POSITION = 1750;
+    public static final int SLIDES_HIGH_POSITION = 1850;
     public static final int SLIDES_POSITION_TOLERANCE = 20;
     public enum SlidesPosition {
         LOW,
@@ -94,8 +94,7 @@ public class Assembly implements Subsystem {
     public Assembly(HardwareMap hardwareMap) {
         slidesMotor = hardwareMap.get(DcMotorImplEx.class, "slidesMotor");
         pitchMotor = hardwareMap.get(DcMotorImplEx.class, "pitchMotor");
-        flipLeft = hardwareMap.get(Servo.class, "flipLeft");
-        flipRight = hardwareMap.get(Servo.class, "flipRight");
+
         pitchMotor.setMode(DcMotorImplEx.RunMode.STOP_AND_RESET_ENCODER);
         pitchMotor.setMode(DcMotorImplEx.RunMode.RUN_WITHOUT_ENCODER);
         slidesMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -164,14 +163,6 @@ public class Assembly implements Subsystem {
         };
     }
 
-    public Action flipLowMid() {
-        return telemetryPacket -> {
-            flipPos = 0.330;
-            flipLeft.setPosition(flipPos);
-            flipRight.setPosition(flipPos*0.94);
-            return false;
-        };
-    }
 
 
     public Action flipMid() {
