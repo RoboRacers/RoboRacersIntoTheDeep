@@ -24,8 +24,8 @@ public class Assembly implements Subsystem {
     public Servo rotateClaw;
     public Servo claw;
     private boolean CLAW_STATE;
-    final double CLAW_OPEN = 0.43;
-    final double CLAW_CLOSE = 0.72;
+    final double CLAW_OPEN = 0.01;
+    final double CLAW_CLOSE = 0.2;
     /*
      * Sensors
      */
