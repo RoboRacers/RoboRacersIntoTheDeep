@@ -36,8 +36,8 @@ public class TeleopLM3Prasham extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         while (opModeInInit()) {
-            assembly.setPitchTarget(assembly.PITCH_LOW_POSITION);
-            assembly.update();
+            //assembly.setPitchTarget(assembly.PITCH_LOW_POSITION);
+            //assembly.update();
         }
 
         waitForStart();
@@ -47,11 +47,14 @@ public class TeleopLM3Prasham extends LinearOpMode {
             TelemetryPacket packet = new TelemetryPacket();
 
             // Pitch presets
+            /*
             if (gamepad1.dpad_up) {
                 assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
             } else if (gamepad1.dpad_down) {
                 assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
             }
+
+             */
 
             // Slide Presets
             if (gamepad1.triangle) {
@@ -110,7 +113,7 @@ public class TeleopLM3Prasham extends LinearOpMode {
             previousGamepad1 = gamepad1;
             previousGamepad2 = gamepad2;
 
-            assembly.update();
+            //assembly.update();
 
             // Pitch
             telemetry.addData("Pitch Motor Position", assembly.pitchMotor.getCurrentPosition());
