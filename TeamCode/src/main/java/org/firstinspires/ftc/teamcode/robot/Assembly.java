@@ -36,6 +36,12 @@ public class Assembly implements Subsystem {
     public DcMotorImplEx pitchMotor;
     // PID Constants
     PIDController pitchPID;
+    /* Old Constants
+     *  kp = 0.026
+     *  ki = 0
+     *  kd = 0.003
+     *  kf (not used) = 0.22
+     */
     public static double pitchKp = 0.026;
     public static double pitchKi = 0;
     public static double pitchKd = 0.003;//pitch constant
@@ -206,50 +212,6 @@ public class Assembly implements Subsystem {
         };
     }
 
-//    public Action extendSlide(int position) {
-//        return telemetryPacket -> {
-//            slidesTarget = position;
-//            slidesControl.setSetpoint(slidesTarget);
-//            double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
-//            double pid2 = slidesControl.calculate(slidesMotor.getCurrentPosition());
-//            slidesMotor.setPower(-(pid2 + feedforward));
-//
-//            double pos = slidesMotor.getCurrentPosition();
-//            return pos>(slidesTarget - slidesPositionTolerance) && pos<(slidesTarget + slidesPositionTolerance);
-//        };
-//    }
-
-//    public Action extendSlide(SlidesPosition position) {
-//        return telemetryPacket -> {
-//            switch (position) {
-//                case DOWN:
-//                    slidesTarget = slidesLowPosition;
-//                    break;
-//                case MID:
-//                    slidesTarget = slidesMidPosition;
-//                    break;
-//                case HIGH:
-//                    slidesTarget = slidesHighPosition;
-//                    break;
-//                case MANUALUP:
-//                    slidesTarget+=75;
-//                    break;
-//                case MANUALDOWN:
-//                    slidesTarget-=75;
-//                    break;
-//                case STAY:
-//                    slidesTarget= slidesTarget;
-//            }
-//            slidesControl.setSetpoint(slidesTarget);
-//            double feedforward = kG * Math.sin(Math.toRadians((pitchMotor.getCurrentPosition() - offset) * ticksToDegrees)) + 0;
-//            double pid = slidesControl.calculate(slidesMotor.getCurrentPosition());
-//            slidesMotor.setPower(-(pid + feedforward));
-//
-//            double pos = slidesMotor.getCurrentPosition();
-//            return pos>(slidesTarget - slidesPositionTolerance) && pos<(slidesTarget + slidesPositionTolerance);
-//        };
-//    }
-
     public void setPitchTarget (double pitchTarget) {
         Assembly.pitchTarget = pitchTarget;
     }
@@ -267,36 +229,30 @@ public class Assembly implements Subsystem {
         pitchAngle = mapPotentiometerToAngle(pot.getVoltage());
         pitchPID.setSetpoint(targetAngle);
 
-        double error = targetAngle - pitchAngle;
         pitchPID.setCoefficients(pitchKp, pitchKi, pitchKd);
-
-        if (targetAngle> lastPitchTarget){
-//            kPPitch = 0.026;
-//            kDPitch = 0.003;
-//            kIPitch = 0.000;
-//            kFPitch = 0.22;
-
-//            kPPitch = 0.015;
-//            kDPitch = 0.000;
-//            kIPitch = 0.000;
-//            kFPitch = 0;
-            //
-
-        }
-//        else if (targetAngle< lastPitchTarget){
-//            kPPitch = 0.009;
-//            kDPitch = 0.0;
-//            kIPitch = 0.0;
-//            kFPitch= 0.1;
-//            //
-//            pitchPID.setCoefficients(kPPitch, kIPitch, kDPitch);
-//        }
 
         double feedforward = pitchKf * Math.cos(Math.toRadians(pitchAngle));
         double motorPower = pitchPID.calculate(pitchAngle) + feedforward;
         pitchMotor.setPower(-motorPower);
 
         lastPitchTarget = targetAngle;
+    }
+
+    /**
+     *
+     * @param targetTicks
+     * @return current error
+     */
+    private void pitchPIDUpdate(int targetTicks) {
+        int currentPitchTicks = pitchMotor.getCurrentPosition();
+        pitchPID.setSetpoint(targetTicks);
+
+        pitchPID.setCoefficients(pitchKp, pitchKi, pitchKd);
+
+//        double feedforward = pitchKf * Math.cos(Math.toRadians(pitchAngle));
+        double motorPower = pitchPID.calculate(currentPitchTicks);
+        pitchMotor.setPower(motorPower);
+
     }
 
     /**
@@ -330,7 +286,7 @@ public class Assembly implements Subsystem {
     @Override
     public void update() {
         // Pitch PID Update
-        pitchPIDUpdate(pitchTarget);
+        pitchPIDUpdate((int) pitchTarget);
         pitchAngle = mapPotentiometerToAngle(pot.getVoltage());
         // Slides Code
         slidesPIDUpdate(slideTarget);

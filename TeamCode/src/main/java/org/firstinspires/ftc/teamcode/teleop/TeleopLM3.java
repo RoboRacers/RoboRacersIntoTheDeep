@@ -40,7 +40,7 @@ public class TeleopLM3 extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         while (opModeInInit()) {
-            assembly.pitchTarget = assembly.PITCH_LOW_POSITION;
+            assembly.pitchTarget = 0;
             assembly.update();
         }
 
@@ -52,9 +52,9 @@ public class TeleopLM3 extends LinearOpMode {
 
             // Pitch presets
             if (gamepad1.dpad_up) {
-                assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
+                assembly.setPitchTarget(-2400);
             } else if (gamepad1.dpad_down) {
-                assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
+                assembly.setPitchTarget(5);
             }
 
             // Slide Presets
