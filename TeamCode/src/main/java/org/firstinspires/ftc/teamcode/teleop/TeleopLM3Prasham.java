@@ -37,7 +37,7 @@ public class TeleopLM3Prasham extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         while (opModeInInit()) {
-            assembly.setPitchTarget(assembly.PITCH_LOW_POSITION);
+            assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
             assembly.update();
         }
 
