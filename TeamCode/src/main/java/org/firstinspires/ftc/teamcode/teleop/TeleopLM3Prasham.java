@@ -51,9 +51,9 @@ public class TeleopLM3Prasham extends LinearOpMode {
 
             if (gamepad1.dpad_up) {
                 assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
-            } else if (gamepad1.dpad_down) {
+            } else if (gamepad1.dpad_down && (assembly.slideTarget < 45)) {
                 assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
-            } else if (gamepad1.dpad_right){
+            } else if (gamepad1.dpad_right && (assembly.slideTarget < 45)){
                 assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
             }
 
@@ -67,7 +67,7 @@ public class TeleopLM3Prasham extends LinearOpMode {
             }
 
             if (gamepad1.right_bumper){
-                assembly.claw.setPosition(0);
+                assembly.claw.setPosition(0.1);
             }else if(gamepad1.left_bumper){
                 assembly.claw.setPosition(0.35);
             }
@@ -79,6 +79,13 @@ public class TeleopLM3Prasham extends LinearOpMode {
             } else if (gamepad1.circle) {
                 assembly.flipRight.setPosition(0.5 * 0.94);
                 assembly.flipLeft.setPosition(0.5);
+            }
+
+
+            if (gamepad1.right_trigger > 0.1){
+                assembly.rotateClaw.setPosition(0.116);
+            }else if(gamepad1.left_trigger > 0.1){
+                assembly.rotateClaw.setPosition(0.483);
             }
 
             // Rotate
@@ -128,7 +135,7 @@ public class TeleopLM3Prasham extends LinearOpMode {
             // Slides
             telemetry.addData("Slides Motor Position", assembly.slidesMotor.getCurrentPosition());
             telemetry.addData("Slides Motor Power", assembly.slidesMotor.getPower());
-            telemetry.addData("Slides Target", Assembly.slideTarget);
+            telemetry.addData("Slides Target", assembly.slideTarget);
             telemetry.update();
 
         }
