@@ -115,7 +115,7 @@ public class TeleopLM3Tickletesh extends LinearOpMode {
 
 
             if (gamepad1.dpad_down){
-                assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
+                assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION-50);
             } else if (gamepad1.dpad_up){
                 assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
             }
