@@ -51,7 +51,7 @@ public class Assembly implements Subsystem {
     private double pitchAngle = 0;
     public double lastPitchTarget = 0.0;
     public double lastPitchError = 0.0;
-
+    public boolean pitchPIDEnabled = false;
     public double getPitchAngle() {return pitchAngle;}
     // Preset positions
     public static final double PITCH_LOW_POSITION = -200;
@@ -83,7 +83,7 @@ public class Assembly implements Subsystem {
 //    public double slidesKP = 0.042;
 //public double slidesKP = 0.047;
 //public double slidesKP = 0.052;
-public double slidesKP = 0.056;
+    public double slidesKP = 0.072;
     public double slidesKI = 0.001; // slides constant
     public double slidesKD = 0.002;
     public double slidesKF = 0.39;
@@ -295,10 +295,16 @@ public double slidesKP = 0.056;
         };
     }
 
+    public void setPIDEnable(boolean enable) {
+        this.pitchPIDEnabled = enable;
+    }
+
     @Override
     public void update() {
         // Pitch PID Update
-        pitchPIDUpdate((int) pitchTarget);
+        if (pitchPIDEnabled) {
+            pitchPIDUpdate((int) pitchTarget);
+        }
         pitchAngle = mapPotentiometerToAngle(pot.getVoltage());
 
         // Slides Code

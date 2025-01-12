@@ -73,10 +73,10 @@ public class TeleopLM3Prasham extends LinearOpMode {
             }
 
             // Flip
-            if (gamepad1.square) {
+            if (gamepad1.circle) {
                 assembly.flipRight.setPosition(0.130 * 0.94);
                 assembly.flipLeft.setPosition(0.130);
-            } else if (gamepad1.circle) {
+            } else if (gamepad1.square) {
                 assembly.flipRight.setPosition(0.5 * 0.94);
                 assembly.flipLeft.setPosition(0.5);
             }
@@ -86,6 +86,13 @@ public class TeleopLM3Prasham extends LinearOpMode {
                 assembly.rotateClaw.setPosition(0.116);
             }else if(gamepad1.left_trigger > 0.1){
                 assembly.rotateClaw.setPosition(0.483);
+            }
+
+            if (gamepad2.right_bumper){
+                assembly.slideTarget = Assembly.SLIDES_MID_POSITION;
+                telemetry.addLine("test");
+            } else if(gamepad2.left_bumper){
+                assembly.slideTarget = Assembly.SLIDES_AUTO_POSITION;
             }
 
             // Rotate
