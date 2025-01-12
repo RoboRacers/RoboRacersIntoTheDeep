@@ -24,8 +24,8 @@ public class AssemblyShrekster implements Subsystem {
     public Servo rotateClaw;
     public Servo claw;
     private boolean CLAW_STATE;
-    final double CLAW_OPEN = 0.01;
-    final double CLAW_CLOSE = 0.2;
+    final double CLAW_OPEN = 0.43;
+    final double CLAW_CLOSE = 0.72;
     /*
      * Sensors
      */
@@ -222,37 +222,32 @@ public class AssemblyShrekster implements Subsystem {
 
     public Action SmoothDepositUp(){
         return telemetryPacket -> {
-            pitchPIDUpdate(PITCH_MID_POSITION);
             setPitchTarget(PITCH_MID_POSITION);
             while(Math.abs(pitchMotor.getCurrentPosition()-pitchTarget)>50){
-                pitchPIDUpdate(PITCH_MID_POSITION);
+                update();
             }
-            slidesPIDUpdate(SLIDES_LOW_POSITION);
             extendSlide(SLIDES_LOW_POSITION);
             while(Math.abs(slidesMotor.getCurrentPosition()-slideTarget)>200){
-                slidesPIDUpdate(SLIDES_LOW_POSITION);
+                update();
             }
-            pitchPIDUpdate(PITCH_HIGH_POSITION);
             setPitchTarget(PITCH_HIGH_POSITION);
             while(Math.abs(pitchMotor.getCurrentPosition()-pitchTarget)>50){
                 flipUp();
-                pitchPIDUpdate(PITCH_HIGH_POSITION);
+                update();
             }
             extendSlide(SLIDES_HIGH_POSITION);
             return false;
         };    }
     public Action SmoothDepositDown(){
         return telemetryPacket -> {
-            slidesPIDUpdate(SLIDES_LOW_POSITION);
             extendSlide(SLIDES_LOW_POSITION);
             while(Math.abs(slidesMotor.getCurrentPosition()-slideTarget)>200){
-                slidesPIDUpdate(SLIDES_LOW_POSITION);
+                update();
             }
-            pitchPIDUpdate(PITCH_MID_POSITION);
             anglePitch(PITCH_MID_POSITION);
             while(Math.abs(pitchMotor.getCurrentPosition()-pitchTarget)>50){
                 flipDown();
-                pitchPIDUpdate(PITCH_MID_POSITION);
+                update();
             }
             extendSlide(SLIDES_MID_POSITION);
             return false;

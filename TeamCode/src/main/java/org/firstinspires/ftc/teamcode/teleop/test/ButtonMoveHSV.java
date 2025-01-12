@@ -119,7 +119,7 @@ public class ButtonMoveHSV extends LinearOpMode {
         while (opModeInInit()) {
 
             assembly.setPitchTarget(assembly.PITCH_AUTO_POSITION);
-            assembly.setSlideTarget(assembly.SLIDES_AUTO_POSITION);
+            assembly.setSlideTarget(assembly.SLIDES_MID_POSITION);
             assembly.update();
 
 
@@ -160,11 +160,6 @@ public class ButtonMoveHSV extends LinearOpMode {
             output = (((pipeline.angle - 0) * (0.96 - 0.17)) / (180 - 0)) + 0.17;
 
             telemetry.addData("Angle", pipeline.angle);
-
-            telemetry.addData("Output", output);
-            telemetry.addData("Rotate", claw.getPosition());
-
-
             telemetry.addData("Detected Objects", detectedObjects);
             telemetry.addData("X Error in Inches", xErrorInches);
             telemetry.addData("Y Error in Inches", yErrorInches);
@@ -226,7 +221,7 @@ public class ButtonMoveHSV extends LinearOpMode {
                 Action trajectory = drive.actionBuilder(new Pose2d(0, 0, 0))
 //                    .strafeTo(new Vector2d((yErrorInches * 3), -(xErrorInches * 3)))
 //                    .strafeTo(new Vector2d((Math.pow(yErrorInches/10,2)-3.5), -Math.pow(xErrorInches/10,2)))
-                        .strafeTo(new Vector2d((((yErrorInches / 10) * 1) - 3), (0.5 - ((xErrorInches / 10) * 1))))
+                        .strafeTo(new Vector2d((((yErrorInches / 15) * 1) - 3), (0.5 - ((xErrorInches / 15) * 1))))
 
                         .waitSeconds(1)
 //                    .strafeTo(new Vector2d((Math.sqrt(yErrorInches)), Math.sqrt(xErrorInches)))
