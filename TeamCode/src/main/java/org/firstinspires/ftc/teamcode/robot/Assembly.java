@@ -100,7 +100,7 @@ public class Assembly implements Subsystem {
     public enum SlidesPosition {
         LOW,
         MID,
-        HIGH
+        SLIDES_HIGH_POSITION
     }
 
     public Assembly(HardwareMap hardwareMap) {
@@ -282,7 +282,7 @@ public class Assembly implements Subsystem {
         slidesMotor.setPower(-motorPower);
     }
 
-    public Action extendSlide(int slideTarget) {
+    public Action slideTarget(int slideTarget) {
         return telemetryPacket -> {
             //slideTarget = slideTarget;
             slidePosition = slidesMotor.getCurrentPosition();
