@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.robot.Assembly;
 import org.firstinspires.ftc.teamcode.robot.AssemblyShrekster;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.List;
 @TeleOp(name = "Teleop LM3", group = "0000-Final")
 public class TeleopLM3Tickletesh extends LinearOpMode {
 
-    ElapsedTime elapsedTime;
+    ElapsedTime time = new ElapsedTime();
 
     Gamepad previousGamepad1 = new Gamepad();
     Gamepad previousGamepad2 = new Gamepad();
@@ -41,6 +42,10 @@ public class TeleopLM3Tickletesh extends LinearOpMode {
 
         while (opModeInInit()) {
             assembly.pitchTarget = 0;
+            assembly.slideTarget = Assembly.SLIDES_MID_POSITION;
+            assembly.flipRight.setPosition(0.5 * 0.94);
+            assembly.flipLeft.setPosition(0.5);  //flip up
+            assembly.clawOpen();
             assembly.update();
         }
 
@@ -56,8 +61,85 @@ public class TeleopLM3Tickletesh extends LinearOpMode {
 
             if(gamepad1.cross){
                 assembly.SmoothDepositDown();
+                time.reset();
+                time.startTime();
+                assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
+                while (time.seconds() <0.45){
+                    assembly.update();
+                }
+                time.reset();
+                time.startTime();
+                assembly.slideTarget = assembly.SLIDES_LOW_POSITION;
+                while(time.seconds()<0.35){
+                    assembly.update();
+                }
+                time.reset();
+                time.startTime();
+                assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
+                assembly.flipRight.setPosition(0.5 * 0.94);
+                assembly.flipLeft.setPosition(0.5);  //flip up
+                while (time.seconds() <0.75){
+                    assembly.update();
+                }
+                time.reset();
+                time.startTime();
+                assembly.slideTarget = Assembly.SLIDES_HIGH_POSITION;
+
+
+            }
+            if (gamepad1.right_bumper){
+                assembly.claw.setPosition(0.1);
+            }else if(gamepad1.left_bumper){
+                assembly.claw.setPosition(0.35);
             }
 
+            if(gamepad1.cross){
+                time.reset();
+                time.startTime();
+                assembly.slideTarget = Assembly.SLIDES_LOW_POSITION;
+                while (time.seconds() <0.5){
+                    assembly.update();
+                }
+                time.reset();
+                time.startTime();
+                assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
+                while (time.seconds() <0.5){
+                    assembly.update();
+                }
+                time.reset();
+                time.startTime();
+                assembly.slideTarget = Assembly.SLIDES_MID_POSITION;
+                assembly.flipRight.setPosition(0.130 * 0.94);
+                assembly.flipLeft.setPosition(0.130); // flip down
+
+//                assembly.setPitchTarget(AssemblyShrekster.PITCH_LOW_POSITION -100);
+            }
+
+
+            if (gamepad1.dpad_down){
+                assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
+            } else if (gamepad1.dpad_up){
+                assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
+            }
+
+            if(gamepad1.right_bumper){
+                assembly.clawOpen();
+            }else if(gamepad1.left_bumper){
+                assembly.clawClose();
+
+            }
+
+            if (gamepad1.right_trigger > 0.1){
+                assembly.slideTarget += 40;
+            }else if(gamepad1.left_trigger > 0.1){
+                assembly.slideTarget -= 15;
+            }
+
+            if (gamepad1.dpad_left){
+                assembly.rotateClaw.setPosition(0.116);
+            }else if(gamepad1.dpad_right){
+                assembly.rotateClaw.setPosition(0.483);
+            }
 
             drive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(

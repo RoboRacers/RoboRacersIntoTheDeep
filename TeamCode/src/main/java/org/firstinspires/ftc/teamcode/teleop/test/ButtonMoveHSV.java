@@ -19,6 +19,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.Assembly;
+import org.firstinspires.ftc.teamcode.robot.AssemblyShrekster;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -120,6 +121,8 @@ public class ButtonMoveHSV extends LinearOpMode {
 
             assembly.setPitchTarget(assembly.PITCH_AUTO_POSITION);
             assembly.setSlideTarget(assembly.SLIDES_MID_POSITION);
+            assembly.setPitchTarget(Assembly.PITCH_AUTO_POSITION);
+            assembly.setSlideTarget(Assembly.SLIDES_AUTO_POSITION);
             assembly.update();
 
 
@@ -222,6 +225,7 @@ public class ButtonMoveHSV extends LinearOpMode {
 //                    .strafeTo(new Vector2d((yErrorInches * 3), -(xErrorInches * 3)))
 //                    .strafeTo(new Vector2d((Math.pow(yErrorInches/10,2)-3.5), -Math.pow(xErrorInches/10,2)))
                         .strafeTo(new Vector2d((((yErrorInches / 15) * 1) - 3), (0.5 - ((xErrorInches / 15) * 1))))
+                        .strafeTo(new Vector2d((((yErrorInches / 15) * 1) - 3), (0.5 - ((xErrorInches / 10) * 1))))
 
                         .waitSeconds(1)
 //                    .strafeTo(new Vector2d((Math.sqrt(yErrorInches)), Math.sqrt(xErrorInches)))
