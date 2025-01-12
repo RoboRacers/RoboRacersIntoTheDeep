@@ -80,7 +80,10 @@ public class Assembly implements Subsystem {
     public static double slidesKp = 0.005;
     public static double slidesKi = 0; // slides constant
     public static double slidesKd = 0.0008;
-    public double slidesKP = 0.042;
+//    public double slidesKP = 0.042;
+//public double slidesKP = 0.047;
+//public double slidesKP = 0.052;
+public double slidesKP = 0.056;
     public double slidesKI = 0.001; // slides constant
     public double slidesKD = 0.002;
     public double slidesKF = 0.39;
@@ -95,6 +98,7 @@ public class Assembly implements Subsystem {
     // Preset positions
     public static final int SLIDES_LOW_POSITION = 10;
     public static final int SLIDES_MID_POSITION = 25;
+    public static final int SLIDES_AUTO_POSITION = 40;
     public static final int SLIDES_HIGH_POSITION = 70;
     public static final int SLIDES_POSITION_TOLERANCE = 20;
     public enum SlidesPosition {
