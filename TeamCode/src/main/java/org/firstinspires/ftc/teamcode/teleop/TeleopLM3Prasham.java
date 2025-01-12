@@ -37,7 +37,9 @@ public class TeleopLM3Prasham extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         while (opModeInInit()) {
-            assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
+            //assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
+            //assembly.slideTarget = Assembly.SLIDES_LOW_POSITION;
+
             assembly.update();
         }
 
@@ -89,10 +91,9 @@ public class TeleopLM3Prasham extends LinearOpMode {
             }
 
             if (gamepad2.right_bumper){
-                assembly.slideTarget = Assembly.SLIDES_MID_POSITION;
-                telemetry.addLine("test");
+                assembly.slideTarget = assembly.slideTarget + 2;
             } else if(gamepad2.left_bumper){
-                assembly.slideTarget = Assembly.SLIDES_AUTO_POSITION;
+                assembly.slideTarget = assembly.slideTarget - 2;
             }
 
             // Rotate

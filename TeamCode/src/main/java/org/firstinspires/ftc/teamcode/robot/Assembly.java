@@ -51,13 +51,13 @@ public class Assembly implements Subsystem {
     private double pitchAngle = 0;
     public double lastPitchTarget = 0.0;
     public double lastPitchError = 0.0;
-    public boolean pitchPIDEnabled = false;
+    public boolean pitchPIDEnabled = true;
     public double getPitchAngle() {return pitchAngle;}
     // Preset positions
     public static final double PITCH_LOW_POSITION = -200;
     public static final double PITCH_MID_POSITION = -600;
     public static final double PITCH_AUTO_POSITION = -400;
-    public static final double PITCH_HIGH_POSITION = -2000;
+    public static final double PITCH_HIGH_POSITION = -2200;
     public static final double PITCH_POSITION_TOLERANCE = 1;
 
     public enum PitchPosition {

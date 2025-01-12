@@ -275,8 +275,8 @@ public class oneplusfour extends LinearOpMode {
         while (opModeInInit()){
             assembly.claw.setPosition(0.35);
             assembly.flipMid();
-            assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
-            assembly.setSlideTarget(Assembly.SLIDES_LOW_POSITION);
+            assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
+            assembly.slideTarget = (Assembly.SLIDES_LOW_POSITION);
             //                    new SleepAction(2);
             //                    new SleepAction(2);
         }
