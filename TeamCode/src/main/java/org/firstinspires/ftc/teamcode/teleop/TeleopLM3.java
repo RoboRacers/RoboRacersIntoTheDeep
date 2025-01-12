@@ -120,7 +120,7 @@ public class TeleopLM3 extends LinearOpMode {
             // Slides
             telemetry.addData("Slides Motor Position", assembly.slidesMotor.getCurrentPosition());
             telemetry.addData("Slides Motor Power", assembly.slidesMotor.getPower());
-            telemetry.addData("Slides Target", Assembly.slideTarget);
+            telemetry.addData("Slides Target", assembly.slideTarget);
             telemetry.update();
 
         }

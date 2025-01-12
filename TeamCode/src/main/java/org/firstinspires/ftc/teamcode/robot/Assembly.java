@@ -85,7 +85,7 @@ public class Assembly implements Subsystem {
     public double slidesKD = 0.002;
     public double slidesKF = 0.39;
     public static double offset = 40;
-    public static int slideTarget = 0;
+    public int slideTarget = 0;
     public static double slidePosition = 0;
     // Tick tuning values
     public double ticksPerMaxExtend = 1936;
@@ -95,7 +95,7 @@ public class Assembly implements Subsystem {
     // Preset positions
     public static final int SLIDES_LOW_POSITION = 10;
     public static final int SLIDES_MID_POSITION = 25;
-    public static final int SLIDES_HIGH_POSITION = 55;
+    public static final int SLIDES_HIGH_POSITION = 70;
     public static final int SLIDES_POSITION_TOLERANCE = 20;
     public enum SlidesPosition {
         LOW,
@@ -223,7 +223,7 @@ public class Assembly implements Subsystem {
     }
 
     public void setSlideTarget (int slideTarget) {
-        Assembly.slideTarget = slideTarget;
+        slideTarget = slideTarget;
     }
 
     /**
@@ -284,9 +284,9 @@ public class Assembly implements Subsystem {
 
     public Action extendSlide(int slideTarget) {
         return telemetryPacket -> {
-            Assembly.slideTarget = slideTarget;
+            //slideTarget = slideTarget;
             slidePosition = slidesMotor.getCurrentPosition();
-            slidesPIDUpdate(Assembly.slideTarget);
+            slidesPIDUpdate(slideTarget);
             return Math.abs(slideTarget - slidePosition) > SLIDES_POSITION_TOLERANCE;
         };
     }
