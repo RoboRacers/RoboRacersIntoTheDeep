@@ -67,7 +67,7 @@ public class TeleopLM3Prasham extends LinearOpMode {
             }
 
             if (gamepad1.right_bumper){
-                assembly.claw.setPosition(0);
+                assembly.claw.setPosition(0.1);
             }else if(gamepad1.left_bumper){
                 assembly.claw.setPosition(0.35);
             }

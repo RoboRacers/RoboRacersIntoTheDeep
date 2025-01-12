@@ -26,13 +26,15 @@ public class ServoTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        servo = hardwareMap.get(Servo.class, "claw");
+        servo = hardwareMap.get(Servo.class, "rotateClaw");
 
         while (opModeInInit()) {
 
         }
+
+
         while (!isStopRequested()) {
-            servo.setPosition(gamepad1.touchpad_finger_1_x);
+            servo.setPosition(gamepad1.left_stick_y);
             telemetry.addData("pos", servo.getPosition());
             telemetry.update();
         }
