@@ -54,7 +54,7 @@ public class oneplusfour extends LinearOpMode {
                             assembly.flipRight.setPosition(0.130 * 0.94);
                             return false;
                         },
-                        telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
+                        telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
                             return false;
                         }
                         //                        new SleepAction(2)
@@ -72,9 +72,13 @@ public class oneplusfour extends LinearOpMode {
                             return false;
                         },
                         new SleepAction(1),
-                        assembly.flipMid(),
+                        telemetryPacket -> {
+                            assembly.flipLeft.setPosition(0.5);
+                            assembly.flipRight.setPosition(0.5 * 0.94);
+                            return false;
+                        },
                         new SleepAction(0.5),
-                        telemetryPacket -> {assembly.claw.setPosition(0.35);
+                        telemetryPacket -> {assembly.claw.setPosition(0.1);
                             return false;
                         },
                         new SleepAction(0.5),
@@ -86,7 +90,8 @@ public class oneplusfour extends LinearOpMode {
                         new SleepAction(1),
                         telemetryPacket -> {assembly.slideTarget = Assembly.SLIDES_LOW_POSITION;
                             return false;
-                        },                        new SleepAction(1),
+                        },
+                        new SleepAction(1),
                         telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
                             return false;
                         }                ))
@@ -103,7 +108,8 @@ public class oneplusfour extends LinearOpMode {
                         new SleepAction(1),
                         telemetryPacket -> {assembly.claw.setPosition(0.35);
                             return false;
-                        },                        new SleepAction(0.5),
+                        },
+                        new SleepAction(0.5),
                         telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
                             return false;
                         }
@@ -120,7 +126,8 @@ public class oneplusfour extends LinearOpMode {
                         new SleepAction(0.5),
                         telemetryPacket -> {assembly.slideTarget = Assembly.SLIDES_HIGH_POSITION;
                             return false;
-                        },                        new SleepAction(1),
+                        },
+                        new SleepAction(1),
                         assembly.flipMid(),
                         new SleepAction(0.5),
                         telemetryPacket -> {assembly.claw.setPosition(0.35);
@@ -156,7 +163,8 @@ public class oneplusfour extends LinearOpMode {
                         new SleepAction(1),
                         telemetryPacket -> {assembly.claw.setPosition(0.35);
                             return false;
-                        },                        new SleepAction(1),
+                        },
+                        new SleepAction(1),
                         telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
                             return false;
                         }
@@ -176,7 +184,11 @@ public class oneplusfour extends LinearOpMode {
                             return false;
                         },
                         new SleepAction(1),
-                        assembly.flipMid(),
+                        telemetryPacket -> {
+                            assembly.flipLeft.setPosition(0.5);
+                            assembly.flipRight.setPosition(0.5 * 0.94);
+                            return false;
+                        },
                         new SleepAction(0.5),
                         telemetryPacket -> {assembly.claw.setPosition(0.35);
                             return false;
@@ -261,7 +273,7 @@ public class oneplusfour extends LinearOpMode {
 
                 .build();
         while (opModeInInit()){
-            assembly.clawClose();
+            assembly.claw.setPosition(0.35);
             assembly.flipMid();
             assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
             assembly.setSlideTarget(Assembly.SLIDES_LOW_POSITION);
