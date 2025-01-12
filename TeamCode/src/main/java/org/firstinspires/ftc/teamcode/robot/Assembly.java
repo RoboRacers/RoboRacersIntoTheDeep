@@ -42,10 +42,10 @@ public class Assembly implements Subsystem {
      *  kd = 0.003
      *  kf (not used) = 0.22
      */
-    public static double pitchKp = 0.026;
+    public static double pitchKp = 0.002;
     public static double pitchKi = 0;
-    public static double pitchKd = 0.003;//pitch constant
-    public static double pitchKf = 0.22;
+    public static double pitchKd = 0.000001;//pitch constant
+    public static double pitchKf = 0;
     public static double pitchTarget = 0;
     private double pitchAngle = 0;
     public double lastPitchTarget = 0.0;

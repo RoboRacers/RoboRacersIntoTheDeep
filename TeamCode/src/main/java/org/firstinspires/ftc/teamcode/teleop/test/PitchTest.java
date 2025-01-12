@@ -29,6 +29,8 @@ public class PitchTest extends LinearOpMode {
 
             telemetry.addData("Raw Angle", pitchAngle);
             telemetry.addData("My Angle", myAngle);
+            telemetry.update();
+
         }
     }
 }
