@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.robot.AssemblyShrekster;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "Teleop LM3", group = "0000-Final")
+@TeleOp(name = "Teleop LM3 Tickletesh", group = "0000-Final")
 public class TeleopLM3Tickletesh extends LinearOpMode {
 
     ElapsedTime elapsedTime;
@@ -40,8 +40,9 @@ public class TeleopLM3Tickletesh extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         while (opModeInInit()) {
-            assembly.pitchTarget = 0;
+            assembly.setSlideTarget(AssemblyShrekster.SLIDES_MID_POSITION);
             assembly.update();
+            assembly.flipUp();
         }
 
         waitForStart();
