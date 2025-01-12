@@ -75,10 +75,10 @@ public class TeleopLM3Prasham extends LinearOpMode {
             // Flip
             if (gamepad1.square) {
                 assembly.flipRight.setPosition(0.130 * 0.94);
-                assembly.flipLeft.setPosition(0.130);
+                assembly.flipLeft.setPosition(0.130); // flip down
             } else if (gamepad1.circle) {
                 assembly.flipRight.setPosition(0.5 * 0.94);
-                assembly.flipLeft.setPosition(0.5);
+                assembly.flipLeft.setPosition(0.5);  //flip up
             }
 
 

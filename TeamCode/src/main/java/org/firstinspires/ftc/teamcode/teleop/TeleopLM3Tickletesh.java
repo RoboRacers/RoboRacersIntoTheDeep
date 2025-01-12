@@ -6,12 +6,15 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.ftc.LogWriter;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.robot.Assembly;
 import org.firstinspires.ftc.teamcode.robot.AssemblyShrekster;
 
 import java.util.ArrayList;
@@ -26,7 +29,8 @@ public class TeleopLM3Tickletesh extends LinearOpMode {
     Gamepad previousGamepad2 = new Gamepad();
 
     MecanumDrive drive;
-    AssemblyShrekster assembly;
+    Assembly assembly;
+    ElapsedTime time = new ElapsedTime();
 
     private FtcDashboard dash = FtcDashboard.getInstance();
     private List<Action> runningActions = new ArrayList<>();
@@ -34,15 +38,18 @@ public class TeleopLM3Tickletesh extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        assembly = new AssemblyShrekster(hardwareMap);
+        assembly = new Assembly(hardwareMap);
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = dashboard.getTelemetry();
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         while (opModeInInit()) {
             assembly.setSlideTarget(AssemblyShrekster.SLIDES_MID_POSITION);
+            assembly.flipRight.setPosition(0.5 * 0.94);
+            assembly.flipLeft.setPosition(0.5);  //flip up
+            assembly.clawOpen();
             assembly.update();
-            assembly.flipUp();
+
         }
 
         waitForStart();
@@ -52,11 +59,56 @@ public class TeleopLM3Tickletesh extends LinearOpMode {
             TelemetryPacket packet = new TelemetryPacket();
 
             if(gamepad1.triangle){
-                assembly.SmoothDepositUp();
+                time.reset();
+                time.startTime();
+                assembly.setPitchTarget(AssemblyShrekster.PITCH_MID_POSITION);
+                while (time.seconds() <2){
+                    assembly.update();
+                }
+                time.reset();
+                time.startTime();
+                assembly.slideTarget = assembly.SLIDES_LOW_POSITION;
+                while(time.seconds()<1){
+                    assembly.update();
+                }
+                time.reset();
+                time.startTime();
+                assembly.setPitchTarget(AssemblyShrekster.PITCH_HIGH_POSITION);
+                while (time.seconds() <2){
+                    assembly.update();
+                }
+                time.reset();
+                time.startTime();
+                assembly.slideTarget = Assembly.SLIDES_HIGH_POSITION;
+
+
+            }
+            if (gamepad1.right_bumper){
+                assembly.claw.setPosition(0.1);
+            }else if(gamepad1.left_bumper){
+                assembly.claw.setPosition(0.35);
             }
 
             if(gamepad1.cross){
-                assembly.SmoothDepositDown();
+                time.reset();
+                time.startTime();
+                assembly.slideTarget = Assembly.SLIDES_LOW_POSITION;
+                while (time.seconds() <1){
+                    assembly.update();
+                }
+                time.reset();
+                time.startTime();
+                assembly.setPitchTarget(AssemblyShrekster.PITCH_MID_POSITION);
+                while (time.seconds() <1.5){
+                    assembly.update();
+                }
+                time.reset();
+                time.startTime();
+                assembly.slideTarget = Assembly.SLIDES_MID_POSITION;
+                assembly.flipRight.setPosition(0.130 * 0.94);
+                assembly.flipLeft.setPosition(0.130); // flip down
+
+//                assembly.setPitchTarget(AssemblyShrekster.PITCH_LOW_POSITION -100);
             }
 
 
