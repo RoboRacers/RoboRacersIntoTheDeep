@@ -1,19 +1,20 @@
-package org.firstinspires.ftc.teamcode.vision;
 
-import org.openftc.easyopencv.OpenCvPipeline;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.Point;
-import org.opencv.core.RotatedRect;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
+        package org.firstinspires.ftc.teamcode.vision;
 
-import java.util.ArrayList;
+        import org.openftc.easyopencv.OpenCvPipeline;
+        import org.opencv.core.Core;
+        import org.opencv.core.Mat;
+        import org.opencv.core.MatOfPoint;
+        import org.opencv.core.MatOfPoint2f;
+        import org.opencv.core.Point;
+        import org.opencv.core.RotatedRect;
+        import org.opencv.core.Scalar;
+        import org.opencv.core.Size;
+        import org.opencv.imgproc.Imgproc;
 
-public class SampleOtherTeamCode extends OpenCvPipeline
+        import java.util.ArrayList;
+
+public class testOldCode extends OpenCvPipeline
 {
     /*
      * Working image buffers
@@ -37,14 +38,14 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     /*
      * Threshold values
      */
-    public static final int YELLOW_MASK_THRESHOLD = 80;
-    public static final int BLUE_MASK_THRESHOLD = 150;
-    public static final int RED_MASK_THRESHOLD = 255;
+    static final int YELLOW_MASK_THRESHOLD = 57;
+    static final int BLUE_MASK_THRESHOLD = 150;
+    static final int RED_MASK_THRESHOLD = 198;
 
     /*
      * Area threshold for detected objects
      */
-    public static final double AREA_THRESHOLD = 500.0; // Adjust this value as needed
+    static final double AREA_THRESHOLD = 500.0; // Adjust this value as needed
 
     /*
      * Elements for noise reduction
@@ -162,9 +163,7 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     {
         return clientStoneList;
     }
-    ArrayList<MatOfPoint> blueClist = new ArrayList<>();
-    ArrayList<MatOfPoint> redClist = new ArrayList<>();
-    ArrayList<MatOfPoint> yClist = new ArrayList<>();
+
     void findContours(Mat input)
     {
         // Convert the input image to YCrCb color space
@@ -176,8 +175,8 @@ public class SampleOtherTeamCode extends OpenCvPipeline
 
         // Threshold the channels to form masks
         Imgproc.threshold(cbMat, blueThresholdMat, BLUE_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY);
-        Imgproc.threshold(crMat, redThresholdMat, 200, 255, Imgproc.THRESH_BINARY);
-        Imgproc.threshold(cbMat, yellowThresholdMat, 50, 110, Imgproc.THRESH_BINARY_INV);
+        Imgproc.threshold(crMat, redThresholdMat, RED_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY);
+        Imgproc.threshold(cbMat, yellowThresholdMat, YELLOW_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY_INV);
 
         // Apply morphology to the masks
         morphMask(blueThresholdMat, morphedBlueThreshold);
@@ -186,21 +185,18 @@ public class SampleOtherTeamCode extends OpenCvPipeline
 
         // Find contours in the masks
         ArrayList<MatOfPoint> blueContoursList = new ArrayList<>();
-        blueClist = blueContoursList;
         Imgproc.findContours(morphedBlueThreshold, blueContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         ArrayList<MatOfPoint> redContoursList = new ArrayList<>();
-        redClist = redContoursList;
         Imgproc.findContours(morphedRedThreshold, redContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         ArrayList<MatOfPoint> yellowContoursList = new ArrayList<>();
-        yClist = yellowContoursList;
         Imgproc.findContours(morphedYellowThreshold, yellowContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         // Create a plain image for drawing contours
         contoursOnPlainImageMat = Mat.zeros(input.size(), input.type());
 
-//         Analyze and draw contours
+        // Analyze and draw contours
         for(MatOfPoint contour : blueContoursList)
         {
             analyzeContour(contour, input, "Blue");
@@ -262,6 +258,7 @@ public class SampleOtherTeamCode extends OpenCvPipeline
 
             // Store the detected stone information
             AnalyzedStone analyzedStone = new AnalyzedStone();
+//            analyzedStone.angle = rotRectAngle;
             analyzedStone.angle = -(rotRectAngle - 180);
             analyzedStone.color = color;
             analyzedStone.rotatedRect = rotatedRectFitToContour; // Store the rotated rectangle
@@ -339,6 +336,7 @@ public class SampleOtherTeamCode extends OpenCvPipeline
     void drawTagText(RotatedRect rect, String text, Mat drawOn, String color)
     {
         Point center = rect.center;
+//        Imgproc.putText(drawOn, text, new Point(center.x - 15, center.y - 15), Imgproc.FONT_HERSHEY_PLAIN, 0.5, getColorScalar(color), 1);
         Imgproc.putText(drawOn, text, new Point(center.x - 15, center.y - 15), Imgproc.FONT_HERSHEY_PLAIN, 0.5, new Scalar(50,50,50), 1);
     }
 }
