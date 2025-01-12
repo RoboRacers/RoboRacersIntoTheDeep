@@ -18,19 +18,22 @@ import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.robot.Assembly;
 
 
-@Autonomous(name = "Blank Autoop", group = "Test")
+@Autonomous(name = "park", group = "Test")
 public class park extends LinearOpMode {
 
     MecanumDrive drive;
 
     ElapsedTime runtime = new ElapsedTime();
+    Assembly assembly;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        assembly = new Assembly(hardwareMap);
         runtime.reset();
 
         Action traj1 = drive.actionBuilder(new Pose2d(0,0,0))
@@ -38,6 +41,10 @@ public class park extends LinearOpMode {
                 .build();
 
 
+
+        while (opModeInInit()){
+            assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
+        }
         waitForStart();
 
         Actions.runBlocking(new SequentialAction(
