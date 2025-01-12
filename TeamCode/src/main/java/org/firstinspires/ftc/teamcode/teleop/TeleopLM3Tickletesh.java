@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.robot.AssemblyShrekster;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "Teleop LM3", group = "0000-Final")
+@TeleOp(name = "Teleop LM3 Tickle", group = "0000-Final")
 public class TeleopLM3Tickletesh extends LinearOpMode {
 
     ElapsedTime time = new ElapsedTime();
