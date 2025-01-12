@@ -56,6 +56,7 @@ public class Assembly implements Subsystem {
     // Preset positions
     public static final double PITCH_LOW_POSITION = -200;
     public static final double PITCH_MID_POSITION = -600;
+    public static final double PITCH_AUTO_POSITION = -400;
     public static final double PITCH_HIGH_POSITION = -2000;
     public static final double PITCH_POSITION_TOLERANCE = 1;
 
