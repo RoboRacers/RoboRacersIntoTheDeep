@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.modules.PIDController;
 
 @Config
@@ -53,9 +54,9 @@ public class Assembly implements Subsystem {
 
     public double getPitchAngle() {return pitchAngle;}
     // Preset positions
-    public static final double PITCH_LOW_POSITION = 10;
-    public static final double PITCH_MID_POSITION = 30;
-    public static final double PITCH_HIGH_POSITION = 90;
+    public static final double PITCH_LOW_POSITION = -450;
+    public static final double PITCH_MID_POSITION = -600;
+    public static final double PITCH_HIGH_POSITION = -2000;
     public static final double PITCH_POSITION_TOLERANCE = 1;
 
     public enum PitchPosition {
@@ -78,6 +79,10 @@ public class Assembly implements Subsystem {
     public static double slidesKp = 0.005;
     public static double slidesKi = 0; // slides constant
     public static double slidesKd = 0.0008;
+    public double slidesKP = 0.042;
+    public double slidesKI = 0.001; // slides constant
+    public double slidesKD = 0.002;
+    public double slidesKF = 0.39;
     public static double offset = 40;
     public static int slideTarget = 0;
     public static double slidePosition = 0;
@@ -115,7 +120,7 @@ public class Assembly implements Subsystem {
         distanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "distance");
         pot = hardwareMap.get(AnalogInput.class,"pot");
 
-        slidesPID = new PIDController(slidesKp, slidesKi, slidesKd);
+        slidesPID = new PIDController(slidesKP, slidesKI, slidesKD);
         slidesPID.setOutputLimits(-1,1);
         pitchPID = new PIDController(pitchKp, pitchKi, pitchKd);
         pitchPID.setOutputLimits(-1, 1);
@@ -270,7 +275,9 @@ public class Assembly implements Subsystem {
     public void slidesPIDUpdate(int slideTarget) {
         slidePosition = slidesMotor.getCurrentPosition();
         slidesPID.setSetpoint(slideTarget);
-        double motorPower = slidesPID.calculate(slidesMotor.getCurrentPosition());
+        double motorPower = slidesPID.calculate(distanceSensor.getDistance(DistanceUnit.CM));
+        double feedForward = slidesKF * Math.sin(Math.toRadians(mapPotentiometerToAngle(pot.getVoltage())));
+        motorPower = motorPower + feedForward;
         slidesMotor.setPower(-motorPower);
     }
 
@@ -288,6 +295,7 @@ public class Assembly implements Subsystem {
         // Pitch PID Update
         pitchPIDUpdate((int) pitchTarget);
         pitchAngle = mapPotentiometerToAngle(pot.getVoltage());
+
         // Slides Code
         slidesPIDUpdate(slideTarget);
 

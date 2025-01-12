@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -36,8 +37,8 @@ public class TeleopLM3Prasham extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         while (opModeInInit()) {
-            //assembly.setPitchTarget(assembly.PITCH_LOW_POSITION);
-            //assembly.update();
+            assembly.setPitchTarget(assembly.PITCH_LOW_POSITION);
+            assembly.update();
         }
 
         waitForStart();
@@ -47,20 +48,22 @@ public class TeleopLM3Prasham extends LinearOpMode {
             TelemetryPacket packet = new TelemetryPacket();
 
             // Pitch presets
-            /*
+
             if (gamepad1.dpad_up) {
                 assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
             } else if (gamepad1.dpad_down) {
                 assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
+            } else if (gamepad1.dpad_right){
+                assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
             }
 
-             */
+
 
             // Slide Presets
             if (gamepad1.triangle) {
-                assembly.setSlideTarget(Assembly.SLIDES_HIGH_POSITION);
+                assembly.setSlideTarget(45);
             } else if (gamepad1.cross) {
-                assembly.setSlideTarget(Assembly.SLIDES_LOW_POSITION);
+                assembly.setSlideTarget(10);
             }
 
             if (gamepad1.right_bumper){
@@ -79,7 +82,7 @@ public class TeleopLM3Prasham extends LinearOpMode {
             }
 
             // Rotate
-
+            /*
             if (gamepad1.dpad_right && !previousGamepad1.dpad_right) {
                 assembly.rotateClaw.setPosition(
                         assembly.rotateClaw.getPosition() + 0.1
@@ -89,6 +92,8 @@ public class TeleopLM3Prasham extends LinearOpMode {
                         assembly.rotateClaw.getPosition() - 0.1
                 );
             }
+
+             */
 
 
             // Claw
@@ -113,7 +118,7 @@ public class TeleopLM3Prasham extends LinearOpMode {
             previousGamepad1 = gamepad1;
             previousGamepad2 = gamepad2;
 
-            //assembly.update();
+            assembly.update();
 
             // Pitch
             telemetry.addData("Pitch Motor Position", assembly.pitchMotor.getCurrentPosition());
