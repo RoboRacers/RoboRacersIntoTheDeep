@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.robot.Assembly;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "Teleop LM3 Prasham :]", group = "0000-Final")
+@TeleOp(name = "Teleop LM3 Prasham", group = "0000-Final")
 public class TeleopLM3Prasham extends LinearOpMode {
 
     Gamepad previousGamepad1 = new Gamepad();
@@ -88,11 +88,11 @@ public class TeleopLM3Prasham extends LinearOpMode {
                 assembly.rotateClaw.setPosition(0.483);
             }
 
-            if (gamepad2.right_bumper){
-                assembly.slideTarget = Assembly.SLIDES_MID_POSITION;
+            if (gamepad2.right_bumper && assembly.slideTarget < 48){
+                assembly.slideTarget = assembly.slideTarget + 2;
                 telemetry.addLine("test");
             } else if(gamepad2.left_bumper){
-                assembly.slideTarget = Assembly.SLIDES_AUTO_POSITION;
+                assembly.slideTarget = assembly.slideTarget - 2;
             }
 
             // Rotate
