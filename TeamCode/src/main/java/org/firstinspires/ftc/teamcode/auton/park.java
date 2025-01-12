@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -37,13 +38,17 @@ public class park extends LinearOpMode {
         runtime.reset();
 
         Action traj1 = drive.actionBuilder(new Pose2d(0,0,0))
-                .strafeToLinearHeading(new Vector2d(5, -50), -45)
+                .strafeToLinearHeading(new Vector2d(5, -50), 0)
                 .build();
 
 
 
+
+
+
         while (opModeInInit()){
-            assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
+            assembly.setPitchTarget(-900);
+            assembly.update();
         }
         waitForStart();
 

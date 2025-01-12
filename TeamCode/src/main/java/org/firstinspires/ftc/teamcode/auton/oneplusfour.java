@@ -59,7 +59,7 @@ public class oneplusfour extends LinearOpMode {
                         }
                         //                        new SleepAction(2)
                 ))
-                .splineToLinearHeading(new Pose2d(7,36,Math.toRadians(-45)),Math.toRadians(-45))
+                .splineToLinearHeading(new Pose2d(7 ,36,Math.toRadians(-45)),Math.toRadians(-45))
 
 //           above or this one     .splineToLinearHeading(new Pose2d(11,34,Math.toRadians(0)),Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
@@ -78,7 +78,7 @@ public class oneplusfour extends LinearOpMode {
                             return false;
                         },
                         new SleepAction(2),
-                        assembly.flipMid(),
+
                         new SleepAction(0.5),
                         telemetryPacket -> {assembly.claw.setPosition(0.1);
                             return false;
@@ -94,17 +94,16 @@ public class oneplusfour extends LinearOpMode {
                             return false;
                         },
                         new SleepAction(1),
-                        telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
+                        telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
                             return false;
                         }                ))
                 // To pick up 1st sample(right side) on floor
-                .strafeToLinearHeading(new Vector2d(12, 30.5), Math.toRadians(0))
-                .strafeToLinearHeading(new Vector2d(12, 30), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(20, 33), Math.toRadians(0))
                 .stopAndAdd(new SequentialAction(
-                        telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
+                        telemetryPacket -> {assembly.slideTarget = Assembly.SLIDES_MID_POSITION;
                             return false;
                         },
-                        telemetryPacket -> {assembly.slideTarget = Assembly.SLIDES_MID_POSITION;
+                        telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
                             return false;
                         },
                         new SleepAction(1),
@@ -112,17 +111,18 @@ public class oneplusfour extends LinearOpMode {
                             return false;
                         },
                         new SleepAction(0.5),
-                        telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
+                        telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
                             return false;
                         }
                 ))
+
                 // To drop 1st sample from floor into high basket
                 .strafeToLinearHeading(new Vector2d(7, 36), Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
                         telemetryPacket -> {assembly.slideTarget = Assembly.SLIDES_LOW_POSITION;
                             return false;
                         },
-                        elemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
+                        telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
                             return false;
                         },
                         new SleepAction(0.5),
@@ -130,9 +130,13 @@ public class oneplusfour extends LinearOpMode {
                             return false;
                         },
                         new SleepAction(1),
-                        assembly.flipMid(),
+                        telemetryPacket -> {
+                            assembly.flipLeft.setPosition(0.50);
+                            assembly.flipRight.setPosition(0.50 * 0.94);
+                            return false;
+                        },
                         new SleepAction(0.5),
-                        telemetryPacket -> {assembly.claw.setPosition(0.35);
+                        telemetryPacket -> {assembly.claw.setPosition(0.1);
                             return false;
                         },
                         new SleepAction(0.5),
@@ -142,10 +146,21 @@ public class oneplusfour extends LinearOpMode {
                             return false;
                         },
                         new SleepAction(0.5),
-                        telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
+                        telemetryPacket -> {assembly.slideTarget = Assembly.SLIDES_LOW_POSITION;
+                            return false;
+                        },
+                        new SleepAction(1),
+                        telemetryPacket -> {
+                            assembly.flipLeft.setPosition(0.50);
+                            assembly.flipRight.setPosition(0.50 * 0.94);
+                            return false;
+                        },
+                        new SleepAction(1),
+                        telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
                             return false;
                         }
                 ))
+                /*
                 // To pickup 2nd sample(middle) from the floor
                 .strafeToLinearHeading(new Vector2d(14, 40), Math.toRadians(0))
                 .strafeToLinearHeading(new Vector2d(12.5, 40), Math.toRadians(0))
@@ -159,19 +174,16 @@ public class oneplusfour extends LinearOpMode {
                             return false;
                         },
                         new SleepAction(0.5),
+                        telemetryPacket -> {assembly.slideTarget = (Assembly.SLIDES_LOW_POSITION);
+                            return false;
+                        },
+                        new SleepAction(1),
                         telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
-                            return false;
-                        },
-                        new SleepAction(1),
-                        telemetryPacket -> {assembly.claw.setPosition(0.35);
-                            return false;
-                        },
-                        new SleepAction(1),
-                        telemetryPacket -> {assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
                             return false;
                         }
                 ))
                 // To drop 2nd sample into high basket
+
                 .strafeToLinearHeading(new Vector2d(8, 36), Math.toRadians(-45))
                 .stopAndAdd(new SequentialAction(
                         telemetryPacket -> {assembly.setSlideTarget(Assembly.SLIDES_LOW_POSITION);
@@ -273,12 +285,14 @@ public class oneplusfour extends LinearOpMode {
 
                 ))
 
+                 */
+
                 .build();
         while (opModeInInit()){
             assembly.claw.setPosition(0.35);
-            assembly.flipMid();
-            assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
+            assembly.setPitchTarget(-900);
             assembly.slideTarget = (Assembly.SLIDES_LOW_POSITION);
+            assembly.update();
             //                    new SleepAction(2);
             //                    new SleepAction(2);
         }
