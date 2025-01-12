@@ -61,9 +61,9 @@ public class TeleopLM3Prasham extends LinearOpMode {
 
             // Slide Presets
             if (gamepad1.triangle) {
-                assembly.setSlideTarget(45);
+                assembly.setSlideTarget(assembly.SLIDES_HIGH_POSITION);
             } else if (gamepad1.cross) {
-                assembly.setSlideTarget(10);
+                assembly.setSlideTarget(assembly.SLIDES_LOW_POSITION);
             }
 
             if (gamepad1.right_bumper){

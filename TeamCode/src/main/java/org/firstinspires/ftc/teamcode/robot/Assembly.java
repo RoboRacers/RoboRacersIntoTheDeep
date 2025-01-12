@@ -54,7 +54,7 @@ public class Assembly implements Subsystem {
 
     public double getPitchAngle() {return pitchAngle;}
     // Preset positions
-    public static final double PITCH_LOW_POSITION = -450;
+    public static final double PITCH_LOW_POSITION = -200;
     public static final double PITCH_MID_POSITION = -600;
     public static final double PITCH_HIGH_POSITION = -2000;
     public static final double PITCH_POSITION_TOLERANCE = 1;
@@ -92,9 +92,9 @@ public class Assembly implements Subsystem {
     final double ticksToInches = (double) 26 /ticksPerMaxExtend;
     final double ticksToDegrees = (double) 90 /ticksPerRightAngle;
     // Preset positions
-    public static final int SLIDES_LOW_POSITION = 400;
-    public static final int SLIDES_MID_POSITION = 950;
-    public static final int SLIDES_HIGH_POSITION = 1850;
+    public static final int SLIDES_LOW_POSITION = 10;
+    public static final int SLIDES_MID_POSITION = 25;
+    public static final int SLIDES_HIGH_POSITION = 55;
     public static final int SLIDES_POSITION_TOLERANCE = 20;
     public enum SlidesPosition {
         LOW,
