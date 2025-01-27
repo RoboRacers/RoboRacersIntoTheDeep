@@ -41,7 +41,7 @@ public class TeleopLM3Tickletesh extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         while (opModeInInit()) {
-            assembly.pitchTarget = 0;
+            assembly.pitchTarget = -250;
             assembly.slideTarget = Assembly.SLIDES_MID_POSITION;
             assembly.flipRight.setPosition(0.5 * 0.94);
             assembly.flipLeft.setPosition(0.5);  //flip up
@@ -55,11 +55,8 @@ public class TeleopLM3Tickletesh extends LinearOpMode {
 
             TelemetryPacket packet = new TelemetryPacket();
 
-            if(gamepad1.triangle){
-                assembly.SmoothDepositUp();
-            }
 
-            if(gamepad1.cross){
+            if(gamepad1.triangle){
                 assembly.SmoothDepositDown();
                 time.reset();
                 time.startTime();
@@ -78,7 +75,7 @@ public class TeleopLM3Tickletesh extends LinearOpMode {
                 assembly.setPitchTarget(Assembly.PITCH_HIGH_POSITION);
                 assembly.flipRight.setPosition(0.5 * 0.94);
                 assembly.flipLeft.setPosition(0.5);  //flip up
-                while (time.seconds() <0.75){
+                while (time.seconds() <0.7){
                     assembly.update();
                 }
                 time.reset();
@@ -97,18 +94,19 @@ public class TeleopLM3Tickletesh extends LinearOpMode {
                 time.reset();
                 time.startTime();
                 assembly.slideTarget = Assembly.SLIDES_LOW_POSITION;
-                while (time.seconds() <0.5){
+                while (time.seconds() <0.45){
                     assembly.update();
                 }
                 time.reset();
                 time.startTime();
                 assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
-                while (time.seconds() <0.5){
+                while (time.seconds() <0.4){
                     assembly.update();
                 }
                 time.reset();
                 time.startTime();
                 assembly.slideTarget = Assembly.SLIDES_MID_POSITION;
+                assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
                 assembly.flipRight.setPosition(0.130 * 0.94);
                 assembly.flipLeft.setPosition(0.130); // flip down
 
@@ -117,7 +115,7 @@ public class TeleopLM3Tickletesh extends LinearOpMode {
 
 
             if (gamepad1.dpad_down){
-                assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION);
+                assembly.setPitchTarget(Assembly.PITCH_LOW_POSITION-50);
             } else if (gamepad1.dpad_up){
                 assembly.setPitchTarget(Assembly.PITCH_MID_POSITION);
             }
