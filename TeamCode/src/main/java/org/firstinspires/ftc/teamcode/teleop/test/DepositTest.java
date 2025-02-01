@@ -13,25 +13,22 @@ import org.firstinspires.ftc.teamcode.robot.Deposit;
 @Config
 @TeleOp(name = "Deposit Test", group = "Test")
 public class DepositTest extends LinearOpMode {
-
-    Deposit deposit;
-
+    ServoImplEx clawPitch;
+    public static double clawPitchPosition = 0;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
+        clawPitch = hardwareMap.get(ServoImplEx.class, "claw");
 
-        deposit =  new Deposit(hardwareMap);
 
-        Gamepad prevGamepad1;
 
         while (opModeInInit()) {
         }
 
 
-
         while (!isStopRequested()) {
-
+            clawPitch.setPosition(clawPitchPosition);
 
 
             telemetry.update();

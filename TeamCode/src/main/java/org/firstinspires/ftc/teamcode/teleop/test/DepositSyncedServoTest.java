@@ -14,11 +14,13 @@ public class DepositSyncedServoTest extends LinearOpMode {
     ServoImplEx flipRight;
     ServoImplEx flipLeft;
     ServoImplEx v4bServo;
+    ServoImplEx clawServo;
 
     public static double target = 0;
     public static boolean rightEnable = false;
     public static boolean leftEnable = true;
     public static double v4bTarget = 0;
+    public static double clawTarget = 0;
     public static boolean v4bEnable = false;
 
 
@@ -30,6 +32,7 @@ public class DepositSyncedServoTest extends LinearOpMode {
         flipRight = hardwareMap.get(ServoImplEx.class, "depositFlipRight");
         flipLeft = hardwareMap.get(ServoImplEx.class, "depositFlipLeft");
         v4bServo = hardwareMap.get(ServoImplEx.class, "depositV4bServo");
+        clawServo = hardwareMap.get(ServoImplEx.class, "claw");
 
         flipLeft.setDirection(Servo.Direction.REVERSE);
         while (opModeInInit()) {
@@ -41,21 +44,8 @@ public class DepositSyncedServoTest extends LinearOpMode {
             flipRight.setPosition(target);
             flipLeft.setPosition(target);
             v4bServo.setPosition(v4bTarget);
+            clawServo.setPosition(clawTarget);
 
-            if (rightEnable)
-                flipRight.setPwmEnable();
-            else
-                flipRight.setPwmDisable();
-
-            if (leftEnable)
-                flipLeft.setPwmEnable();
-            else
-                flipLeft.setPwmDisable();
-
-            if (v4bEnable)
-                v4bServo.setPwmEnable();
-            else
-                v4bServo.setPwmDisable();
 
 
             telemetry.addData("target", target);
