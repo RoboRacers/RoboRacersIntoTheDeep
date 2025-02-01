@@ -14,12 +14,15 @@ import org.firstinspires.ftc.teamcode.robot.Deposit;
 @TeleOp(name = "Deposit Test", group = "Test")
 public class DepositTest extends LinearOpMode {
     ServoImplEx clawPitch;
+    ServoImplEx extendoLeft;
+    ServoImplEx extendoRight;
     public static double clawPitchPosition = 0;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
-        clawPitch = hardwareMap.get(ServoImplEx.class, "depositV4bServo");
+        extendoLeft = hardwareMap.get(ServoImplEx.class, "extendoLeft");
+        extendoRight = hardwareMap.get(ServoImplEx.class, "extendoRight");
 
 
 
