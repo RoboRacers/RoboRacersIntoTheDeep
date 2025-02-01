@@ -15,6 +15,8 @@ public class DepositSyncedServoTest extends LinearOpMode {
     ServoImplEx flipLeft;
     ServoImplEx v4bServo;
     ServoImplEx clawServo;
+    ServoImplEx extendoLeft;
+    ServoImplEx extendoRight;
 
     public static double target = 0;
     public static boolean rightEnable = false;
@@ -22,6 +24,7 @@ public class DepositSyncedServoTest extends LinearOpMode {
     public static double v4bTarget = 0;
     public static double clawTarget = 0;
     public static boolean v4bEnable = false;
+    public static double extendoTarget = 0;
 
 
 
@@ -33,6 +36,8 @@ public class DepositSyncedServoTest extends LinearOpMode {
         flipLeft = hardwareMap.get(ServoImplEx.class, "depositFlipLeft");
         v4bServo = hardwareMap.get(ServoImplEx.class, "depositV4bServo");
         clawServo = hardwareMap.get(ServoImplEx.class, "claw");
+        extendoLeft = hardwareMap.get(ServoImplEx.class, "extendoLeft");
+        extendoRight = hardwareMap.get(ServoImplEx.class, "extendoRight");
 
         flipLeft.setDirection(Servo.Direction.REVERSE);
         while (opModeInInit()) {
@@ -45,6 +50,9 @@ public class DepositSyncedServoTest extends LinearOpMode {
             flipLeft.setPosition(target);
             v4bServo.setPosition(v4bTarget);
             clawServo.setPosition(clawTarget);
+
+            extendoRight.setPosition(extendoTarget);
+            extendoLeft.setPosition(extendoTarget);
 
 
 

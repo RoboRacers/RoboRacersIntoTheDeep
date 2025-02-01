@@ -19,7 +19,7 @@ public class DepositTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        clawPitch = hardwareMap.get(ServoImplEx.class, "claw");
+        clawPitch = hardwareMap.get(ServoImplEx.class, "depositV4bServo");
 
 
 
