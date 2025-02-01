@@ -8,10 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 
-@Disabled
-
 @TeleOp(name = "Slides Test", group = "Test")
-public class MotorTest extends LinearOpMode {
+public class SlidesTest extends LinearOpMode {
     public DcMotorImplEx slidesMotor;
 
     @Override
