@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.test;
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -8,6 +9,7 @@ import com.qualcomm.robotcore.hardware.ServoImplEx;
 //@Disabled // Comment out this line to add to the opmode list
 
 @Config
+@Disabled
 @TeleOp(name = "Deposit Synced Servo Test", group = "Test")
 public class DepositSyncedServoTest extends LinearOpMode {
 

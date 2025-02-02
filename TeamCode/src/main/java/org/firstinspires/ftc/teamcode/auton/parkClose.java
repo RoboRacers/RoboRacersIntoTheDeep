@@ -22,23 +22,24 @@ import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.robot.Assembly;
 
 
-@Autonomous(name = "park", group = "Test")
-public class park extends LinearOpMode {
+@Autonomous(name = "Park for close basket", group = "Test")
+public class parkClose extends LinearOpMode {
 
     MecanumDrive drive;
 
     ElapsedTime runtime = new ElapsedTime();
-    Assembly assembly;
-
     @Override
     public void runOpMode() throws InterruptedException {
 
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-        assembly = new Assembly(hardwareMap);
         runtime.reset();
 
         Action traj1 = drive.actionBuilder(new Pose2d(0,0,0))
-                .strafeToLinearHeading(new Vector2d(5, -50), 0)
+                .strafeToLinearHeading(new Vector2d(5, 20), 0)
+                .stopAndAdd(new SleepAction(1))
+                .strafeToLinearHeading(new Vector2d(55,20), 0)
+                .stopAndAdd(new SleepAction(1))
+                .strafeToLinearHeading(new Vector2d(55,10), 0)
                 .build();
 
 

@@ -50,36 +50,13 @@ public class DepositTest extends LinearOpMode {
 
         while (!isStopRequested()) {
 
-            if ( gamepad1.dpad_right) {
-                flipLeft.setPosition(gamepad1.left_stick_y);
-                flipRight.setPosition(gamepad1.left_stick_y);
-                telemetry.addData("pos", gamepad1.left_stick_y);
-                telemetry.update();
+           if (gamepad1.left_stick_y>0.1){
+               claw.setPosition(gamepad1.left_stick_y);
+               telemetry.addData("claw", claw);
+               telemetry.update();
+           }
 
-            }
-            else if ( gamepad1.dpad_up) {
-                flipLeft.setPosition(0.75);
-                flipRight.setPosition(0.75);
-//                telemetry.addData("claw", extendoRight.getPosition());
-//                telemetry.update();
-
-            }else if ( gamepad1.dpad_down) {
-                flipLeft.setPosition(0.65);
-                flipRight.setPosition(0.65);
-//                telemetry.addData("claw", extendoRight.getPosition());
-//                telemetry.update();
-
-            }
-            else if ( gamepad1.dpad_left) {
-                flipLeft.setPosition(0.5);
-                flipRight.setPosition(0.5);
-//                telemetry.addData("claw", extendoRight.getPosition());
-//                telemetry.update();
-
-            }
-
-
-
+telemetry.addData("claw", claw.getPosition());
 
             telemetry.update();
         }
