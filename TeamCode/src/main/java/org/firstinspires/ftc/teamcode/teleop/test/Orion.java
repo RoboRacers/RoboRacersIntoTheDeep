@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.teleop.test;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -9,20 +9,18 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
-import org.firstinspires.ftc.teamcode.robot.Assembly;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "Teleop LT", group = "0000-Final")
-public class TeleopLT extends LinearOpMode {
+@TeleOp(name = "Orion", group = "0000-Final")
+public class Orion extends LinearOpMode {
 
     Gamepad previousGamepad1 = new Gamepad();
     Gamepad previousGamepad2 = new Gamepad();
@@ -52,6 +50,8 @@ public class TeleopLT extends LinearOpMode {
     double intake4b;
     double deposit4b;
 
+    ElapsedTime time = new ElapsedTime();
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -72,7 +72,7 @@ public class TeleopLT extends LinearOpMode {
         intakeV4b = hardwareMap.get(ServoImplEx.class, "intakeV4b");
         slidesMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
         intakeMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
-extendoRight.setDirection(Servo.Direction.REVERSE);
+        extendoRight.setDirection(Servo.Direction.REVERSE);
         depositFlipLeft.setDirection(Servo.Direction.REVERSE);
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
@@ -96,18 +96,25 @@ extendoRight.setDirection(Servo.Direction.REVERSE);
                 TelemetryPacket packet = new TelemetryPacket();
 
                 if (gamepad1.dpad_down) { //intake
-                 intake4b = 0.4;
-                 intakeFlip = 0.2;
-
+                    intakeV4b.setPosition(0.35);
+                    intakeFlipLeft.setPosition(0.2);
+                    intakeFlipRight.setPosition(0.2);
+                    time.reset();
+                    time.startTime();
+                    while(time.seconds()<1 && gamepad1.left_trigger<0.1){
+                        telemetry.addData("hi", intakeFlipLeft.getPosition());
+                    }
+                    intakeMotor.setPower(0.8);
                 } else if (gamepad1.dpad_up) { //neutral
-                   intake4b = 0.55;
-                   intakeFlip = 0.5;
+                    intakeMotor.setPower(0);
+                    intakeV4b.setPosition(0.40);
+                    intakeFlipLeft.setPosition(0.50);
+                    intakeFlipRight.setPosition(0.50);
 
                 }
 
                 if (gamepad1.right_trigger > 0.1) {intakeMotor.setPower(0.8);}
                 else if (gamepad1.left_trigger > 0.1) {intakeMotor.setPower(-0.8);}
-                else { intakeMotor.setPower(0);}
 
                 if (gamepad1.dpad_right) {
                     slidesMotor.setPower(0.85);
@@ -117,27 +124,42 @@ extendoRight.setDirection(Servo.Direction.REVERSE);
                     slidesMotor.setPower(0);
                 }
 
-                if(gamepad1.a){//specimen grab
-                    deposit4b = 0.06;
-                    depositFlip = 0.65;
-                    extendo = 0.48;
-                }else if(gamepad1.y){//going to score
-                    depositFlip = 0.05;
-                    extendo = 0.95;
-                    deposit4b = 0.5;
-                }
+            if(gamepad1.a){//specimen grab
+                depositV4bServo.setPosition(0.06);
 
-                if(gamepad1.x){//score
-                    depositFlip = 0.18;
-                    deposit4b = 0.35;
-                    clawPos=0.82;
-                }
+                depositFlipLeft.setPosition(0.65);
+                depositFlipRight.setPosition(0.65);
 
-                if(gamepad1.right_bumper){
-                    clawPos = 0.91;
-                }else if(gamepad1.left_bumper){
-                    clawPos = 0.6;
+                extendoLeft.setPosition(0.48);
+                extendoRight.setPosition(0.48);
+
+                claw.setPosition(0.6);
+            }else if(gamepad1.y){//going to score
+                depositFlipLeft.setPosition(0.05);
+                depositFlipRight.setPosition(0.05);
+
+                extendoLeft.setPosition(0.95);
+                extendoRight.setPosition(0.95);
+
+                depositV4bServo.setPosition(.5);
+                time.reset();
+                time.startTime();
+                while(time.seconds()<2){
+                    telemetry.addData("hi", time.seconds());
                 }
+                depositFlipLeft.setPosition(0.18);
+                depositFlipRight.setPosition(0.18);
+                depositV4bServo.setPosition(.35);
+                claw.setPosition(0.82);
+            }
+
+
+            if(gamepad1.right_bumper){
+                claw.setPosition(0.91);
+
+            }else if(gamepad1.left_bumper){
+                claw.setPosition(0.6);
+            }
 
                 intakeV4b.setPosition(intake4b);
                 intakeFlipLeft.setPosition(intakeFlip-0.01);
@@ -152,8 +174,6 @@ extendoRight.setDirection(Servo.Direction.REVERSE);
                 extendoLeft.setPosition(extendo);
                 extendoRight.setPosition(extendo);
                 claw.setPosition(clawPos);
-
-
                 telemetry.update();
 
 

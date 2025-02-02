@@ -26,7 +26,7 @@ public class Deposit implements Subsystem {
     ServoImplEx v4bServo;
     Servo claw;
 
-    private DepositState currentState;
+    private DepositState currentState = DepositState.NEUTRAL;
 
     public enum DepositState {
         INTAKE,
@@ -54,21 +54,38 @@ public class Deposit implements Subsystem {
         switch (currentState) {
             case NEUTRAL:
                 currentState =  DepositState.INTAKE;
+                v4bServo.setPosition(0.06);
+
+                flipLeft.setPosition(0.65);
+                flipRight.setPosition(0.65);
+
+                extendoLeft.setPosition(0.48);
+                extendoRight.setPosition(0.48);
+
+                claw.setPosition(0.6);
                 break;
             case INTAKE:
                 currentState = DepositState.CLOSE;
+                claw.setPosition(0.91);
                 break;
             case CLOSE:
                 currentState = DepositState.EXTEND;
-                flipLeft.setPosition(0.1);
-                flipRight.setPosition(0.1);
-                v4bServo.setPosition(.8);
+
+                flipLeft.setPosition(0.05);
+                flipRight.setPosition(0.05);
+
+                extendoLeft.setPosition(0.95);
+                extendoRight.setPosition(0.95);
+
+                v4bServo.setPosition(.5);
+
                 break;
             case EXTEND:
                 currentState = DepositState.SCORE;
-                flipLeft.setPosition(0.3);
-                flipRight.setPosition(0.3);
-                v4bServo.setPosition(.8);
+                flipLeft.setPosition(0.18);
+                flipRight.setPosition(0.18);
+                v4bServo.setPosition(.35);
+                claw.setPosition(0.82);
                 break;
             case SCORE:
                 currentState = DepositState.NEUTRAL;
@@ -79,19 +96,41 @@ public class Deposit implements Subsystem {
     public void rewindState () {
         switch (currentState) {
             case NEUTRAL:
-                currentState =  DepositState.SCORE;
+                currentState = DepositState.SCORE;
+                flipLeft.setPosition(0.18);
+                flipRight.setPosition(0.18);
+                v4bServo.setPosition(.35);
+                claw.setPosition(0.81);
                 break;
             case INTAKE:
                 currentState = DepositState.NEUTRAL;
                 break;
             case CLOSE:
                 currentState = DepositState.INTAKE;
+                v4bServo.setPosition(0.06);
+
+                flipLeft.setPosition(0.65);
+                flipRight.setPosition(0.65);
+
+                extendoLeft.setPosition(0.48);
+                extendoRight.setPosition(0.48);
+
+                claw.setPosition(0.6);
                 break;
             case EXTEND:
                 currentState = DepositState.CLOSE;
+                claw.setPosition(0.91);
                 break;
             case SCORE:
                 currentState = DepositState.EXTEND;
+
+                flipLeft.setPosition(0.05);
+                flipRight.setPosition(0.05);
+
+                extendoLeft.setPosition(0.95);
+                extendoRight.setPosition(0.95);
+
+                v4bServo.setPosition(.5);
                 break;
         }
     }
