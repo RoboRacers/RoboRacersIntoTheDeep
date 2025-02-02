@@ -19,12 +19,12 @@ public class Deposit implements Subsystem {
     /*
      * Servos
      */
-    ServoImplEx flipRight;
-    ServoImplEx flipLeft;
-    ServoImplEx extendoRight;
-    ServoImplEx extendoLeft;
-    ServoImplEx v4bServo;
-    Servo claw;
+    public ServoImplEx flipRight;
+    public ServoImplEx flipLeft;
+    public ServoImplEx extendoRight;
+    public ServoImplEx extendoLeft;
+    public ServoImplEx v4bServo;
+    public Servo claw;
 
     private DepositState currentState = DepositState.NEUTRAL;
 

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop.test;
+package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -12,15 +12,14 @@ import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "Orion", group = "0000-Final")
-public class Orion extends LinearOpMode {
+@TeleOp(name = "Orion the Huntsman", group = "0000-Final")
+public class OrionDos extends LinearOpMode {
 
     Gamepad previousGamepad1 = new Gamepad();
     Gamepad previousGamepad2 = new Gamepad();
@@ -72,7 +71,7 @@ public class Orion extends LinearOpMode {
         intakeV4b = hardwareMap.get(ServoImplEx.class, "intakeV4b");
         slidesMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
         intakeMotor.setDirection(DcMotorImplEx.Direction.REVERSE);
-        extendoRight.setDirection(Servo.Direction.REVERSE);
+        extendoLeft.setDirection(Servo.Direction.REVERSE);
         depositFlipLeft.setDirection(Servo.Direction.REVERSE);
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
@@ -97,22 +96,21 @@ public class Orion extends LinearOpMode {
 
                 if (gamepad1.dpad_down) { //intake
                     intake4b = 0.4;
-                    intakeFlip = 0.22;
+                    intakeFlip = 0.33;
                     intakeFlipLeft.setPosition(intakeFlip-0.01);
                     intakeV4b.setPosition(intake4b);
                     intakeFlipRight.setPosition(intakeFlip);
 
                 } else if (gamepad1.dpad_up) { //neutral
                     intakeMotor.setPower(0);
-                    intake4b = 0.3;
-                    intakeFlip = 0.5;
+                    intake4b = 0.4;
+                    intakeFlip = 0.65;
                     intakeFlipLeft.setPosition(intakeFlip-0.01);
                     intakeV4b.setPosition(intake4b);
                     intakeFlipRight.setPosition(intakeFlip);
-
                 }
 
-                if (gamepad1.right_trigger > 0.1) {intakeMotor.setPower(0.8);}
+                if (gamepad1.right_trigger > 0.1 && intakeFlip!= 0.5) {intakeMotor.setPower(0.8);}
                 else if (gamepad1.left_trigger > 0.1) {intakeMotor.setPower(-0.8);}
                 else{
                     intakeMotor.setPower(0);
@@ -126,52 +124,50 @@ public class Orion extends LinearOpMode {
                     slidesMotor.setPower(0);
                 }
 
-            if(gamepad1.a){//specimen grab
-               depositV4bServo.setPosition(0.03);
-                depositFlipLeft.setPosition(0.6);
-                depositFlipRight.setPosition(0.6);
-                extendoLeft.setPosition(0.48);
-                extendoRight.setPosition(0.48);
 
 
-
-
-            }
-            if(gamepad1.x){//going to score
-
-
-                depositV4bServo.setPosition(0.5);
-
-                depositFlipLeft.setPosition(0.05);
-                depositFlipRight.setPosition(0.05);
-
-                extendoLeft.setPosition(0.9);
-                extendoRight.setPosition(0.9);
-
-            }
-            if(gamepad1.y){//going to score
-
-
+            if(gamepad2.dpad_up){ // specimen score
                 depositV4bServo.setPosition(0.35);
 
                 depositFlipLeft.setPosition(0.14);
                 depositFlipRight.setPosition(0.14);
 
-                extendoLeft.setPosition(0.7);
-                extendoRight.setPosition(0.7);
-                claw.setPosition(0.82);
 
-//
+                    claw.setPosition(0.82);
+
             }
+            if(gamepad2.dpad_down){ // specimen get into subsystem
+                depositV4bServo.setPosition(0.03);
+                depositFlipLeft.setPosition(0.6);
+                depositFlipRight.setPosition(0.6);
+
+            }
+                if(gamepad2.dpad_right){ // specimen grab
+                    depositV4bServo.setPosition(0.5);
+
+                    depositFlipLeft.setPosition(0.05);
+                    depositFlipRight.setPosition(0.05);
+
+                }
+
+                if (gamepad2.cross){
+                    extendoRight.setPosition(gamepad1.left_stick_y );
+                    extendoLeft.setPosition(gamepad1.left_stick_y);
+                }
 
 
-                if(gamepad1.right_bumper){
+
+
+
+
+                if(gamepad2.right_bumper){
                     clawPos = 0.95;
                     claw.setPosition(clawPos);
-                }else if(gamepad1.left_bumper){
+                }else if(gamepad2.left_bumper){
                     clawPos = 0.6;
                     claw.setPosition(clawPos);
                 }
+
 
 
 

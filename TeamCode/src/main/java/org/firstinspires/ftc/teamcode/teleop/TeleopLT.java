@@ -146,7 +146,7 @@ extendoRight.setDirection(Servo.Direction.REVERSE);
 
                 depositV4bServo.setPosition(deposit4b);
 
-                depositFlipLeft.setPosition(depositFlip + 0.01);
+                depositFlipLeft.setPosition(depositFlip);
                 depositFlipRight.setPosition(depositFlip);
 
                 extendoLeft.setPosition(extendo);
@@ -154,6 +154,15 @@ extendoRight.setDirection(Servo.Direction.REVERSE);
                 claw.setPosition(clawPos);
 
 
+                telemetry.addData("Intake Flip l", intakeFlipLeft.getPosition());
+                telemetry.addData("Intake Flip r", intakeFlipRight.getPosition());
+                telemetry.addData("Deposit Flip l", depositFlipLeft.getPosition());
+                telemetry.addData("Deposit Flip r", depositFlipRight.getPosition());
+                telemetry.addData("Deposit v4b", depositV4bServo.getPosition());
+                telemetry.addData("Intake v4b", intakeV4b.getPosition());
+                telemetry.addData("Claw", claw.getPosition());
+                telemetry.addData("Extendo l", extendoLeft.getPosition());
+                telemetry.addData("Extendo r", extendoRight.getPosition());
                 telemetry.update();
 
 

@@ -25,7 +25,7 @@ import org.firstinspires.ftc.teamcode.robot.Deposit;
 import org.firstinspires.ftc.teamcode.robot.Intake;
 
 @Disabled
-@Autonomous(name = "Blank Autoop", group = "Test")
+@Autonomous(name = "Spec Autoop", group = "Test")
 public class SpecAuton extends LinearOpMode {
 
     MecanumDrive drive;
@@ -46,8 +46,10 @@ public class SpecAuton extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(10, -5), 0)
                 .stopAndAdd(new SequentialAction(
                         telemetryPacket -> {
-                            deposit.advanceState();
-                            deposit.advanceState();
+                            deposit.flipLeft.setPosition(0.05);
+                            deposit.flipRight.setPosition(0.05);
+
+                            deposit.v4bServo.setPosition(0.5);
                             return false;
                         }
                         )
@@ -56,7 +58,8 @@ public class SpecAuton extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(30, -5), 0)
                 .stopAndAdd(new SequentialAction(
                         telemetryPacket -> {
-                            deposit.advanceState();
+                            deposit.extendoLeft.setPosition(0.9);
+                            deposit.extendoRight.setPosition(0.9);
                             return false;
                         })
                 )
@@ -64,7 +67,13 @@ public class SpecAuton extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(45, -5), 0)
                 .stopAndAdd(new SequentialAction(
                         telemetryPacket -> {
-                            deposit.advanceState();
+                            deposit.v4bServo.setPosition(0.03);
+
+                            deposit.flipLeft.setPosition(0.6);
+                            deposit.flipRight.setPosition(0.6);
+
+                            deposit.extendoLeft.setPosition(0.48);
+                            deposit.extendoRight.setPosition(0.48);
                             return false;
                         })
                 )
