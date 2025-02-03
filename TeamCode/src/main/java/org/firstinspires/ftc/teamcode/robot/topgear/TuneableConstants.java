@@ -1,8 +1,10 @@
-package org.firstinspires.ftc.teamcode.robot.customdrive;
+package org.firstinspires.ftc.teamcode.robot.topgear;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.roboracers.topgear.controls.PIDCoefficients;
+import com.roboracers.topgear.follower.BasicGuidedVectorFieldFollower;
 import com.roboracers.topgear.follower.CentripetalGuidedVectorFieldFollower;
+import com.roboracers.topgear.follower.GuidedVectorFieldFollower;
 
 @Config
 public class TuneableConstants {
@@ -51,6 +53,31 @@ public class TuneableConstants {
         return new CentripetalGuidedVectorFieldFollower.Params(
                 TANGENT_DISTANCE,
                 CENTRIPETAL_MASS,
+                GVF_FOLLOWING_MAX_SPEED,
+                PID_FOLLOWING_THRESHOLD,
+                STOPPING_DISTANCE_THRESHOLD,
+                STOPPING_POWER_THRESHOLD,
+                X_PID_COEFFS,
+                Y_PID_COEFFS,
+                H_PID_COEFFS
+        );
+    }
+
+    public static BasicGuidedVectorFieldFollower.Params getBasicParams() {
+        return new BasicGuidedVectorFieldFollower.Params(
+                TANGENT_DISTANCE,
+                GVF_FOLLOWING_MAX_SPEED,
+                PID_FOLLOWING_THRESHOLD,
+                STOPPING_DISTANCE_THRESHOLD,
+                STOPPING_POWER_THRESHOLD,
+                X_PID_COEFFS,
+                Y_PID_COEFFS,
+                H_PID_COEFFS
+        );
+    }
+    public static GuidedVectorFieldFollower.Params getOldParams() {
+        return new GuidedVectorFieldFollower.Params(
+                TANGENT_DISTANCE,
                 GVF_FOLLOWING_MAX_SPEED,
                 PID_FOLLOWING_THRESHOLD,
                 STOPPING_DISTANCE_THRESHOLD,

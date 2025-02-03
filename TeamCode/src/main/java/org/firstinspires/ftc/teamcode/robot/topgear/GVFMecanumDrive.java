@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.robot.customdrive;
+package org.firstinspires.ftc.teamcode.robot.topgear;
 
-import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.robot.customdrive.DriveConstants.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.robot.topgear.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.robot.topgear.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.robot.topgear.DriveConstants.encoderTicksToInches;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
@@ -102,8 +102,8 @@ public class GVFMecanumDrive implements Subsystem {
          */
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront"); //Fl
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear"); //Bl
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear"); //Br
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftBack"); //Bl
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightBack"); //Br
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");// Fr
 
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -167,6 +167,7 @@ public class GVFMecanumDrive implements Subsystem {
                 this.getPoseEstimate().getHeading()
         ));
 
+
         fieldOverlay.setStroke("#00FF00");
         // Draw path
         ParametricPath path = follower.getPath();
@@ -202,7 +203,11 @@ public class GVFMecanumDrive implements Subsystem {
     public void setPath (ParametricPath parametricPath) {
         follower.setPath(parametricPath);
     }
-
+    public void setFollower(Follower follower) { this.follower = follower;
+    }
+    public void setPoseEstimate(Pose2d pose) {
+        localizer.setPoseEstimate(pose);
+    }
     public void setFollowing(boolean following) {
         isFollowing = following;
     }
@@ -213,21 +218,11 @@ public class GVFMecanumDrive implements Subsystem {
      * @return action
      */
     public Action followPath(ParametricPath path) {
-        return new Action() {
-            boolean firstLoop = true;
-            @Override
-            public boolean run(TelemetryPacket p) {
-                if (firstLoop) {
-                    setPath(path);
-                    setFollowing(true);
-                    firstLoop = false;
-                    return true;
-                } else if (!follower.isComplete(getPoseEstimate())) {
-                    update();
-                    return true;
-                }
-                return false;
-            }
+        return p -> {
+            setPath(path);
+            setFollowing(true);
+            update();
+            return !follower.isComplete(getPoseEstimate());
         };
     }
 

@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.robot.topgear.GVFMecanumDrive;
 // - Words to code by
 
 @Config
-@Autonomous(name = "GVF Test move back", group = "16481")
-public class GVFTestBack extends LinearOpMode{
+@Autonomous(name = "GVF Line Test", group = "16481")
+public class GVFStraightLine extends LinearOpMode{
 
 
     @Override
@@ -23,7 +23,7 @@ public class GVFTestBack extends LinearOpMode{
 
         GVFMecanumDrive drive = new GVFMecanumDrive(hardwareMap);
 
-        ParametricPath path1 = new CubicBezierCurve(new Vector2d(0,0), new Vector2d(-36,-36), new Vector2d(-36,36), new Vector2d(-72,0));
+        ParametricPath path1 = new CubicBezierCurve(new Vector2d(0,0), new Vector2d(0,0), new Vector2d(36,0), new Vector2d(36, 0));
 
         while(!isStopRequested() && !opModeIsActive()) {
 
@@ -37,6 +37,8 @@ public class GVFTestBack extends LinearOpMode{
         drive.setFollowing(true);
         while (opModeIsActive()) {
             drive.update();
+            telemetry.addData("Following", drive.isFollowing);
+            telemetry.update();
         }
     }
 

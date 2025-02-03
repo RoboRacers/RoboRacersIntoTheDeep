@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robot.customdrive;
+package org.firstinspires.ftc.teamcode.robot.topgear;
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -31,7 +31,7 @@ public class CustomThreeTrackingWheelLocalizer extends ThreeTrackingWheelLocaliz
                 new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front
         ));
 
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear")); // Port Number 2
+        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftBack")); // Port Number 2
         rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront")); // Port Number 2
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront")); // Port Number 3
 
