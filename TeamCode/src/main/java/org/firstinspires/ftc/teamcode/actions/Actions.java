@@ -4,7 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
-public class Actions {
+public class    Actions {
 
     public static void runBlocking(Action a) {
         FtcDashboard dash = FtcDashboard.getInstance();
