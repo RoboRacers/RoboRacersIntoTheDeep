@@ -64,5 +64,7 @@ public class BlankAutoop extends LinearOpMode {
 
         
         // My new comments
+
+        // only I can see this comment
     }
 }
